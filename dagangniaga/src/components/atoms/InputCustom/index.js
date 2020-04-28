@@ -7,6 +7,8 @@ const InputCustom = ({placeholder, ...rest}) => {
     <View style={{ maxWidth: 300 }}>
       <TextInput style={styles.input} placeholder={placeholder} 
       placeholderTextColor={colors.default} 
+      autoCorrect = {false}
+      autoCapitalize="none"
       {...rest}
       ></TextInput>
     </View>

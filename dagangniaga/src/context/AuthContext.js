@@ -1,6 +1,8 @@
 import { AsyncStorage } from "react-native";
 import createDataContext from "./createDataContext";
 import { navigate } from "../helper/navigationRef";
+import * as dnApi from "../api/dnApi";
+// import * as Facebook from 'expo-facebook';
 
 const authReducer = (state, action) => {
   switch (action.type) {
@@ -35,17 +37,25 @@ const clearErrorMessage = (dispatch) => () => {
 const signup = (dispatch) => {
   return async ({ email, password }) => {
     try {
-      const response = await trackerApi.post("/signup", { email, password });
-      console.log(response.data);
-      await AsyncStorage.setItem("token", response.data.token);
-      // await AsyncStorage.getItem('token');
-      dispatch({ type: "signup", payload: response.data.token });
-
-      navigate("Main");
+      console.log(email);
+      dnApi.signup({ email: email, password: password, displayName: "asd" });
+      console.log("done signup");
     } catch (err) {
-      console.log(err.response.data);
-      dispatch({ type: "add_error", payload: "Something went wrong" });
+      console.log(err.toString());
     }
+
+    // try {
+    //   const response = await trackerApi.post("/signup", { email, password });
+    //   console.log(response.data);
+    //   await AsyncStorage.setItem("token", response.data.token);
+    //   // await AsyncStorage.getItem('token');
+    //   dispatch({ type: "signup", payload: response.data.token });
+
+    //   navigate("Main");
+    // } catch (err) {
+    //   console.log(err.response.data);
+    //   dispatch({ type: "add_error", payload: "Something went wrong" });
+    // }
   };
 };
 
@@ -69,6 +79,12 @@ const signin = (dispatch) => {
   };
 };
 
+const signinWithFacebook = (dispatch) => {
+  return async () => {
+    await dnApi.loginWithFacebook();
+  };
+};
+
 const signout = (dispatch) => {
   return async () => {
     await AsyncStorage.removeItem("token");
@@ -79,6 +95,6 @@ const signout = (dispatch) => {
 
 export const { Provider, Context } = createDataContext(
   authReducer,
-  { signin, signup, signout, clearErrorMessage, tryLocalSignIn },
-  { token: null, errorMessage: ""}
+  { signin, signup, signout,signinWithFacebook, clearErrorMessage, tryLocalSignIn },
+  { token: null, errorMessage: "" }
 );

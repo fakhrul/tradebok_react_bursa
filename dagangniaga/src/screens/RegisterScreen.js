@@ -8,12 +8,21 @@ const RegisterScreen = ({ navigation }) => {
   const { state, signup, clearErrorMessage } = useContext(AuthContext);
 
   const [form, setForm] = new useState({
+    displayName: "fakhrul",
     email: "fakhrulazran@gmail.com",
     password: "qwe123",
   });
 
+  const onInputChanged = (value, input) => {
+    setForm({
+      ...form,
+      [input]: value,
+    });
+  };
+  
   const sendData = () => {
     signup({
+      displayName: form.displayName,
       email: form.email,
       password: form.password,
     });
@@ -26,6 +35,12 @@ const RegisterScreen = ({ navigation }) => {
       </View>
       <Text style={styles.title}>Registration</Text>
       <View style={{ height: 40 }}></View>
+      <InputCustom
+        placeholder="Display Name"
+        value={form.displayName}
+        onChangeText={(value) => onInputChanged(value, "displayName")}
+      ></InputCustom>
+      <View style={{ height: 20 }}></View>
       <InputCustom
         placeholder="Email"
         value={form.email}

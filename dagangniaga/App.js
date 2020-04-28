@@ -14,6 +14,7 @@ import StockScreen from "./src/screens/StockScreen";
 import StreamScreen from "./src/screens/StreamScreen";
 import SettingScreen from "./src/screens/SettingScreen";
 
+
 const dashboardFlow = createStackNavigator({
   Dashboard: DashboardScreen,
 });

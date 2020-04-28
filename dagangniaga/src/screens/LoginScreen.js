@@ -5,7 +5,7 @@ import { InputCustom, ActionButtonCustom, NavLink } from "../components";
 import { Context as AuthContext } from "../context/AuthContext";
 
 const LoginScreen = () => {
-  const { state, signin, clearErrorMessage } = useContext(AuthContext);
+  const { state, signin, signinWithFacebook, clearErrorMessage } = useContext(AuthContext);
   const [form, setForm] = new useState({
     email: "fakhrulazran@gmail.com",
     password: "qwe123",
@@ -16,6 +16,10 @@ const LoginScreen = () => {
       email: form.email,
       password: form.password,
     });
+  };
+
+  const loginWithFacebook = () => {
+    signinWithFacebook();
   };
 
   const onInputChanged = (value, input) => {
@@ -46,6 +50,8 @@ const LoginScreen = () => {
       ></InputCustom>
       <View style={{ height: 30 }}></View>
       <ActionButtonCustom title="Login" onPress={sendData}></ActionButtonCustom>
+      <View style={{ height: 30 }}></View>
+      <ActionButtonCustom title="Login with Facebook" onPress={loginWithFacebook}></ActionButtonCustom>
 
       <NavLink
         text="Don't have an account? Register new account!"
