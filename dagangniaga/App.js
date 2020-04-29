@@ -47,6 +47,12 @@ settingFlow.navigationOptions = {
   tabBarIcon: <FontAwesome name="home" size={20}></FontAwesome>,
 };
 
+SettingScreen.navigationOptions = () => {
+  return {
+    headerShown: false,
+  };
+};
+
 const switchNavigator = createSwitchNavigator({
   Splash: SplashScreen,
   anonymousFlow: createStackNavigator({

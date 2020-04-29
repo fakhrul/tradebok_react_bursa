@@ -2,6 +2,7 @@ import { AsyncStorage } from "react-native";
 import createDataContext from "./createDataContext";
 import { navigate } from "../helper/navigationRef";
 import * as dnApi from "../api/dnApi";
+import * as fb from "../config/firebase";
 // import * as Facebook from 'expo-facebook';
 
 const authReducer = (state, action) => {
@@ -10,9 +11,9 @@ const authReducer = (state, action) => {
       return { ...state, errorMessage: action.payload };
     case "signin":
     case "signup":
-      return { errorMessage: "", token: action.payload };
+      return { errorMessage: "", currentUser: action.payload };
     case "signout":
-      return { token: null, errorMessage: "" };
+      return { currentUser: null, errorMessage: "" };
     case "clear_error_message":
       return { ...state, errorMessage: "" };
     default:
@@ -21,13 +22,14 @@ const authReducer = (state, action) => {
 };
 
 const tryLocalSignIn = (dispatch) => async () => {
-  const token = await AsyncStorage.getItem("token");
-  if (token) {
-    dispatch({ type: "signin", payload: token });
-    navigate("Main");
-  } else {
-    navigate("anonymousFlow");
-  }
+  await fb.auth.onAuthStateChanged((user) => {
+    if (user) {
+      dispatch({ type: "signin", payload: user });
+      navigate("userFlow");
+    } else {
+      navigate("anonymousFlow");
+    }
+  });
 };
 
 const clearErrorMessage = (dispatch) => () => {
@@ -35,14 +37,28 @@ const clearErrorMessage = (dispatch) => () => {
 };
 
 const signup = (dispatch) => {
-  return async ({ email, password }) => {
-    try {
-      console.log(email);
-      dnApi.signup({ email: email, password: password, displayName: "asd" });
-      console.log("done signup");
-    } catch (err) {
-      console.log(err.toString());
-    }
+  return async ({ email, password, displayName }) => {
+    await fb.auth
+      .createUserWithEmailAndPassword(email, password)
+      .then((userInfo) => {
+        userInfo.user.updateProfile({ displayName: displayName.trim() });
+        dispatch({ type: "signup", payload: userInfo.user });
+        navigate("userFlow");
+      })
+      .catch((error) => {
+        alert(error.message);
+        dispatch({ type: "add_error", payload: error.message });
+      });
+
+    // try {
+    //   await dnApi.signup({
+    //     email: email,
+    //     password: password,
+    //     displayName: displayName,
+    //   });
+    // } catch (err) {
+    //   console.log(err);
+    // }
 
     // try {
     //   const response = await trackerApi.post("/signup", { email, password });
@@ -61,21 +77,34 @@ const signup = (dispatch) => {
 
 const signin = (dispatch) => {
   return async ({ email, password }) => {
-    try {
-      const response = await trackerApi.post("/signin", { email, password });
-      console.log(response.data);
-      await AsyncStorage.setItem("token", response.data.token);
-      // await AsyncStorage.getItem('token');
-      dispatch({ type: "signin", payload: response.data.token });
-
-      navigate("Main");
-    } catch (err) {
-      console.log(err.response.data);
-      dispatch({
-        type: "add_error",
-        payload: "Something went wrong with sign in",
+    await fb.auth
+      .signInWithEmailAndPassword(email, password)
+      .then((userInfo) => {
+        console.log(userInfo);
+        dispatch({ type: "signin", payload: userInfo });
+      })
+      .catch((error) => {
+        dispatch({
+          type: "add_error",
+          payload: error.message,
+        });
       });
-    }
+
+    // try {
+    //   const response = await trackerApi.post("/signin", { email, password });
+    //   console.log(response.data);
+    //   await AsyncStorage.setItem("token", response.data.token);
+    //   // await AsyncStorage.getItem('token');
+    //   dispatch({ type: "signin", payload: response.data.token });
+
+    //   navigate("Main");
+    // } catch (err) {
+    //   console.log(err.response.data);
+    //   dispatch({
+    //     type: "add_error",
+    //     payload: "Something went wrong with sign in",
+    //   });
+    // }
   };
 };
 
@@ -87,7 +116,9 @@ const signinWithFacebook = (dispatch) => {
 
 const signout = (dispatch) => {
   return async () => {
-    await AsyncStorage.removeItem("token");
+    await fb.auth
+    .signOut()
+    .then(() => console.log('User signed out!'));
     dispatch({ type: "signout" });
     navigate("anonymousFlow");
   };
@@ -95,6 +126,13 @@ const signout = (dispatch) => {
 
 export const { Provider, Context } = createDataContext(
   authReducer,
-  { signin, signup, signout,signinWithFacebook, clearErrorMessage, tryLocalSignIn },
-  { token: null, errorMessage: "" }
+  {
+    signin,
+    signup,
+    signout,
+    signinWithFacebook,
+    clearErrorMessage,
+    tryLocalSignIn,
+  },
+  { currentUser: null, errorMessage: "" }
 );

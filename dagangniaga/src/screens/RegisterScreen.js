@@ -11,6 +11,7 @@ const RegisterScreen = ({ navigation }) => {
     displayName: "fakhrul",
     email: "fakhrulazran@gmail.com",
     password: "qwe123",
+    isLoading: false,
   });
 
   const onInputChanged = (value, input) => {
@@ -19,13 +20,15 @@ const RegisterScreen = ({ navigation }) => {
       [input]: value,
     });
   };
-  
+
   const sendData = () => {
+    setForm({ isLoading: true });
     signup({
       displayName: form.displayName,
       email: form.email,
       password: form.password,
     });
+    setForm({ isLoading: false });
   };
 
   return (
@@ -35,6 +38,9 @@ const RegisterScreen = ({ navigation }) => {
       </View>
       <Text style={styles.title}>Registration</Text>
       <View style={{ height: 40 }}></View>
+      {state.errorMessage ? (
+        <Text style={styles.errorMessage}>{state.errorMessage} </Text>
+      ) : null}
       <InputCustom
         placeholder="Display Name"
         value={form.displayName}
@@ -54,13 +60,15 @@ const RegisterScreen = ({ navigation }) => {
         secureTextEntry={true}
       ></InputCustom>
       <View style={{ height: 30 }}></View>
-      <ActionButtonCustom title="Register" onPress={sendData}></ActionButtonCustom>
-
+      <ActionButtonCustom
+        title="Register"
+        onPress={sendData}
+      ></ActionButtonCustom>
+      <View style={{ height: 30 }}></View>
       <NavLink
         text="Already have an account? Sign In instead!"
         routeName="Login"
-      >
-      </NavLink>
+      ></NavLink>
     </SafeAreaView>
   );
 };
@@ -92,7 +100,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     textAlign: "center",
   },
+  errorMessage: {
+    fontSize: 16,
+    color: "red",
+    marginLeft: 15,
+    marginTop: 15,
+  },
 });
-
 
 export default RegisterScreen;

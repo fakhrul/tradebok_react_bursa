@@ -26,16 +26,18 @@ export async function loginWithFacebook() {
 }
 
 export function signup({ email, password, displayName }) {
-  console.log(email);
-  console.log(password);
-  console.log(displayName);
-
-  fb.auth.createUserWithEmailAndPassword(email, password).then((userInfo) => {
-    console.log(userInfo);
-    userInfo.user
-      .updateProfile({ displayName: displayName.trim() })
-      .then(() => {});
-  });
+  try {
+    fb.auth
+      .createUserWithEmailAndPassword(email, password)
+      .then((userInfo) => {
+        userInfo.user.updateProfile({ displayName: displayName.trim() });
+      })
+      .catch((error) => {
+        throw new Error(error.message);
+      });
+  } catch (error) {
+    alert(error.message);
+  }
 }
 
 export function subscribeToAuthChanges(authStateChanged) {

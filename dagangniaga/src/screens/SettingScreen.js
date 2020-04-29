@@ -1,12 +1,22 @@
-import React from "react";
-import {View, Text} from "react-native";
+import React, {useContext, useEffect} from "react";
+import { SafeAreaView, Text, Button } from "react-native";
+import {Context as AuthContext} from "../context/AuthContext";
+import {Spacer} from "../components"
 
 const SettingScreen = () => {
-  
+  const {state, signout} = useContext(AuthContext);
+
+  useEffect(() => {
+    console.log(state.currentUser.displayName);
+  })
+
   return (
-    <View>
-      <Text>SettingScreen</Text>
-    </View>
+    <SafeAreaView forceInset={{ top: "always" }}>
+      <Text style={{ fontSize: 48 }}>{state.currentUser.displayName}</Text>
+      <Spacer>
+        <Button title="SingOut" onPress={signout} />
+      </Spacer>
+    </SafeAreaView>
   );
 };
 
