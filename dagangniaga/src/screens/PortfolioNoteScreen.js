@@ -61,7 +61,7 @@ const PortfolioNoteScreen = ({ navigation }) => {
           <Ionicons name="md-arrow-back" size={24} color="#D8D9DB"></Ionicons>
         </TouchableOpacity>
         <TouchableOpacity onPress={handleNote}>
-          <Text style={{ fontWeight: "500" }}>Post</Text>
+          <Text style={{ fontWeight: "500" }}>Save</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.inputContainer}>
