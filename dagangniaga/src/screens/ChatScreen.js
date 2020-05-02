@@ -1,14 +1,13 @@
 import React from "react";
-import {View, Text} from "react-native";
+import { View } from "react-native";
 import {Header} from "../components";
-import {colors} from  "../utils";
+import {colors} from "../utils";
 
-const DashboardScreen = ({navigation}) => {
-  
+const ChatScreen = ({navigation}) => {
   return (
     <View style={{ flex: 1, backgroundColor: colors.background }}>
       <Header
-        title="Home"
+        title="Chat"
         navigation={navigation}
         onPress={() => {
           alert("More option here");
@@ -18,4 +17,4 @@ const DashboardScreen = ({navigation}) => {
   );
 };
 
-export default DashboardScreen;
+export default ChatScreen;

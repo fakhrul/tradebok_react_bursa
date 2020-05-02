@@ -1,13 +1,21 @@
-import React, {useEffect, useState} from "react";
-import { Text, View, Button, Vibration, Platform } from 'react-native';
-import { Notifications } from 'expo';
-import * as Permissions from 'expo-permissions';
-import Constants from 'expo-constants';
+import React, { useEffect, useState } from "react";
+import { Text, View, Button, Vibration, Platform } from "react-native";
+import { Notifications } from "expo";
+import * as Permissions from "expo-permissions";
+import Constants from "expo-constants";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import { createStackNavigator } from "react-navigation-stack";
 import { setNavigator } from "./src/helper/navigationRef";
-import { FontAwesome, Entypo, FontAwesome5, MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
+import {
+  FontAwesome,
+  Entypo,
+  FontAwesome5,
+  MaterialCommunityIcons,
+  AntDesign,
+  MaterialIcons,
+  Feather
+} from "@expo/vector-icons";
 
 import { Provider as AuthProvider } from "./src/context/AuthContext";
 import SplashScreen from "./src/screens/SplashScreen";
@@ -19,37 +27,90 @@ import StreamScreen from "./src/screens/StreamScreen";
 import SettingScreen from "./src/screens/SettingScreen";
 import PortfolioScreen from "./src/screens/PortfolioScreen";
 import PortfolioNoteScreen from "./src/screens/PortfolioNoteScreen";
+import AboutScreen from "./src/screens/AboutScreen";
+import ProfileScreen from "./src/screens/ProfileScreen";
+import SignoutScreen from "./src/screens/SignoutScreen";
+import ChatScreen from "./src/screens/ChatScreen";
+import DrawerScreen from "./src/screens/DrawerScreen";
+
+import { createDrawerNavigator } from "react-navigation-drawer";
 
 const dashboardFlow = createStackNavigator({
   Dashboard: DashboardScreen,
 });
 dashboardFlow.navigationOptions = {
-  title: "Dashboard",
-  tabBarIcon: <MaterialCommunityIcons name="monitor-dashboard" size={20}></MaterialCommunityIcons>,
+  title: "Home",
+  tabBarIcon: (
+    <MaterialCommunityIcons
+      name="monitor-dashboard"
+      size={20}
+    ></MaterialCommunityIcons>
+  ),
 };
 
 const stockFlow = createStackNavigator({
   Stock: StockScreen,
 });
-stockFlow.navigationOptions = {
-  title: "Stocks",
-  tabBarIcon: <Entypo name="line-graph" size={20}></Entypo>,
-};
 
 const streamFlow = createStackNavigator({
   Stream: StreamScreen,
 });
+
+const settingFlow = createStackNavigator({
+  Setting: SettingScreen,
+});
+
+const chatFlow = createStackNavigator({
+  Chat: ChatScreen,
+});
+
+const portfolioFlow = createStackNavigator({
+  Portfolio: PortfolioScreen,
+  PortfolioNote: PortfolioNoteScreen,
+});
+
+PortfolioScreen.navigationOptions = () => {
+  return {
+    headerShown: false,
+  };
+};
+PortfolioNoteScreen.navigationOptions = () => {
+  return {
+    headerShown: false,
+  };
+};
+
+DashboardScreen.navigationOptions = () => {
+  return {
+    headerShown: false,
+  };
+};
+
 streamFlow.navigationOptions = {
   title: "Stream",
   tabBarIcon: <FontAwesome5 name="newspaper" size={20}></FontAwesome5>,
 };
 
-const settingFlow = createStackNavigator({
-  Setting: SettingScreen,
-});
 settingFlow.navigationOptions = {
   title: "Setting",
   tabBarIcon: <AntDesign name="setting" size={20}></AntDesign>,
+};
+
+portfolioFlow.navigationOptions = {
+  title: "Portfolio",
+  tabBarIcon: <FontAwesome name="money" size={20}></FontAwesome>,
+};
+
+stockFlow.navigationOptions = {
+  title: "Stocks",
+  tabBarIcon: <Entypo name="line-graph" size={20}></Entypo>,
+};
+
+chatFlow.navigationOptions = {
+  title: "Chat",
+  tabBarIcon: (
+    <MaterialIcons name="chat-bubble-outline" size={20}></MaterialIcons>
+  ),
 };
 
 SettingScreen.navigationOptions = () => {
@@ -57,40 +118,43 @@ SettingScreen.navigationOptions = () => {
     headerShown: false,
   };
 };
-
-
-const portfolioFlow = createStackNavigator({
-  Portfolio: PortfolioScreen,
-  PortfolioNote: PortfolioNoteScreen
-});
-
-portfolioFlow.navigationOptions = {
-  title: "Portfolio",
-  tabBarIcon: <FontAwesome name="money" size={20}></FontAwesome>,
-};
-PortfolioScreen.navigationOptions = () => {
+ChatScreen.navigationOptions = () => {
   return {
     headerShown: false,
-  }
+  };
 };
-PortfolioNoteScreen.navigationOptions = () => {
-  return {
-    headerShown: false,
-  }
-};
+
 const switchNavigator = createSwitchNavigator({
   Splash: SplashScreen,
   anonymousFlow: createStackNavigator({
     Login: LoginScreen,
     Register: RegisterScreen,
   }),
-  userFlow: createBottomTabNavigator({
-    dashboardFlow,
-    stockFlow,
-    streamFlow,
-    portfolioFlow,
-    settingFlow,
-  }),
+  userFlow: createDrawerNavigator(
+    {
+      homeFlow: createBottomTabNavigator({
+        dashboardFlow,
+        stockFlow,
+        streamFlow,
+        portfolioFlow,
+        chatFlow,
+      }),
+      ProfileScreen: {
+        screen: ProfileScreen,
+        navigationOptions: {
+          title: "Profile",
+          drawerIcon: ({ tintColor }) => (
+            <Feather name="user" size={16} color={tintColor}>
+            </Feather>
+          ),
+        },
+      },
+      SettingScreen,
+      AboutScreen,
+      SignoutScreen,
+    },
+    { contentComponent: (props) => <DrawerScreen {...props}></DrawerScreen> }
+  ),
 });
 
 LoginScreen.navigationOptions = () => {
@@ -103,6 +167,17 @@ RegisterScreen.navigationOptions = () => {
     headerShown: false,
   };
 };
+StockScreen.navigationOptions = () => {
+  return {
+    headerShown: false,
+  };
+};
+
+StreamScreen.navigationOptions = () => {
+  return {
+    headerShown: false,
+  };
+};
 
 const App = createAppContainer(switchNavigator);
 
@@ -111,7 +186,6 @@ export default () => {
     expoPushToken: "",
     notification: {},
   });
-
 
   registerForPushNotificationsAsync = async () => {
     if (Constants.isDevice) {

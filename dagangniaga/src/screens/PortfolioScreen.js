@@ -1,8 +1,17 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet, FlatList, Image } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  FlatList,
+  Image,
+} from "react-native";
 import { SafeAreaView } from "react-navigation";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import moment from "moment";
+import {Header} from "../components";
+import {colors} from "../utils";
 
 const PortfolioScreen = ({ navigation }) => {
   const posts = [
@@ -33,7 +42,8 @@ const PortfolioScreen = ({ navigation }) => {
     {
       id: "4",
       name: "asd dasda",
-      text: "dasda asdad ,asda asd,asd dasda asdad ,asda asd,asd dasda asdad ,asda asd,asd dasda asdad ,asda asd,asd dasda asdad ,asda asd,asd dasda asdad ,asda asd,asd ",
+      text:
+        "dasda asdad ,asda asd,asd dasda asdad ,asda asd,asd dasda asdad ,asda asd,asd dasda asdad ,asda asd,asd dasda asdad ,asda asd,asd dasda asdad ,asda asd,asd ",
       timestamp: 1588204660217,
       image: require("../resources/register.png"),
       avatar: require("../resources/login_logo.png"),
@@ -59,29 +69,34 @@ const PortfolioScreen = ({ navigation }) => {
           >
             <View>
               <Text style={styles.name}>{post.name}</Text>
-              <Text style={styles.timestamp}>{moment(post.timestamp).fromNow()}</Text>
+              <Text style={styles.timestamp}>
+                {moment(post.timestamp).fromNow()}
+              </Text>
             </View>
             <Ionicons name="ios-more" size={24} color="#73788B"></Ionicons>
           </View>
           <Text style={styles.post}>{post.text}</Text>
-          <Image source={post.image} style={styles.postImage} resizeMode="cover"></Image>
-          <View style={{flexDirection:"row"}}>
-            <Ionicons name="ios-heart-empty" size={24} color="#73788B" style={{marginRight:16}}></Ionicons>
+          <Image
+            source={post.image}
+            style={styles.postImage}
+            resizeMode="cover"
+          ></Image>
+          <View style={{ flexDirection: "row" }}>
+            <Ionicons
+              name="ios-heart-empty"
+              size={24}
+              color="#73788B"
+              style={{ marginRight: 16 }}
+            ></Ionicons>
             <Ionicons name="ios-chatboxes" size={24} color="#73788B"></Ionicons>
-
           </View>
         </View>
       </View>
     );
   };
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Stream</Text>
-        <TouchableOpacity onPress={addNewNote}>
-          <Text style={{ fontWeight: "500" }}>Add Note</Text>
-        </TouchableOpacity>
-      </View>
+    <View style={{flex: 1, backgroundColor: colors.background}}>
+      <Header title="Portfolio" navigation={navigation} onPress={() => {alert('More option here')}}></Header>
       <FlatList
         style={styles.feed}
         data={posts}
@@ -89,37 +104,18 @@ const PortfolioScreen = ({ navigation }) => {
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
       ></FlatList>
+      <View style={{position:"absolute", top:"90%", alignSelf:"flex-end"}}>
+        <TouchableOpacity style={{marginRight:30}} onPress={addNewNote}>
+          <FontAwesome name="pencil-square-o" size={40} />
+          {/* <Text style={{ fontWeight: "500" }}>Add Note</Text> */}
+        </TouchableOpacity>
+      </View>
       {/* <Button title="Add Note" onPress={addNewNote}></Button> */}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#EFECF4",
-  },
-  header: {
-    paddingTop: 64,
-    paddingHorizontal: 32,
-    paddingBottom: 16,
-    backgroundColor: "#FFF",
-    alignItems: "center",
-    justifyContent: "space-between",
-    borderBottomWidth: 1,
-    borderBottomColor: "#EBECF4",
-    shadowColor: "#454D65",
-    shadowOffset: { height: 5 },
-    shadowRadius: 15,
-    shadowOpacity: 0.2,
-    zIndex: 10,
-    flexDirection:"row"
-
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: "500",
-  },
   feed: {
     marginHorizontal: 16,
   },
@@ -149,14 +145,14 @@ const styles = StyleSheet.create({
   post: {
     marginTop: 16,
     fontSize: 14,
-    color: "#838899"
+    color: "#838899",
   },
-  postImage :{
+  postImage: {
     width: undefined,
     height: 150,
 
     borderRadius: 5,
-    marginVertical: 16
-  }
+    marginVertical: 16,
+  },
 });
 export default PortfolioScreen;

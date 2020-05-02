@@ -11,7 +11,6 @@ const SplashScreen = () => {
 
   return (
     <View>
-      <Text>SplashScreen</Text>
       <ActivityIndicator size="large"></ActivityIndicator>
     </View>
   );
