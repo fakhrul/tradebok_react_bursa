@@ -278,7 +278,7 @@ const DrawerScreen = ({ navigation }) => {
           <SidebarLink
             navigation={navigation}
             title="Logout"
-            route="homeFlow"
+            route="SignoutScreen"
             icon={
               <Ionicons
                 name="ios-exit"

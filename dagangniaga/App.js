@@ -3,7 +3,11 @@ import { Text, View, Button, Vibration, Platform } from "react-native";
 import { Notifications } from "expo";
 import * as Permissions from "expo-permissions";
 import Constants from "expo-constants";
-import { createAppContainer, createSwitchNavigator } from "react-navigation";
+import {
+  createAppContainer,
+  createSwitchNavigator,
+  createMaterialTopTabNavigator,
+} from "react-navigation";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import { createStackNavigator } from "react-navigation-stack";
 import { setNavigator } from "./src/helper/navigationRef";
@@ -14,7 +18,7 @@ import {
   MaterialCommunityIcons,
   AntDesign,
   MaterialIcons,
-  Feather
+  Feather,
 } from "@expo/vector-icons";
 
 import { Provider as AuthProvider } from "./src/context/AuthContext";
@@ -32,6 +36,7 @@ import ProfileScreen from "./src/screens/ProfileScreen";
 import SignoutScreen from "./src/screens/SignoutScreen";
 import ChatScreen from "./src/screens/ChatScreen";
 import DrawerScreen from "./src/screens/DrawerScreen";
+import LoginWithEmailScreen from "./src/screens/LoginWithEmailScreen";
 
 import { createDrawerNavigator } from "react-navigation-drawer";
 
@@ -124,11 +129,26 @@ ChatScreen.navigationOptions = () => {
   };
 };
 
+RegisterScreen.navigationOptions = () => {
+  return {
+    headerShown: false,
+  };
+};
+
+
+
+
 const switchNavigator = createSwitchNavigator({
   Splash: SplashScreen,
-  anonymousFlow: createStackNavigator({
+  anonymousFlow: createSwitchNavigator({
     Login: LoginScreen,
-    Register: RegisterScreen,
+    loginWithEmailFlow: createStackNavigator({
+      LoginWithEmail: {
+        screen: LoginWithEmailScreen,
+        navigationOptions: { title: "Email", headerShown: false },
+      },
+      Register: RegisterScreen,
+    }),
   }),
   userFlow: createDrawerNavigator(
     {
@@ -144,8 +164,7 @@ const switchNavigator = createSwitchNavigator({
         navigationOptions: {
           title: "Profile",
           drawerIcon: ({ tintColor }) => (
-            <Feather name="user" size={16} color={tintColor}>
-            </Feather>
+            <Feather name="user" size={16} color={tintColor}></Feather>
           ),
         },
       },
@@ -178,6 +197,8 @@ StreamScreen.navigationOptions = () => {
     headerShown: false,
   };
 };
+
+
 
 const App = createAppContainer(switchNavigator);
 
