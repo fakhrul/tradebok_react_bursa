@@ -1,14 +1,22 @@
 export const colors = {
-    default: '#008037',
-    disable: '#a5b1c2',
-    text: {
-        default: '#838899',
-        title: "#454D65",
-        timestamp: "#C4C6CE",
-        bullish: "#008037",
-        bearish: "#FF0000"
-        
-    },
-    background: "#EFECF4"
+  default: "#008037",
+  disable: "#a5b1c2",
+  accent: "#846BE2",
+  base: "#FFFFFF",
+  placeholder: "#F4F4F4",
+  white: "#FFFFFF",
+  background: "#EFECF4",
+  text: {
+    default: "#838899",
+    title: "#454D65",
+    timestamp: "#C4C6CE",
+    bullish: "#008037",
+    bearish: "#FF0000",
+    accent: "#846BE2",
+    base: "#FFFFFF",
+    text01: "#000000",
+    text02: "#BBBBBB",
+    placeholder: "#F4F4F4",
+    white: "#FFFFFF",
+  },
 };
-

@@ -6,6 +6,8 @@ import Header from "./Header";
 import WatchList from "./WatchList";
 import SidebarLink from "./SidebarLink";
 import SidebarTitle from "./SidebarTitle";
+import TermsAndConditions from "./TermsAndConditions";
+import BottomSheetHeader from "./BottomSheetHeader";
 
 export {
   InputCustom,
@@ -15,5 +17,7 @@ export {
   Header,
   WatchList,
   SidebarLink,
-  SidebarTitle
+  SidebarTitle,
+  TermsAndConditions,
+  BottomSheetHeader
 };

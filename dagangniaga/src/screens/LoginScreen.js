@@ -1,10 +1,17 @@
-import React, { useContext, useState, useEffect } from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import React, { useContext, useState, useEffect, useRef } from "react";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-navigation";
-import { InputCustom, ActionButtonCustom, NavLink } from "../components";
+import {
+  InputCustom,
+  ActionButtonCustom,
+  NavLink,
+  TermsAndConditions,
+} from "../components";
 import { Context as AuthContext } from "../context/AuthContext";
 import { SocialIcon } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
+import { colors } from "../utils";
+import { Modalize } from "react-native-modalize";
 
 const LoginScreen = ({ navigation }) => {
   const {
@@ -13,6 +20,8 @@ const LoginScreen = ({ navigation }) => {
     signInWithGoogle,
     clearErrorMessage,
   } = useContext(AuthContext);
+
+  const modalizeRef = useRef(null);
 
   const loginWithEmail = () => {
     navigation.navigate("loginWithEmailFlow");
@@ -24,6 +33,10 @@ const LoginScreen = ({ navigation }) => {
 
   const loginWithGoogle = () => {
     signInWithGoogle();
+  };
+
+  const showTerms = () => {
+    modalizeRef.current?.open();
   };
 
   return (
@@ -43,8 +56,11 @@ const LoginScreen = ({ navigation }) => {
 
       <View
         style={{
-          // borderWidth: 1,
+          borderWidth: 1,
           width: 280,
+          borderColor: colors.base,
+          // borderWidth:1,
+          // backgroundColor: "#421234"
         }}
       >
         <SocialIcon
@@ -68,7 +84,24 @@ const LoginScreen = ({ navigation }) => {
           type="google"
           onPress={loginWithGoogle}
         />
+        <View style={{ height: 30 }}></View>
       </View>
+      <TouchableOpacity onPress={showTerms} style={styles.terms}>
+        <Text style={styles.termsText}>Terms a and conditions</Text>
+      </TouchableOpacity>
+
+      <Modalize
+        ref={modalizeRef}
+        scrollViewProps={{ showsVerticalScrollIndicator: false }}
+        modalStyle={{
+          flex: 1,
+          backgroundColor: colors.base,
+          padding: 15
+        }}
+        adjustToContentHeight={false}
+      >
+        <TermsAndConditions></TermsAndConditions>
+      </Modalize>
     </SafeAreaView>
   );
 };
@@ -106,7 +139,13 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginTop: 15,
   },
-
+  terms: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  termsText: {
+    color: colors.text.text02,
+  },
 });
 
 export default LoginScreen;
