@@ -6,6 +6,7 @@ const SplashScreen = () => {
   const { tryLocalSignIn } = useContext(AuthContext);
 
   useEffect(() => {
+    console.log("SplashScree-useEffect")
     tryLocalSignIn();
   }, []);
 

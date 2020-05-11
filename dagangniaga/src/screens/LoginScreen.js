@@ -16,10 +16,13 @@ import { Modalize } from "react-native-modalize";
 const LoginScreen = ({ navigation }) => {
   const {
     state,
+    tryLocalSignIn,
     signinWithFacebook,
     signInWithGoogle,
     clearErrorMessage,
   } = useContext(AuthContext);
+
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
   const modalizeRef = useRef(null);
 
@@ -31,8 +34,20 @@ const LoginScreen = ({ navigation }) => {
     signinWithFacebook();
   };
 
-  const loginWithGoogle = () => {
-    signInWithGoogle();
+  const loginWithGoogle = async () => {
+    if (isGoogleLoading) {
+      console.log("Google currently is loading.");
+      return;
+    }
+    try {
+      setIsGoogleLoading(true);
+      const user = await signInWithGoogle();
+      console.log("login screen", user);
+      setIsGoogleLoading(false);
+      // if (user) tryLocalSignIn();
+    } catch ({ message }) {
+      setIsGoogleLoading(false);
+    }
   };
 
   const showTerms = () => {
@@ -96,7 +111,7 @@ const LoginScreen = ({ navigation }) => {
         modalStyle={{
           flex: 1,
           backgroundColor: colors.base,
-          padding: 15
+          padding: 15,
         }}
         adjustToContentHeight={false}
       >

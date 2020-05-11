@@ -7,7 +7,7 @@ const SettingScreen = () => {
   const {state, signout} = useContext(AuthContext);
 
   useEffect(() => {
-    console.log(state.currentUser.displayName);
+    // console.log(state.currentUser.displayName);
   })
 
   return (

@@ -7,12 +7,12 @@ const SingoutScreen = () => {
   const { state, signout } = useContext(AuthContext);
 
   useEffect(() => {
-    console.log(state.currentUser.displayName);
+    // console.log(state.currentUser.displayName);
   });
 
   return (
     <SafeAreaView forceInset={{ top: "always" }}>
-      <Text style={{ fontSize: 48 }}>{state.currentUser.displayName}</Text>
+      {/* <Text style={{ fontSize: 48 }}>{state.currentUser.displayName}</Text> */}
       <Spacer>
         <Button title="SingOut" onPress={signout} />
       </Spacer>

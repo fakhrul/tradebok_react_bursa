@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Text, View, Button, Vibration, Platform } from "react-native";
+import { ApolloProvider, useMutation } from "@apollo/react-hooks";
+import client from "./src/graphql/client";
+
 import { Notifications } from "expo";
 import * as Permissions from "expo-permissions";
 import Constants from "expo-constants";
@@ -39,6 +42,7 @@ import DrawerScreen from "./src/screens/DrawerScreen";
 import LoginWithEmailScreen from "./src/screens/LoginWithEmailScreen";
 
 import { createDrawerNavigator } from "react-navigation-drawer";
+import WelcomeScreen from "./src/screens/WelcomeScreen";
 
 const dashboardFlow = createStackNavigator({
   Dashboard: DashboardScreen,
@@ -135,9 +139,6 @@ RegisterScreen.navigationOptions = () => {
   };
 };
 
-
-
-
 const switchNavigator = createSwitchNavigator({
   Splash: SplashScreen,
   anonymousFlow: createSwitchNavigator({
@@ -150,6 +151,7 @@ const switchNavigator = createSwitchNavigator({
       Register: RegisterScreen,
     }),
   }),
+  Welcome: WelcomeScreen,
   userFlow: createDrawerNavigator(
     {
       homeFlow: createBottomTabNavigator({
@@ -198,11 +200,10 @@ StreamScreen.navigationOptions = () => {
   };
 };
 
-
-
 const App = createAppContainer(switchNavigator);
 
 export default () => {
+  console.ignoredYellowBox = ["Setting a timer"];
   const [state, setState] = new useState({
     expoPushToken: "",
     notification: {},
@@ -281,12 +282,14 @@ export default () => {
     });
   };
   return (
-    <AuthProvider>
-      <App
-        ref={(navigator) => {
-          setNavigator(navigator);
-        }}
-      ></App>
-    </AuthProvider>
+    <ApolloProvider client={client}>
+      <AuthProvider>
+        <App
+          ref={(navigator) => {
+            setNavigator(navigator);
+          }}
+        ></App>
+      </AuthProvider>
+    </ApolloProvider>
   );
 };

@@ -1,12 +1,35 @@
 import React from "react";
-import {View, Text} from "react-native";
+import { View, Text, Button } from "react-native";
+// import client from "../graphql/client";
+// import { QUERY_USER_EXISTS } from "../graphql/query";
+import { useMutation } from "@apollo/react-hooks";
+import { MUTATION_CREATE_USER } from "../graphql/mutation";
 
 const MostActiveScreen = () => {
-    return (
-        <View>
-            <Text>Most Active</Text>
-        </View>
-    )
-}
+//   const [createUser] = useMutation(MUTATION_CREATE_USER);
+
+  const getData = async () => {
+    // const authId = "1";
+    // const { data: {userExist}  } = await client.query({ query: QUERY_USER_EXISTS, variables: { authId } });
+
+    // // console.log(userExist);
+    // const authId = "a";
+    // const avatar = "b";
+    // const name = "c";
+    // const email = "d";
+    // // const { data } = await createUser({
+    // //   variables: { authId, avatar, name, email },
+    // // });
+
+    // const {data} = await createUser({ variables: { authId, avatar, name, email } });
+    // console.log(data);
+  };
+  return (
+    <View>
+      <Text>Most Active</Text>
+      <Button title="test" onPress={getData}></Button>
+    </View>
+  );
+};
 
 export default MostActiveScreen;

@@ -1,6 +1,7 @@
 import React from "react";
 import { SafeAreaView, View, Text, StyleSheet } from "react-native";
-import { BottomSheetHeader } from "../../../components";
+// import { BottomSheetHeader } from "../../../components";
+import BottomSheetHeader from "../BottomSheetHeader";
 import {colors} from "../../../utils";
 import { responsiveHeight } from 'react-native-responsive-dimensions';
 

@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+// const Schema = mongoose.Schema;
 
 const mongoUri = process.env.CONNECTION_STRING;
 if (!mongoUri) {
@@ -29,13 +29,23 @@ mongoose.connection.on('error', err => {
 //   }
 // );
 
-const player = new Schema({
-  position: String,
-  name: String,
-  team: String,
-  String,
-  jerseyNumber: Number,
-  wonSuperBowl: Boolean,
-});
+// const player = new Schema({
+//   position: String,
+//   name: String,
+//   team: String,
+//   jerseyNumber: Number,
+//   wonSuperBowl: Boolean,
+// });
 
-module.exports = mongoose.model("Player", player);
+// const user = new Schema({
+//   authId: String,
+//   avatar: String,
+//   name: String,
+//   email: String,
+//   about: String
+
+// })
+// module.exports = mongoose.model("Player", player);
+// module.exports = mongoose.model("User", user)
+
+

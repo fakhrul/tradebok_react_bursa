@@ -22,6 +22,7 @@ const RegisterScreen = ({ navigation }) => {
   };
 
   const sendData = () => {
+    console.log("sendData");
     setForm({ isLoading: true });
     signup({
       displayName: form.displayName,

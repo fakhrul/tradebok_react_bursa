@@ -1,7 +1,6 @@
 import { AsyncStorage } from "react-native";
 import createDataContext from "./createDataContext";
 import { navigate } from "../helper/navigationRef";
-import * as dnApi from "../api/dnApi";
 import * as fb from "../config/firebase";
 import * as Facebook from "expo-facebook";
 import * as Google from "expo-google-app-auth";
@@ -11,23 +10,27 @@ const authReducer = (state, action) => {
     case "add_error":
       return { ...state, errorMessage: action.payload };
     case "signin":
+      return { ...state, errorMessage: "", currentUser: action.payload };
     case "signup":
-      return { errorMessage: "", currentUser: action.payload };
+      // console.log(action.payload)
+      return { ...state, errorMessage: "", currentUser: action.payload };
     case "signout":
-      return { currentUser: null, errorMessage: "" };
+      return { ...state, currentUser: null, errorMessage: "" };
     case "clear_error_message":
       return { ...state, errorMessage: "" };
     default:
       return state;
   }
 };
-
 const tryLocalSignIn = (dispatch) => async () => {
-  await fb.auth.onAuthStateChanged((user) => {
+  fb.auth.onAuthStateChanged((user) => {
     if (user) {
+      console.log("User had sign in");
       dispatch({ type: "signin", payload: user });
-      navigate("userFlow");
+      navigate("Welcome");
     } else {
+      console.log("User had sign out");
+      dispatch({ type: "signout" });
       navigate("anonymousFlow");
     }
   });
@@ -44,35 +47,12 @@ const signup = (dispatch) => {
       .then((userInfo) => {
         userInfo.user.updateProfile({ displayName: displayName.trim() });
         dispatch({ type: "signup", payload: userInfo.user });
-        navigate("userFlow");
+        navigate("Welcome");
       })
       .catch((error) => {
         alert(error.message);
         dispatch({ type: "add_error", payload: error.message });
       });
-
-    // try {
-    //   await dnApi.signup({
-    //     email: email,
-    //     password: password,
-    //     displayName: displayName,
-    //   });
-    // } catch (err) {
-    //   console.log(err);
-    // }
-
-    // try {
-    //   const response = await trackerApi.post("/signup", { email, password });
-    //   console.log(response.data);
-    //   await AsyncStorage.setItem("token", response.data.token);
-    //   // await AsyncStorage.getItem('token');
-    //   dispatch({ type: "signup", payload: response.data.token });
-
-    //   navigate("Main");
-    // } catch (err) {
-    //   console.log(err.response.data);
-    //   dispatch({ type: "add_error", payload: "Something went wrong" });
-    // }
   };
 };
 
@@ -81,7 +61,6 @@ const signin = (dispatch) => {
     await fb.auth
       .signInWithEmailAndPassword(email, password)
       .then((userInfo) => {
-        console.log(userInfo);
         dispatch({ type: "signin", payload: userInfo });
       })
       .catch((error) => {
@@ -90,22 +69,6 @@ const signin = (dispatch) => {
           payload: error.message,
         });
       });
-
-    // try {
-    //   const response = await trackerApi.post("/signin", { email, password });
-    //   console.log(response.data);
-    //   await AsyncStorage.setItem("token", response.data.token);
-    //   // await AsyncStorage.getItem('token');
-    //   dispatch({ type: "signin", payload: response.data.token });
-
-    //   navigate("Main");
-    // } catch (err) {
-    //   console.log(err.response.data);
-    //   dispatch({
-    //     type: "add_error",
-    //     payload: "Something went wrong with sign in",
-    //   });
-    // }
   };
 };
 
@@ -128,7 +91,10 @@ const signinWithFacebook = (dispatch) => {
 
 const signInWithGoogle = (dispatch) => {
   return async () => {
-    signInWithGoogleAsync(dispatch);
+    const data = await signInWithGoogleAsync(dispatch);
+    // const { id, photoUrl, name, email } = data.user;
+    // createUserIfNotExist(id, photoUrl, name, email);
+    return data;
   };
 };
 
@@ -144,7 +110,7 @@ const signInWithGoogleAsync = async (dispatch) => {
 
     if (result.type === "success") {
       onSignIn(dispatch, result);
-      return result.accessToken;
+      return result;
     } else {
       return { cancelled: true };
     }
@@ -154,20 +120,19 @@ const signInWithGoogleAsync = async (dispatch) => {
 };
 
 const onSignIn = (dispatch, googleUser) => {
-  console.log("Google Auth Response", googleUser);
+  // console.log("Google Auth Response", googleUser);
   // We need to register an Observer on Firebase Auth to make sure auth is initialized.
   var unsubscribe = fb.auth.onAuthStateChanged((firebaseUser) => {
     unsubscribe();
     // Check if we are already signed-in Firebase with the correct user.
     if (!isUserEqual(googleUser, firebaseUser)) {
       // Build Firebase credential with the Google ID token.
-      console.log("1");
+
       var credential = fb.fb.auth.GoogleAuthProvider.credential(
         // googleUser.getAuthResponse().id_token
         googleUser.idToken,
         googleUser.accessToken
       );
-      console.log("2");
 
       // Sign in with credential from the Google user.
       fb.auth
@@ -217,8 +182,6 @@ const isUserEqual = (googleUser, firebaseUser) => {
 const signout = (dispatch) => {
   return async () => {
     await fb.auth.signOut().then(() => console.log("User signed out!"));
-    dispatch({ type: "signout" });
-    navigate("anonymousFlow");
   };
 };
 

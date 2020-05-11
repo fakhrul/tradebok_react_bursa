@@ -1,5 +1,14 @@
 {
   "main": "node_modules/expo/AppEntry.js",
+  "author": {
+    "name": "Fakhrul Azran Bin Nawi",
+    "email": "fakhrulazran@gmail.com",
+    "url": "http://fakhrul.my"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fakhrul/tradebox_react_bursa.git"
+  },
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -8,7 +17,10 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@apollo/react-hooks": "^3.1.5",
     "@react-native-community/masked-view": "0.1.6",
+    "apollo-boost": "^0.4.7",
+    "apollo-link-ws": "^1.0.20",
     "expo": "~37.0.3",
     "expo-constants": "^9.0.0",
     "expo-facebook": "^8.1.0",
@@ -17,6 +29,8 @@
     "expo-image-picker": "^8.1.0",
     "expo-permissions": "^8.1.0",
     "firebase": "7.9.0",
+    "graphql": "^15.0.0",
+    "graphql-tag": "^2.10.3",
     "moment": "^2.24.0",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
@@ -33,7 +47,8 @@
     "react-navigation": "^4.3.8",
     "react-navigation-drawer": "^2.4.12",
     "react-navigation-stack": "^2.3.13",
-    "react-navigation-tabs": "^2.8.12"
+    "react-navigation-tabs": "^2.8.12",
+    "subscriptions-transport-ws": "^0.9.16"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
