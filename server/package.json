@@ -7,10 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon --watch server --watch package.json index.js --exec babel-node --presets es2015,stage-2"
   },
-  "author":  {
+  "author": {
     "name": "Fakhrul Azran Bin Nawi",
     "email": "fakhrulazran@gmail.com",
-    "url" : "http://fakhrul.my"
+    "url": "http://fakhrul.my"
   },
   "license": "ISC",
   "devDependencies": {
@@ -24,6 +24,7 @@
     "dotenv": "^8.2.0",
     "graphql": "^15.0.0",
     "graphql-tools": "^5.0.0",
-    "mongoose": "^5.9.12"
+    "mongoose": "^5.9.12",
+    "mongoose-timestamp": "^0.6.0"
   }
 }

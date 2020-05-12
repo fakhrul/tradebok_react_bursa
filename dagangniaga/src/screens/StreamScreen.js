@@ -10,7 +10,8 @@ import {
 import { SafeAreaView } from "react-navigation";
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import moment from "moment";
-import {Header} from "../components";
+import { Header } from "../components";
+import {colors} from "../utils";
 
 const StreamScreen = ({ navigation }) => {
   const posts = [
@@ -49,8 +50,8 @@ const StreamScreen = ({ navigation }) => {
     },
   ];
 
-  const addNewNote = () => {
-    navigation.navigate("PortfolioNote");
+  const addNewStream = () => {
+    navigation.navigate("StreamAdd");
   };
 
   const renderPost = (post) => {
@@ -103,13 +104,11 @@ const StreamScreen = ({ navigation }) => {
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
       ></FlatList>
-      <View style={{position:"absolute", top:"90%", alignSelf:"flex-end"}}>
-        <TouchableOpacity style={{marginRight:30}} onPress={addNewNote}>
-          <FontAwesome name="pencil-square-o" size={40} />
-          {/* <Text style={{ fontWeight: "500" }}>Add Note</Text> */}
+      <View style={{ position: "absolute", top: "90%", alignSelf: "flex-end" }}>
+        <TouchableOpacity style={{ marginRight: 30 }} onPress={addNewStream}>
+          <Ionicons name="ios-add-circle-outline" size={50} color={colors.default} />
         </TouchableOpacity>
       </View>
-      {/* <Button title="Add Note" onPress={addNewNote}></Button> */}
     </View>
   );
 };

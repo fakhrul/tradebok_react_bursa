@@ -6,6 +6,7 @@ export const colors = {
   placeholder: "#F4F4F4",
   white: "#FFFFFF",
   background: "#EFECF4",
+  placeholder : "#F4F4F4",
   text: {
     default: "#838899",
     title: "#454D65",

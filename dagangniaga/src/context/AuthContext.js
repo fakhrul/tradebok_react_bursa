@@ -18,14 +18,73 @@ const authReducer = (state, action) => {
       return { ...state, currentUser: null, errorMessage: "" };
     case "clear_error_message":
       return { ...state, errorMessage: "" };
+    case "update_user_id":
+      // console.log("state", state);
+      // console.log("payload", action.payload);
+      const returnObj = { ...state, userId: action.payload };
+      // console.log("returnObj", returnObj);
+      return returnObj;
     default:
       return state;
   }
 };
+
+// const authReducer = (state, action) => {
+//   return new Promise(resolve => {
+//     setTimeout(() => {
+//       switch (action.type) {
+//         case "add_error":
+//           return { ...state, errorMessage: action.payload };
+//         case "signin":
+//           resolve( { ...state, errorMessage: "", currentUser: action.payload });
+//           break;
+//         case "signup":
+//           // console.log(action.payload)
+//           resolve( { ...state, errorMessage: "", currentUser: action.payload });
+//         case "signout":
+//           resolve( { ...state, currentUser: null, errorMessage: "" });
+//           break;
+//         case "clear_error_message":
+//           resolve( { ...state, errorMessage: "" });
+//           break;
+//         case "update_user_id":
+//           resolve( { ...state, userId: action.payload });
+//           break;
+//         default:
+//           resolve( state);
+//           break;
+//       }
+//     }, 1000)
+//   })
+
+// };
+
+// function reducer(state, action) {
+//   return new Promise(resolve => {
+//     setTimeout(() => {
+//       switch (action.type) {
+//         case 'up':
+//           resolve({ ...state, count: state.count + 1 });
+//           break;
+//         case 'down':
+//           resolve({ ...state, count: state.count - 1 });
+//           break;
+//         case 'reset':
+//           resolve({ ...initialState });
+//           break;
+//         default:
+//           resolve(state);
+//           break;
+//       }
+//     }, 1000);
+//   });
+// }
+
 const tryLocalSignIn = (dispatch) => async () => {
-  fb.auth.onAuthStateChanged((user) => {
+  await fb.auth.onAuthStateChanged((user) => {
     if (user) {
       console.log("User had sign in");
+
       dispatch({ type: "signin", payload: user });
       navigate("Welcome");
     } else {
@@ -109,7 +168,7 @@ const signInWithGoogleAsync = async (dispatch) => {
     });
 
     if (result.type === "success") {
-      onSignIn(dispatch, result);
+      await onSignIn(dispatch, result);
       return result;
     } else {
       return { cancelled: true };
@@ -184,7 +243,16 @@ const signout = (dispatch) => {
     await fb.auth.signOut().then(() => console.log("User signed out!"));
   };
 };
-
+const updateUserId = (dispatch) => {
+  return async ({ userId }) => {
+    // console.log("userId", userId);
+    dispatch({
+      type: "update_user_id",
+      payload: userId,
+    });
+    // dispatch({ type: "update_user_id", payload: userId });
+  };
+};
 export const { Provider, Context } = createDataContext(
   authReducer,
   {
@@ -195,6 +263,7 @@ export const { Provider, Context } = createDataContext(
     signInWithGoogle,
     clearErrorMessage,
     tryLocalSignIn,
+    updateUserId,
   },
-  { currentUser: null, errorMessage: "" }
+  { userId: null, currentUser: null, errorMessage: "" }
 );

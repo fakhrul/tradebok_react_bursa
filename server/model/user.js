@@ -1,14 +1,42 @@
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+import timestamps from 'mongoose-timestamp';
+// import Follower from "./_follower";
+// import Following from "./_following";
 
-  const mongoose = require("mongoose");
-  const Schema = mongoose.Schema;
+const userSchema = new Schema({
+  authId: {
+    type: String,
+    required: true,
+  },
+  avatar: {
+    type: String,
+  },
+  name: {
+    type: String,
+    trim: true,
+    required: true,
+  },
+  email: {
+    type: String,
+    lowercase: true,
+    trim: true,
+    unique: true,
+    required: true,
+  },
+  handle:{
+    type: String,
+    trim: true,
+    required: true,
+  },
+  about: String,
+  followerIds: [Schema.Types.ObjectId],
+  followingIds: [Schema.Types.ObjectId]
+});
 
 
-  const user = new Schema({
-    authId: String,
-    avatar: String,
-    name: String,
-    email: String,
-    about: String
-  
-  })
-  module.exports = mongoose.model("User", user);
+userSchema.plugin(timestamps);
+
+userSchema.index({ createdAt: 1, updatedAt: 1 });
+
+module.exports = mongoose.model("User", userSchema);

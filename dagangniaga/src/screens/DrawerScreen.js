@@ -106,6 +106,18 @@ const DrawerScreen = ({ navigation }) => {
               ></Ionicons>
             }
           ></SidebarLink>
+          <SidebarLink
+            navigation={navigation}
+            title="Profile"
+            route="profileFlow"
+            icon={
+              <Ionicons
+                name="md-person"
+                size={20}
+                color={colors.text.title}
+              ></Ionicons>
+            }
+          ></SidebarLink>
           <Divider></Divider>
           <SidebarTitle title="TRADE"></SidebarTitle>
           <SidebarLink

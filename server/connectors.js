@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-// const Schema = mongoose.Schema;
 
 const mongoUri = process.env.CONNECTION_STRING;
 if (!mongoUri) {
@@ -18,34 +17,5 @@ mongoose.connection.on('error', err => {
   console.error('Error connecting to mongo', err);
 });
 
-
-
-// mongoose.connect(
-//   process.env.CONNECTION_STRING,
-//   { useNewUrlParser: true },
-//   (error) => {
-//     if (error) console.log("Database Connection Error----", error);
-//     else console.log("Database connected");
-//   }
-// );
-
-// const player = new Schema({
-//   position: String,
-//   name: String,
-//   team: String,
-//   jerseyNumber: Number,
-//   wonSuperBowl: Boolean,
-// });
-
-// const user = new Schema({
-//   authId: String,
-//   avatar: String,
-//   name: String,
-//   email: String,
-//   about: String
-
-// })
-// module.exports = mongoose.model("Player", player);
-// module.exports = mongoose.model("User", user)
 
 

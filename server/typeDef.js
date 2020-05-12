@@ -16,6 +16,7 @@ const typeDefs = gql`
         createUser(authId: String, avatar: String, name: String, email: String): User
         updateUser(id: String, authId: String, avatar: String, name: String, email: String): User
         deleteUser(id: String): User
+        followProfile(userId: String, profileToFollowUserId: String): User
     }
     type Player {
         id: String
@@ -31,8 +32,12 @@ const typeDefs = gql`
         avatar: String
         name: String
         email: String
+        handle: String
         about: String
-    }
+        followingIds: [String]
+        followerIds: [String]
+
+    },
     schema {
         query: Query
         mutation: Mutation
