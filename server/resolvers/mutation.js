@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const User = require("../model/user");
+const Post = require("../model/post");
 
 const addProfileToFollowingList = (userId, profileToFollowUserId) =>
   new Promise((resolve, reject) => {
@@ -25,6 +26,28 @@ const addProfileToFollowerList = (userId, profileToFollowUserId) =>
       }
     );
   });
+
+const addPost = (id, caption, uri, reports, authorId) =>
+  new Promise((resolve, reject) => {
+    Post.create(
+      { caption, uri, reports, author: authorId, _id: id },
+      (err, result) => {
+        if (err) reject(err);
+        else resolve(result);
+      }
+    );
+  });
+const updateUserPostList = (userId, postId) =>
+  new Promise((resolve, reject) => {
+    User.update(
+      { _id: userId },
+      { $push: { posts: postId } },
+      (err, result) => {
+        if (err) reject(err);
+        else resolve(result);
+      }
+    );
+  });
 const resolvers = {
   followProfile: (_, args) => {
     return Promise.all([
@@ -32,12 +55,12 @@ const resolvers = {
       addProfileToFollowerList(args.userId, args.profileToFollowUserId),
     ]).then((result) => result[0]);
   },
-//   unFollowProfile: (_, args) => {
-//     return Promise.all([
-//       removeProfileFromFollowingList(args.userId, args.profileToFollowUserId),
-//       removeProfileFromFollowerList(args.userId, args.profileToFollowUserId),
-//     ]).then((result) => result[0]);
-//   },
+  //   unFollowProfile: (_, args) => {
+  //     return Promise.all([
+  //       removeProfileFromFollowingList(args.userId, args.profileToFollowUserId),
+  //       removeProfileFromFollowerList(args.userId, args.profileToFollowUserId),
+  //     ]).then((result) => result[0]);
+  //   },
   createPlayer: (_, args) => {
     const newlyCreatedPlayer = new Player({
       name: args.name,
@@ -103,6 +126,13 @@ const resolvers = {
       }
       return;
     });
+  },
+  createPost: (_, args) => {
+    const id = mongoose.Types.ObjectId();
+    return Promise.all([
+      addPost(id, args.caption, args.uri, args.reports, args.authorId),
+      updateUserPostList(args.authorId, id),
+    ]).then((result) => result[0]);
   },
 };
 

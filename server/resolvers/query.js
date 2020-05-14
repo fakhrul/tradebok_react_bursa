@@ -1,5 +1,8 @@
+import { promisify } from "../helper";
+
 const Player = require("../model/player");
 const User = require("../model/user");
+const Post = require("../model/post");
 
 const resolvers = {
   players: () =>
@@ -18,6 +21,7 @@ const resolvers = {
       if (error) throw new Error(error);
       return users;
     }),
+  user: (_, args) => promisify(User.findById(args.id)),
   getUser: (_, args) =>
     User.findById({ _id: args.id }, async (error, userToReturn) => {
       if (error) throw new Error(error);
@@ -28,6 +32,12 @@ const resolvers = {
       if (error) throw new Error(error);
       return userToReturn;
     }),
+  post: (_, args) => promisify(Post.findById(args.id)).then((result) => result),
+  // Post.findById({ _id: args.id }, async (error, data) => {
+  //   if (error) throw new Error(error);
+  //   return data;
+  // }),
+  posts: (_, args) => promisify(Post.find({})).then((result) => result),
 };
 
 module.exports = resolvers;

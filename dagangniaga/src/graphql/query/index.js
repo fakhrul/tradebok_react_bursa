@@ -11,6 +11,12 @@ export const QUERY_USER = gql`
       about
       followingIds
       followerIds
+      posts {
+        id
+        caption
+        uri
+        
+      }
     }
   }
 `;

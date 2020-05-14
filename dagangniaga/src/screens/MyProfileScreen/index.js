@@ -1,14 +1,17 @@
 import React, { useEffect, useContext } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, FlatList } from "react-native";
 import {
   Header,
   ProfileScreenPlaceholder,
   ProfileCard,
+  ListEmptyComponent,
 } from "../../components";
 import { useQuery } from "@apollo/react-hooks";
 import { QUERY_USER } from "../../graphql/query";
 import { PollIntervals } from "../../constants";
 import { Context as AuthContext } from "../../context/AuthContext";
+import { FlatGrid } from "react-native-super-grid";
+import { responsiveWidth } from "react-native-responsive-dimensions";
 
 const MyProfileScreen = ({ navigation }) => {
   const { state } = useContext(AuthContext);
@@ -37,8 +40,8 @@ const MyProfileScreen = ({ navigation }) => {
     handle,
     about,
   }) => {
-      console.log("following", following);
-      console.log("follower", followers);
+    console.log("following", following);
+    console.log("follower", followers);
     return (
       <View>
         <ProfileCard
@@ -56,17 +59,13 @@ const MyProfileScreen = ({ navigation }) => {
       </View>
     );
   };
-  let content = <ProfileScreenPlaceholder />;
 
-  if (!loading && !error) {
+  const ListHeaderComponent = () => {
     const {
       getUser: { avatar, name, handle, followingIds, followerIds, about },
     } = data;
 
-    console.log("profile data found", data.getUser);
-    console.log("followingIds", followingIds.length);
-    console.log("followersIds", followerIds.length);
-    content = (
+    return (
       <ProfileHeader
         avatar={avatar}
         name={name}
@@ -75,6 +74,52 @@ const MyProfileScreen = ({ navigation }) => {
         followers={followerIds.length}
         about={about}
       ></ProfileHeader>
+    );
+  };
+
+  const renderItem = ({ item }) => {
+    console.log(item);
+    const { id, caption, uri } = item;
+    return (
+      <Text>{caption}</Text>
+      //   <PostThumbnail id={id} uri={uri} dimensions={PostDimensions.Medium} />
+    );
+  };
+
+  let content = <ProfileScreenPlaceholder />;
+
+  if (!loading && !error) {
+    const {
+      getUser: {
+        avatar,
+        name,
+        handle,
+        followingIds,
+        followerIds,
+        about,
+        posts,
+      },
+    } = data;
+    // console.log("posts", posts);
+    // const sortedPosts = posts;
+    content = (
+      <>
+        <ProfileHeader
+          avatar={avatar}
+          name={name}
+          handle={handle}
+          following={followingIds.length}
+          followers={followerIds.length}
+          about={about}
+        ></ProfileHeader>
+        <FlatList
+          style={styles.feed}
+          data={posts}
+          renderItem={({ item }) => renderItem({ item })}
+          keyExtractor={(item) => item.id}
+          showsVerticalScrollIndicator={false}
+        ></FlatList>
+      </>
     );
   }
 

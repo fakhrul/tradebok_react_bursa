@@ -4,7 +4,7 @@ import timestamps from 'mongoose-timestamp';
 // import Follower from "./_follower";
 // import Following from "./_following";
 
-const userSchema = new Schema({
+const schema = new Schema({
   authId: {
     type: String,
     required: true,
@@ -31,12 +31,17 @@ const userSchema = new Schema({
   },
   about: String,
   followerIds: [Schema.Types.ObjectId],
-  followingIds: [Schema.Types.ObjectId]
-});
+  followingIds: [Schema.Types.ObjectId],
+  posts: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Post'
+  }]
+}, {timestamps: true});
 
 
-userSchema.plugin(timestamps);
 
-userSchema.index({ createdAt: 1, updatedAt: 1 });
+// userSchema.plugin(timestamps);
 
-module.exports = mongoose.model("User", userSchema);
+// userSchema.index({ createdAt: 1, updatedAt: 1 });
+
+module.exports = mongoose.model("User", schema);

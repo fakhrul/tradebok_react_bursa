@@ -1,4 +1,4 @@
 import ProfileScreenPlaceholder from "./ProfileScreenPlaceHolder";
 import ProfileCard from "./ProfileCard";
-
-export { ProfileScreenPlaceholder, ProfileCard };
+import ListEmptyComponent from "./ListEmptyComponent"
+export { ProfileScreenPlaceholder, ProfileCard, ListEmptyComponent };
