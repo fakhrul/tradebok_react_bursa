@@ -1,5 +1,34 @@
 import gql from "graphql-tag";
 
+
+export const QUERY_POST = gql`
+  query Post($id: String!) {
+    post(id: $id) {
+      author {
+        id
+        handle
+        avatar
+      }
+      comments {
+        id
+        body
+        author {
+          id
+          avatar
+          handle
+        }
+        createdAt
+      }
+      uri
+      likes {
+        id
+      }
+      caption
+      createdAt
+    }
+  }
+`;
+
 export const QUERY_USER = gql`
  query GetUser($id: String!) {
     getUser(id: $id) {
@@ -15,7 +44,7 @@ export const QUERY_USER = gql`
         id
         caption
         uri
-        
+        createdAt
       }
     }
   }

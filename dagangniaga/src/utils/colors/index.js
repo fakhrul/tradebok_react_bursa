@@ -1,7 +1,7 @@
 export const colors = {
-  default: "#008037",
+  default: "#002B55",
   disable: "#a5b1c2",
-  accent: "#846BE2",
+  accent: "#002B55",
   base: "#FFFFFF",
   placeholder: "#F4F4F4",
   white: "#FFFFFF",
@@ -13,7 +13,7 @@ export const colors = {
     timestamp: "#C4C6CE",
     bullish: "#008037",
     bearish: "#FF0000",
-    accent: "#846BE2",
+    accent: "#002B55",
     base: "#FFFFFF",
     text01: "#000000",
     text02: "#BBBBBB",

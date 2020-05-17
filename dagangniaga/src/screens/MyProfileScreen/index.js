@@ -1,5 +1,12 @@
-import React, { useEffect, useContext } from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import React, { useEffect, useContext, useRef } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Image,
+  ScrollView,
+} from "react-native";
 import {
   Header,
   ProfileScreenPlaceholder,
@@ -10,8 +17,10 @@ import { useQuery } from "@apollo/react-hooks";
 import { QUERY_USER } from "../../graphql/query";
 import { PollIntervals } from "../../constants";
 import { Context as AuthContext } from "../../context/AuthContext";
-import { FlatGrid } from "react-native-super-grid";
-import { responsiveWidth } from "react-native-responsive-dimensions";
+import SettingsBottomSheet from "./components/SettingsBottomSheet";
+import { Modalize } from "react-native-modalize";
+import { colors, sortPostsAscendingTime } from "../../utils";
+import { PostList } from "../../components";
 
 const MyProfileScreen = ({ navigation }) => {
   const { state } = useContext(AuthContext);
@@ -21,6 +30,8 @@ const MyProfileScreen = ({ navigation }) => {
     pollInterval: PollIntervals.profile,
     fetchPolicy: "network-only",
   });
+
+  const settingsBottomSheetRef = useRef(null);
 
   useEffect(() => {
     console.log(state.userId);
@@ -60,30 +71,11 @@ const MyProfileScreen = ({ navigation }) => {
     );
   };
 
-  const ListHeaderComponent = () => {
-    const {
-      getUser: { avatar, name, handle, followingIds, followerIds, about },
-    } = data;
-
-    return (
-      <ProfileHeader
-        avatar={avatar}
-        name={name}
-        handle={handle}
-        following={followingIds.length}
-        followers={followerIds.length}
-        about={about}
-      ></ProfileHeader>
-    );
-  };
-
   const renderItem = ({ item }) => {
-    console.log(item);
-    const { id, caption, uri } = item;
-    return (
-      <Text>{caption}</Text>
-      //   <PostThumbnail id={id} uri={uri} dimensions={PostDimensions.Medium} />
-    );
+    const {
+      getUser: { avatar, name },
+    } = data;
+    return <PostList name={name} avatar={avatar} navigation={navigation} item={item}></PostList>;
   };
 
   let content = <ProfileScreenPlaceholder />;
@@ -101,32 +93,62 @@ const MyProfileScreen = ({ navigation }) => {
       },
     } = data;
     // console.log("posts", posts);
-    // const sortedPosts = posts;
+    const sortedPosts = sortPostsAscendingTime(posts);
     content = (
       <>
-        <ProfileHeader
-          avatar={avatar}
-          name={name}
-          handle={handle}
-          following={followingIds.length}
-          followers={followerIds.length}
-          about={about}
-        ></ProfileHeader>
-        <FlatList
-          style={styles.feed}
-          data={posts}
-          renderItem={({ item }) => renderItem({ item })}
-          keyExtractor={(item) => item.id}
-          showsVerticalScrollIndicator={false}
-        ></FlatList>
+        <ScrollView>
+          <View>
+            <ProfileHeader
+              avatar={avatar}
+              name={name}
+              handle={handle}
+              following={followingIds.length}
+              followers={followerIds.length}
+              about={about}
+            ></ProfileHeader>
+            <FlatList
+              style={styles.feed}
+              data={sortedPosts}
+              renderItem={({ item }) => renderItem({ item })}
+              keyExtractor={(item) => item.id}
+              showsVerticalScrollIndicator={false}
+            ></FlatList>
+          </View>
+        </ScrollView>
       </>
     );
   }
 
+  const onMorePress = () => {
+    settingsBottomSheetRef.current?.open();
+  };
+
+  const onAddPostPress = () => {
+    settingsBottomSheetRef.current?.close();
+    navigation.navigate("AddPost");
+  };
+
+  const onBlockListPress = () => {};
+
   return (
     <View style={styles.container}>
-      <Header title="Profile" navigation={navigation}></Header>
+      <Header
+        title="Profile"
+        navigation={navigation}
+        onPress={onMorePress}
+      ></Header>
       {content}
+      <Modalize
+        ref={settingsBottomSheetRef}
+        scrollViewProps={{ showsVerticalScrollIndicator: false }}
+        modalStyle={styles.settingContainer}
+        adjustToContentHeight
+      >
+        <SettingsBottomSheet
+          onAddPostPress={onAddPostPress}
+          onBlockListPress={onBlockListPress}
+        ></SettingsBottomSheet>
+      </Modalize>
     </View>
   );
 };
@@ -135,6 +157,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#EFECF4",
+  },
+  settingContainer: {
+    padding: 20,
+    backgroundColor: colors.base,
   },
 });
 

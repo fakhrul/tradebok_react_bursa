@@ -15,6 +15,7 @@ import ChatScreen from "./src/screens/ChatScreen";
 import DrawerScreen from "./src/screens/DrawerScreen";
 import LoginWithEmailScreen from "./src/screens/LoginWithEmailScreen";
 import StreamAddScreen from "./src/screens/StreamAddScreen";
+import AddPostScreen from "./src/screens/AddPostScreen";
 
 import { createDrawerNavigator } from "react-navigation-drawer";
 import WelcomeScreen from "./src/screens/WelcomeScreen";
@@ -35,6 +36,7 @@ import {
 } from "react-navigation";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import { createStackNavigator } from "react-navigation-stack";
+import PostViewScreen from "./src/screens/PostViewScreen";
 
 const dashboardFlow = createStackNavigator({
   Dashboard: DashboardScreen,
@@ -82,7 +84,18 @@ PortfolioNoteScreen.navigationOptions = () => {
   };
 };
 
+PostViewScreen.navigationOptions = () => {
+  return {
+    headerShown: false,
+  };
+};
 DashboardScreen.navigationOptions = () => {
+  return {
+    headerShown: false,
+  };
+};
+
+AddPostScreen.navigationOptions = () => {
   return {
     headerShown: false,
   };
@@ -161,7 +174,9 @@ const switchNavigator = createSwitchNavigator({
         chatFlow,
       }),
       profileFlow: createStackNavigator({
-        Porfile: MyProfileScreen,
+        Profile: MyProfileScreen,
+        AddPost: AddPostScreen,
+        PostView: PostViewScreen,
       }),
       //   ProfileScreen: {
       //     screen: ProfileScreen,
@@ -172,9 +187,9 @@ const switchNavigator = createSwitchNavigator({
       //       ),
       //     },
       //   },
-        SettingScreen,
-        AboutScreen,
-        SignoutScreen,
+      SettingScreen,
+      AboutScreen,
+      SignoutScreen,
     },
     { contentComponent: (props) => <DrawerScreen {...props}></DrawerScreen> }
   ),

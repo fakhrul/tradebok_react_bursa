@@ -10,7 +10,7 @@ const typeDefs = gql`
     users: [User]
     getUser(id: String): User
     userExist(authId: String): User
-    post(id: ID!): Post
+    post(id: String): Post
     posts: [Post!]!
   }
   type Mutation {
@@ -45,7 +45,7 @@ const typeDefs = gql`
     ): User
     deleteUser(id: String): User
     followProfile(userId: String, profileToFollowUserId: String): User
-    createPost(caption: String, uri: String, reports: Int, authorId: String): Post
+    createPost(caption: String, uri: String, authorId: String): Post
   }
   type Player {
     id: String
@@ -73,6 +73,8 @@ const typeDefs = gql`
     posts: [Post]!
     chats: [Chat]!
     notifications: [Notification!]
+    postLikes: [Post]!
+    commentLikes: [Comment]!
   }
   type Post {
     id: ID!
@@ -80,11 +82,16 @@ const typeDefs = gql`
     uri: String
     reports: Int!
     author: User!
+    comments: [Comment]
+    createdAt: DateTime!
+    likes: [User]
   }
   type Comment {
-    id: String
+    id: ID!
     body: String!
     author: User!
+    post: Post!
+    createdAt: DateTime!
   }
   type Notification {
     id: String

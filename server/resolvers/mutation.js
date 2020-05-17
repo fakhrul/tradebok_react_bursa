@@ -27,10 +27,10 @@ const addProfileToFollowerList = (userId, profileToFollowUserId) =>
     );
   });
 
-const addPost = (id, caption, uri, reports, authorId) =>
+const addPost = (id, caption, uri, authorId) =>
   new Promise((resolve, reject) => {
     Post.create(
-      { caption, uri, reports, author: authorId, _id: id },
+      { caption, uri, author: authorId, _id: id },
       (err, result) => {
         if (err) reject(err);
         else resolve(result);
@@ -130,7 +130,7 @@ const resolvers = {
   createPost: (_, args) => {
     const id = mongoose.Types.ObjectId();
     return Promise.all([
-      addPost(id, args.caption, args.uri, args.reports, args.authorId),
+      addPost(id, args.caption, args.uri, args.authorId),
       updateUserPostList(args.authorId, id),
     ]).then((result) => result[0]);
   },

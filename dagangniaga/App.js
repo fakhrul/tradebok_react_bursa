@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, Button, Vibration, Platform } from "react-native";
+import {
+  Text,
+  View,
+  Button,
+  Vibration,
+  Platform,
+  StatusBar,
+} from "react-native";
 import { ApolloProvider, useMutation } from "@apollo/react-hooks";
 import client from "./src/graphql/client";
 
@@ -11,7 +18,8 @@ import { setNavigator } from "./src/helper/navigationRef";
 
 import { Provider as AuthProvider } from "./src/context/AuthContext";
 
-import App  from "./Navigation";
+import App from "./Navigation";
+import FlashMessage from "react-native-flash-message";
 
 export default () => {
   console.ignoredYellowBox = ["Setting a timer"];
@@ -95,11 +103,24 @@ export default () => {
   return (
     <ApolloProvider client={client}>
       <AuthProvider>
+        <StatusBar
+          barStyle="dark-content"
+          hidden={false}
+          backgroundColor="#FFF"
+          translucent={true}
+        />
         <App
           ref={(navigator) => {
             setNavigator(navigator);
           }}
         ></App>
+        <FlashMessage
+          titleStyle={{
+            color: "#FFF",
+          }}
+          floating
+          position="bottom"
+        />
       </AuthProvider>
     </ApolloProvider>
   );

@@ -4,7 +4,7 @@ import {colors} from "../../../utils";
 
 const BottomSheetHeader = ({ header, subHeader }) => {
   return (
-    <View>
+    <View style={{}}>
       <Text style={styles.header}>{header}</Text>
       <Text style={styles.subHeader}>{subHeader}</Text>
     </View>
@@ -14,9 +14,7 @@ const BottomSheetHeader = ({ header, subHeader }) => {
 const styles = StyleSheet.create({
     header:{
         fontSize: 20,
-
         color: colors.text.text01
-
     },
     subHeader:{
         fontSize: 16,

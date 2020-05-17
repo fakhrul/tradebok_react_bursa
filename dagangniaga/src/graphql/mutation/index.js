@@ -10,3 +10,12 @@ export const MUTATION_CREATE_USER = gql`
         }
     }
 `;
+
+export const MUTATION_CREATE_POST = gql`
+  mutation CreatePost($authorId: String!, $uri: String, $caption: String) {
+    createPost(authorId: $authorId, uri: $uri, caption: $caption) {
+      id
+    }
+  }
+`;
+

@@ -2,18 +2,23 @@ import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
 
-
-const Header = ({title, navigation, ...more}) => {
+const Header = ({ title, navigation, isBackButton, ...more }) => {
   return (
-      <View style={styles.header}>
+    <View style={styles.header}>
+      {isBackButton ? (
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="md-arrow-back" size={32} />
+        </TouchableOpacity>
+      ) : (
         <TouchableOpacity onPress={() => navigation.openDrawer()}>
           <Ionicons name="ios-menu" size={32} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>{title}</Text>
-        <TouchableOpacity {...more}>
-          <Ionicons name="ios-more" size={32} />
-        </TouchableOpacity>
-      </View>
+      )}
+      <Text style={styles.headerTitle}>{title}</Text>
+      <TouchableOpacity {...more}>
+        <Ionicons name="ios-more" size={32} />
+      </TouchableOpacity>
+    </View>
   );
 };
 
@@ -39,7 +44,6 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     marginLeft: 10,
   },
-
 });
 
 export default Header;

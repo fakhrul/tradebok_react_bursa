@@ -35,6 +35,14 @@ const schema = new Schema({
   posts: [{
     type: Schema.Types.ObjectId,
     ref: 'Post'
+  }],
+  postLikes: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Post'
+  }],
+  commentLikes: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Comment'
   }]
 }, {timestamps: true});
 

@@ -7,26 +7,19 @@ const schema = new Schema(
     caption: {
       type: String,
     },
-    uri: {
+    body: {
       type: String,
-    },
-    reports: {
-      type: Number,
     },
     author: {
       type: Schema.Types.ObjectId,
       ref: "User",
     },
-    comments: [{
+    post: {
       type: Schema.Types.ObjectId,
-      ref: 'Comment'
-    }],
-    likes: [{
-      type: Schema.Types.ObjectId,
-      ref: 'User'
-    }]
+      ref: "Post",
+    },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Post", schema);
+module.exports = mongoose.model("Comment", schema);

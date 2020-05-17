@@ -8,6 +8,12 @@ import SidebarLink from "./SidebarLink";
 import SidebarTitle from "./SidebarTitle";
 import TermsAndConditions from "./TermsAndConditions";
 import BottomSheetHeader from "./BottomSheetHeader";
+import Option from "./Option";
+import IconButton from "./IconButton";
+import SvgBanner from "./SvgBanner";
+import LoadingIndicator from "./LoadingIndicator";
+import Button from "./Button";
+import NativeImage from "./NativeImage";
 
 export {
   InputCustom,
@@ -19,5 +25,11 @@ export {
   SidebarLink,
   SidebarTitle,
   TermsAndConditions,
-  BottomSheetHeader
+  BottomSheetHeader,
+  Option,
+  IconButton,
+  SvgBanner,
+  LoadingIndicator,
+  Button,
+  NativeImage
 };
