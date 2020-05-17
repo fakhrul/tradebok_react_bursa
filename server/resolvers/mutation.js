@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { promisify } from "../helper";
 
 const User = require("../model/user");
 const Post = require("../model/post");
@@ -29,13 +30,10 @@ const addProfileToFollowerList = (userId, profileToFollowUserId) =>
 
 const addPost = (id, caption, uri, authorId) =>
   new Promise((resolve, reject) => {
-    Post.create(
-      { caption, uri, author: authorId, _id: id },
-      (err, result) => {
-        if (err) reject(err);
-        else resolve(result);
-      }
-    );
+    Post.create({ caption, uri, author: authorId, _id: id }, (err, result) => {
+      if (err) reject(err);
+      else resolve(result);
+    });
   });
 const updateUserPostList = (userId, postId) =>
   new Promise((resolve, reject) => {
@@ -48,6 +46,46 @@ const updateUserPostList = (userId, postId) =>
       }
     );
   });
+
+// const addProfileToFollowerList = (userId, profileToFollowUserId) =>
+// new Promise((resolve, reject) => {
+//   User.update(
+//     { _id: profileToFollowUserId },
+//     { $push: { followerIds: userId } },
+//     (err, result) => {
+//       if (err) reject(err);
+//       else resolve(result);
+//     }
+//   );
+// });
+
+const isHandleExist = (handleName) => {
+  User.findOne({ handle: handleName }, (error, userFound) => {
+    if (error) throw new Error(error);
+    if (userFound) {
+      console.log("user found");
+      return true;
+    } else {
+      console.log("user not found");
+      return false;
+    }
+  });
+};
+
+const generateUniqueAccountName = (proposedName) => {
+  proposedName = proposedName.replace(/\W/g, "");
+  User.findOne({ handle: proposedName }).exec(function (err, user) {
+    if (err) throw new Error(err);
+    if (user) {
+      proposedName += Math.floor(Math.random() * 100 + 1);
+      return generateUniqueAccountName(proposedName);
+    }
+    return proposedName;
+  });
+  return proposedName;
+ 
+};
+
 const resolvers = {
   followProfile: (_, args) => {
     return Promise.all([
@@ -96,13 +134,18 @@ const resolvers = {
     );
   },
   createUser: (_, args) => {
+    const handle = generateUniqueAccountName(args.name);
+    console.log("handle", handle);
+    if (!handle) throw new Error("failed to generate handle");
     const newUser = new User({
       authId: args.authId,
       avatar: args.avatar,
       name: args.name,
       email: args.email,
+      handle: handle,
     });
     newUser.save(function (err) {
+      if (err) throw new Error(err);
       // const id = newUser._id; // Hey!
     });
     return newUser;

@@ -33,10 +33,6 @@ const resolvers = {
       return userToReturn;
     }),
   post: (_, args) => promisify(Post.findById(args.id)).then((result) => result),
-  // Post.findById({ _id: args.id }, async (error, data) => {
-  //   if (error) throw new Error(error);
-  //   return data;
-  // }),
   posts: (_, args) => promisify(Post.find({})).then((result) => result),
 };
 
