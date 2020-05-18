@@ -14,7 +14,7 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
-import { Header } from "../../components";
+import { Header, PostOptionsBottomSheet } from "../../components";
 import { colors } from "../../utils";
 import {
   PostViewPlaceHolder,
@@ -24,15 +24,18 @@ import {
 import { Entypo } from "@expo/vector-icons";
 import { QUERY_POST } from "../../graphql/query";
 import moment from "moment";
-import { responsiveWidth } from 'react-native-responsive-dimensions';
-import {Context as AuthContext} from "../../context/AuthContext";
+import { responsiveWidth } from "react-native-responsive-dimensions";
+import { Context as AuthContext } from "../../context/AuthContext";
 
 const PostViewScreen = ({ navigation }) => {
   const postId = navigation.getParam("postId");
   const { state } = useContext(AuthContext);
 
   const scrollViewRef = useRef();
-  const likeBounceAnimationRef = useRef();
+  const postOptionsBottomSheetRef = useRef();
+  const editPostBottomSheetRef = useRef();
+  const likesBottomSheetRef = useRef();
+  // const likeBounceAnimationRef = createRef();
 
   const [postData, setPostData] = useState(null);
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
@@ -60,17 +63,45 @@ const PostViewScreen = ({ navigation }) => {
     }
   }, [postQueryData, postQueryCalled, postQueryLoading]);
 
-  const onMorePress = () => {};
+  const onMorePress = () => {
+    openOptions();
+  };
   const navigateToProfile = (authorId) => {
     navigation.navigate("ProfileView", { authorId });
   };
-  const openOptions = () => {};
+
+
+  const openOptions = () => {
+    // @ts-ignore
+    postOptionsBottomSheetRef.current.open();
+  };
+
+  const closeOptions = () => {
+    // @ts-ignore
+    postOptionsBottomSheetRef.current.close();
+  };
 
   const handleDoubleTap = (isLiked) => {};
 
   const openLikes = () => {};
 
   const readableLikes = () => {};
+
+  const confirmationToggle = () => {
+    setIsConfirmModalVisible(!isConfirmModalVisible);
+  };
+
+
+  const onPostEdit = () => {
+    closeOptions();
+    // @ts-ignore
+    editPostBottomSheetRef.current.open();
+  };
+
+  const onPostDelete = () => {
+    closeOptions();
+    confirmationToggle();
+  };
 
   let content = <PostViewPlaceHolder></PostViewPlaceHolder>;
 
@@ -92,7 +123,7 @@ const PostViewScreen = ({ navigation }) => {
     // const readableLikes = parseLikes(likes.length);
 
     content = (
-      <View style={{borderWidth:1}}>
+      <View style={{ borderWidth: 1 }}>
         <TouchableOpacity
           activeOpacity={0.9}
           onPress={() => navigateToProfile(authorId)}
@@ -149,12 +180,48 @@ const PostViewScreen = ({ navigation }) => {
       </View>
     );
   }
+  let bottomSheets;
+  if (postQueryCalled && !postQueryLoading && !postQueryError && postData) {
+    const {
+      post: {
+        author: { id: authorId },
+        uri,
+        likes,
+        caption,
+      },
+    } = postData;
 
-  const bottomSheets = (
-    <View>
-      <Text>bottom Sheets</Text>
-    </View>
-  );
+    bottomSheets = (
+      <>
+        <PostOptionsBottomSheet
+          ref={postOptionsBottomSheetRef}
+          authorId={authorId}
+          postId={postId}
+          onPostEdit={onPostEdit}
+          onPostDelete={onPostDelete}
+        />
+        {/* <EditPostBottomSheet
+          ref={editPostBottomSheetRef}
+          postId={postId}
+          caption={caption}
+        />
+        <ConfirmationModal
+          label="Delete"
+          title="Delete post?"
+          description={`Do you want to delete the current post? Post won't be recoverable later`}
+          color={ThemeStatic.delete}
+          isVisible={isConfirmModalVisible}
+          toggle={confirmationToggle}
+          onConfirm={() => onDeleteConfirm(uri)}
+        />
+        <LikesBottomSheet
+          ref={likesBottomSheetRef}
+          likes={likes}
+          onUserPress={navigateToProfile}
+        /> */}
+      </>
+    );
+  }
 
   const keyboardBehavior = Platform.OS === "ios" ? "padding" : undefined;
 
@@ -210,20 +277,20 @@ const styles = StyleSheet.create({
   },
   handleText: {
     fontSize: 16,
-    color: colors.text01
+    color: colors.text01,
   },
   timeText: {
     fontSize: 14,
     color: colors.text02,
-    marginTop: 2
+    marginTop: 2,
   },
   postImage: {
     height: responsiveWidth(90),
     width: responsiveWidth(90),
-    alignSelf: 'center',
+    alignSelf: "center",
     marginTop: 25,
     borderRadius: 10,
-    backgroundColor: colors.placeholder
+    backgroundColor: colors.placeholder,
   },
 });
 

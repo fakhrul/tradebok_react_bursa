@@ -14,6 +14,10 @@ import SvgBanner from "./SvgBanner";
 import LoadingIndicator from "./LoadingIndicator";
 import Button from "./Button";
 import NativeImage from "./NativeImage";
+import PostOptionsBottomSheet from "./PostOptionsBottomSheet";
+import EditPostBottomSheet from "./EditPostBottomSheet";
+import UseCard from "./UserCard";
+import LikesBottomSheet from "./LikesBottomSheet";
 
 export {
   InputCustom,
@@ -31,5 +35,9 @@ export {
   SvgBanner,
   LoadingIndicator,
   Button,
-  NativeImage
+  NativeImage,
+  PostOptionsBottomSheet,
+  EditPostBottomSheet,
+  UseCard,
+  LikesBottomSheet
 };
