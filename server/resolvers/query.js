@@ -3,6 +3,7 @@ import { promisify } from "../helper";
 const Player = require("../model/player");
 const User = require("../model/user");
 const Post = require("../model/post");
+const Comment = require("../model/comment");
 
 const resolvers = {
   players: () =>
@@ -34,6 +35,10 @@ const resolvers = {
     }),
   post: (_, args) => promisify(Post.findById(args.id)).then((result) => result),
   posts: (_, args) => promisify(Post.find({})).then((result) => result),
+  comment: (_, args) =>
+    promisify(Comment.findById(args.id)).then((result) => result),
+  comments: (_, args) =>
+    promisify(Comment.find({ post: args.postId })).then((result) => result),
 };
 
 module.exports = resolvers;

@@ -14,18 +14,24 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
-import { Header, PostOptionsBottomSheet } from "../../components";
-import { colors } from "../../utils";
+import { Header, PostOptionsBottomSheet, BounceView, ConfirmationModal, LikesBottomSheet } from "../../components";
+import { colors, postDeletedNotification } from "../../utils";
 import {
   PostViewPlaceHolder,
   CommentInput,
   NativeImage,
-} from "../../components";
-import { Entypo } from "@expo/vector-icons";
+  IconButton,
+  Comments
+  } from "../../components";
+import { Entypo, AntDesign } from "@expo/vector-icons";
 import { QUERY_POST } from "../../graphql/query";
+import { MUTATION_DELETE_POST, MUTATION_LIKE_INTERACTION } from '../../graphql/mutation';
+
 import moment from "moment";
 import { responsiveWidth } from "react-native-responsive-dimensions";
 import { Context as AuthContext } from "../../context/AuthContext";
+import EditPostBottomSheet from "./components/EditPostBottomSheet";
+import { deleteFromStorage } from "../../config/firebase";
 
 const PostViewScreen = ({ navigation }) => {
   const postId = navigation.getParam("postId");
@@ -54,6 +60,8 @@ const PostViewScreen = ({ navigation }) => {
     fetchPolicy: "network-only",
   });
 
+  const [deletePost] = useMutation(MUTATION_DELETE_POST);
+
   useEffect(() => {
     if (postQueryCalled && !postQueryLoading) {
       setPostData(postQueryData);
@@ -70,14 +78,12 @@ const PostViewScreen = ({ navigation }) => {
     navigation.navigate("ProfileView", { authorId });
   };
 
-
   const openOptions = () => {
     // @ts-ignore
     postOptionsBottomSheetRef.current.open();
   };
 
   const closeOptions = () => {
-    // @ts-ignore
     postOptionsBottomSheetRef.current.close();
   };
 
@@ -85,12 +91,12 @@ const PostViewScreen = ({ navigation }) => {
 
   const openLikes = () => {};
 
-  const readableLikes = () => {};
+  // const readableLikes = () => {};
+  const likeInteractionHandler = (isLiked: boolean) => {};
 
   const confirmationToggle = () => {
     setIsConfirmModalVisible(!isConfirmModalVisible);
   };
-
 
   const onPostEdit = () => {
     closeOptions();
@@ -101,6 +107,14 @@ const PostViewScreen = ({ navigation }) => {
   const onPostDelete = () => {
     closeOptions();
     confirmationToggle();
+  };
+
+  const onDeleteConfirm = (uri: string) => {
+    confirmationToggle();
+    navigation.goBack();
+    postDeletedNotification();
+    deletePost({ variables: { postId } });
+    deleteFromStorage(uri);
   };
 
   let content = <PostViewPlaceHolder></PostViewPlaceHolder>;
@@ -118,9 +132,13 @@ const PostViewScreen = ({ navigation }) => {
       },
     } = postData;
 
+    const parseLikes = (likeCount) => {
+      return likeCount === 1 ? `${likeCount} like` : `${likeCount} likes`;
+    };
+
     const readableTime = moment(createdAt).format("LLLL");
     const isLiked = likes.includes(state.userId);
-    // const readableLikes = parseLikes(likes.length);
+    const readableLikes = parseLikes(likes.length);
 
     content = (
       <View style={{ borderWidth: 1 }}>
@@ -134,16 +152,16 @@ const PostViewScreen = ({ navigation }) => {
             <Text style={styles.handleText}>{handle}</Text>
             <Text style={styles.timeText}>{readableTime}</Text>
           </View>
-          {/* <IconButton
+          <IconButton
             onPress={openOptions}
             Icon={() => (
               <Entypo
                 name="dots-three-vertical"
-                size={IconSizes.x4}
-                color={theme.text01}
+                size={16}
+                color={colors.text01}
               />
             )}
-          /> */}
+          />
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => handleDoubleTap(isLiked)}
@@ -153,19 +171,19 @@ const PostViewScreen = ({ navigation }) => {
           {/* <LikeBounceAnimation ref={likeBounceAnimationRef} /> */}
         </TouchableOpacity>
         <View style={styles.likes}>
-          {/* <BounceView
+          <BounceView
             scale={1.5}
             onPress={() => likeInteractionHandler(isLiked)}
           >
             <AntDesign
               name="heart"
-              color={isLiked ? ThemeStatic.like : ThemeStatic.unlike}
-              size={IconSizes.x5}
+              color={isLiked ? colors.like : colors.unlike}
+              size={20}
             />
-          </BounceView> */}
-          {/* <Text onPress={openLikes} style={styles.likesText}>
+          </BounceView>
+          <Text onPress={openLikes} style={styles.likesText}>
             {readableLikes}
-          </Text> */}
+          </Text>
         </View>
         <Text style={styles.captionText}>
           <Text
@@ -173,10 +191,10 @@ const PostViewScreen = ({ navigation }) => {
             style={styles.handleText}
           >
             {handle}
-          </Text>
-          {caption}
+          </Text>{" "}
+          {caption}{" "}
         </Text>
-        {/* <Comments postId={postId} comments={comments} /> */}
+        <Comments navigation={navigation} postId={postId} comments={comments}></Comments>
       </View>
     );
   }
@@ -200,7 +218,7 @@ const PostViewScreen = ({ navigation }) => {
           onPostEdit={onPostEdit}
           onPostDelete={onPostDelete}
         />
-        {/* <EditPostBottomSheet
+        <EditPostBottomSheet
           ref={editPostBottomSheetRef}
           postId={postId}
           caption={caption}
@@ -209,7 +227,7 @@ const PostViewScreen = ({ navigation }) => {
           label="Delete"
           title="Delete post?"
           description={`Do you want to delete the current post? Post won't be recoverable later`}
-          color={ThemeStatic.delete}
+          color={colors.delete}
           isVisible={isConfirmModalVisible}
           toggle={confirmationToggle}
           onConfirm={() => onDeleteConfirm(uri)}
@@ -218,7 +236,7 @@ const PostViewScreen = ({ navigation }) => {
           ref={likesBottomSheetRef}
           likes={likes}
           onUserPress={navigateToProfile}
-        /> */}
+        />
       </>
     );
   }
@@ -291,6 +309,21 @@ const styles = StyleSheet.create({
     marginTop: 25,
     borderRadius: 10,
     backgroundColor: colors.placeholder,
+  },
+  likes: {
+    flexDirection: "row",
+    marginTop: 20,
+  },
+  likesText: {
+    fontSize: 16,
+    marginLeft: 10,
+    color: colors.text01,
+  },
+  captionText: {
+    fontSize: 16,
+    color: colors.text01,
+    marginTop: 10,
+    marginBottom: 20,
   },
 });
 

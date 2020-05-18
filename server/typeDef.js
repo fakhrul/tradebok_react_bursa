@@ -12,6 +12,9 @@ const typeDefs = gql`
     userExist(authId: String): User
     post(id: String): Post
     posts: [Post!]!
+    comment(id: String): Comment
+    comments(postId: String): [Comment]
+
   }
   type Mutation {
     createPlayer(
@@ -46,6 +49,8 @@ const typeDefs = gql`
     deleteUser(id: String): User
     followProfile(userId: String, profileToFollowUserId: String): User
     createPost(caption: String, uri: String, authorId: String): Post
+    addComment(userId: String!, postId: String!, body: String!): Comment
+    deleteComment(id: String!) : Comment
   }
   type Player {
     id: String

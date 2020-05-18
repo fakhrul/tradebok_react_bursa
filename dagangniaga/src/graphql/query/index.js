@@ -58,3 +58,15 @@ export const QUERY_USER_EXISTS = gql`
     }
   }
 `;
+
+
+export const QUERY_LIKE_USERS = gql`
+  query LikeUsers($likes: [String!]) {
+    likeUsers(likes: $likes) {
+      id
+      avatar
+      handle
+      name
+    }
+  }
+`;

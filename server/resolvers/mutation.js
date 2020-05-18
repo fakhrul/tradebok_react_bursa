@@ -3,6 +3,7 @@ import { promisify } from "../helper";
 
 const User = require("../model/user");
 const Post = require("../model/post");
+const Comment = require("../model/comment");
 
 const addProfileToFollowingList = (userId, profileToFollowUserId) =>
   new Promise((resolve, reject) => {
@@ -83,7 +84,6 @@ const generateUniqueAccountName = (proposedName) => {
     return proposedName;
   });
   return proposedName;
- 
 };
 
 const resolvers = {
@@ -176,6 +176,32 @@ const resolvers = {
       addPost(id, args.caption, args.uri, args.authorId),
       updateUserPostList(args.authorId, id),
     ]).then((result) => result[0]);
+  },
+  addComment: (_, args) => {
+    return new Promise((resolve, reject) => {
+      const id = mongoose.Types.ObjectId();
+      Comment.create(
+        {
+          _id: id,
+          author: args.userId,
+          post: args.postId,
+          body: args.body,
+        },
+        (err, result) => {
+          if (err) reject(err);
+          else resolve(result);
+        }
+      );
+    });
+  },
+  deleteComment: (_, args) => {
+    return Comment.findByIdAndDelete({ _id: args.id }, (error, obj) => {
+      if (error) {
+        throw new Error(error);
+      }
+      return;
+    });
+
   },
 };
 

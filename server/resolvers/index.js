@@ -4,7 +4,7 @@ import Mutation from "./mutation";
 import DateTime from "./dateTime";
 import Post from "./post";
 import User from "./user";
-
-const resolvers = {User, Post, Query, Mutation};
+import Comment from "./comment";
+const resolvers = {User, Post, Comment, Query, Mutation};
 
 module.exports = resolvers;

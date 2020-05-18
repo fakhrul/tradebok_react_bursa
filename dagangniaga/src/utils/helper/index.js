@@ -2,6 +2,12 @@ import { colors } from "../colors";
 import * as ImagePicker from "expo-image-picker";
 import { showMessage } from "react-native-flash-message";
 
+
+export const createAsyncDelay = (duration: number) => {
+
+  return new Promise((resolve, _) => setTimeout(() => { resolve(); }, duration));
+};
+
 export const sortPostsAscendingTime = array =>
   // @ts-ignore
   [...array].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));

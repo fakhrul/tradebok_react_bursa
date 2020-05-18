@@ -12,9 +12,7 @@ import { colors } from "../../../utils/colors";
 import { MaterialIcons } from "@expo/vector-icons";
 
 const PostList = ({navigation, name, avatar, item }) => {
-  console.log(name);
   const { id, caption, uri, createdAt } = item;
-  console.log("createdAt", createdAt);
   const displayTime = moment(createdAt).format("LLLL");
   const onPostPress = () => {
     console.log("onPostPress", id);

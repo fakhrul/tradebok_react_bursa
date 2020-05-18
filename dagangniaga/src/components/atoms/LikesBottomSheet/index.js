@@ -1,28 +1,32 @@
-import { useQuery } from '@apollo/react-hooks';
-import { StyleSheet, View } from 'react-native';
-import { Modalize } from 'react-native-modalize';
-import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
-import { FlatGrid } from 'react-native-super-grid';
-import EmptyLikesBanner from '../../../resources/empty-likes.svg';
-import { QUERY_LIKE_USERS } from '../../../graphql/query';
-import { BottomSheetHeader, ConnectionsPlaceholder, SvgBanner, UserCard } from '../../../components';
-import {colors} from "../../../utils";
+import React from "react";
+import { useQuery } from "@apollo/react-hooks";
+import { StyleSheet, View } from "react-native";
+import { Modalize } from "react-native-modalize";
+import {
+  responsiveHeight,
+  responsiveWidth,
+} from "react-native-responsive-dimensions";
+import { FlatGrid } from "react-native-super-grid";
+import EmptyLikesBanner from "../../../resources/empty-likes.svg";
+import { QUERY_LIKE_USERS } from "../../../graphql/query";
+import {
+  BottomSheetHeader,
+  ConnectionsPlaceholder,
+  SvgBanner,
+  UserCard,
+} from "../../../components";
+import { colors } from "../../../utils";
 
-const LikesBottomSheet=(({ likes, onUserPress }, ref) => {
-
-    const { data, loading, error } = useQuery(QUERY_LIKE_USERS, {
+const LikesBottomSheet = React.forwardRef(({ likes, onUserPress }, ref) => {
+  const { data, loading, error } = useQuery(QUERY_LIKE_USERS, {
     variables: { likes },
-    fetchPolicy: 'network-only'
+    fetchPolicy: "network-only",
   });
 
   let content = <ConnectionsPlaceholder />;
 
   const ListEmptyComponent = () => (
-    <SvgBanner
-      Svg={EmptyLikesBanner}
-      placeholder='No likes yet'
-      spacing={16}
-    />
+    <SvgBanner Svg={EmptyLikesBanner} placeholder="No likes yet" spacing={16} />
   );
 
   const renderItem = ({ item }) => {
@@ -62,38 +66,37 @@ const LikesBottomSheet=(({ likes, onUserPress }, ref) => {
       //@ts-ignore
       ref={ref}
       scrollViewProps={{ showsVerticalScrollIndicator: false }}
-      modalStyle={styles.container}>
+      modalStyle={styles.container}
+    >
       <BottomSheetHeader
-        heading='Likes'
-        subHeading='Users who liked this post'
+        heading="Likes"
+        subHeading="Users who liked this post"
       />
-      <View style={styles.content}>
-        {content}
-      </View>
+      <View style={styles.content}>{content}</View>
     </Modalize>
   );
 });
 
-const styles =StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     marginTop: 40,
     padding: 20,
-    backgroundColor: colors.base
+    backgroundColor: colors.base,
   },
   content: {
     flex: 1,
-    paddingBottom: responsiveHeight(5)
+    paddingBottom: responsiveHeight(5),
   },
   listContainer: {
-    flex: 1
+    flex: 1,
   },
   listItemContainer: {
-    width: '106%'
+    width: "106%",
   },
   listContentContainer: {
-    alignItems: 'center',
-    justifyContent: 'flex-start'
-  }
+    alignItems: "center",
+    justifyContent: "flex-start",
+  },
 });
 
 export default LikesBottomSheet;
