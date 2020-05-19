@@ -123,7 +123,7 @@ const PostViewScreen = ({ navigation }) => {
     const {
       // @ts-ignore
       post: {
-        author: { id, avatar, handle },
+        author: { id: authorId, avatar, handle },
         comments,
         uri,
         likes,

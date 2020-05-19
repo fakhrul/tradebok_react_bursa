@@ -26,14 +26,6 @@ const Comments = ({ navigation, postId, comments }) => {
       createdAt,
     } = item;
 
-    console.log(commentId);
-    console.log(authorId);
-    console.log(avatar);
-    console.log(handle);
-    console.log(body);
-    console.log(createdAt);
-    console.log(item);
-
     return (
       // <View></View>
       <CommentCard

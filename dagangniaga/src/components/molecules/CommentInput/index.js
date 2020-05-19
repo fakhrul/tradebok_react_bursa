@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { View, StyleSheet, Platform, TextInput } from "react-native";
+import { Keyboard, View, StyleSheet, Platform, TextInput } from "react-native";
 import {
   colors,
   inputLimitErrorNotification,
@@ -16,7 +16,6 @@ const CommentInput = ({ postId, scrollViewRef }) => {
   const [comment, setComment] = useState("");
   const [addComment, { loading }] = useMutation(MUTATION_ADD_COMMENT);
 
-  // console.log("state", state);
   const postComment = async () => {
     if (comment.length < 1) {
       inputLimitErrorNotification("Comment", "more", 1);
