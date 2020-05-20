@@ -14,18 +14,28 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
-import { Header, PostOptionsBottomSheet, BounceView, ConfirmationModal, LikesBottomSheet } from "../../components";
+import {
+  Header,
+  PostOptionsBottomSheet,
+  BounceView,
+  ConfirmationModal,
+  LikesBottomSheet,
+} from "../../components";
 import { colors, postDeletedNotification } from "../../utils";
 import {
   PostViewPlaceHolder,
   CommentInput,
   NativeImage,
   IconButton,
-  Comments
-  } from "../../components";
+  Comments,
+} from "../../components";
 import { Entypo, AntDesign } from "@expo/vector-icons";
 import { QUERY_POST } from "../../graphql/query";
-import { MUTATION_DELETE_POST, MUTATION_LIKE_INTERACTION } from '../../graphql/mutation';
+import {
+  MUTATION_DELETE_POST,
+  MUTATION_LIKE_INTERACTION,
+} from "../../graphql/mutation";
+import { SUBSCRIPTION_POST } from "../../graphql/subscription";
 
 import moment from "moment";
 import { responsiveWidth } from "react-native-responsive-dimensions";
@@ -60,16 +70,26 @@ const PostViewScreen = ({ navigation }) => {
     fetchPolicy: "network-only",
   });
 
+  const {
+    data: postSubscriptionData,
+    loading: postSubscriptionLoading,
+  } = useSubscription(SUBSCRIPTION_POST, { variables: { id: postId } });
+
   const [deletePost] = useMutation(MUTATION_DELETE_POST);
 
   useEffect(() => {
-    if (postQueryCalled && !postQueryLoading) {
-      setPostData(postQueryData);
-      console.log(postQueryData);
-    } else if (!postQueryCalled) {
-      queryPost();
+    if (!postSubscriptionLoading) {
+      console.log("subscription load");
+      setPostData(postSubscriptionData);
+    } else if (postSubscriptionLoading) {
+      if (postQueryCalled && !postQueryLoading) {
+        setPostData(postQueryData);
+      } else if (!postQueryCalled) {
+        queryPost();
+      }
     }
-  }, [postQueryData, postQueryCalled, postQueryLoading]);
+  }, [postQueryData, postQueryCalled, postQueryLoading, postSubscriptionData, postSubscriptionLoading]);
+// }, [postQueryData, postQueryCalled, postQueryLoading]);
 
   const onMorePress = () => {
     openOptions();
@@ -194,7 +214,11 @@ const PostViewScreen = ({ navigation }) => {
           </Text>{" "}
           {caption}{" "}
         </Text>
-        <Comments navigation={navigation} postId={postId} comments={comments}></Comments>
+        <Comments
+          navigation={navigation}
+          postId={postId}
+          comments={comments}
+        ></Comments>
       </View>
     );
   }
@@ -232,11 +256,11 @@ const PostViewScreen = ({ navigation }) => {
           toggle={confirmationToggle}
           onConfirm={() => onDeleteConfirm(uri)}
         />
-        <LikesBottomSheet
+        {/* <LikesBottomSheet
           ref={likesBottomSheetRef}
           likes={likes}
           onUserPress={navigateToProfile}
-        />
+        /> */}
       </>
     );
   }

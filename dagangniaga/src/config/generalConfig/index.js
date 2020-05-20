@@ -30,7 +30,7 @@ const generalConfig = {
   codepush,
   url: {
     https: 'http://192.168.0.140:4000/',
-    wss: 'wss://192.168.0.140:4000/'
+    wss: 'ws://192.168.0.140:4000/graphql'
   }
 };
 

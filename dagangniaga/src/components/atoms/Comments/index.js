@@ -45,8 +45,8 @@ const Comments = ({ navigation, postId, comments }) => {
     <Text style={[styles.commentsHeader, { marginBottom }]}>Comments</Text>
   );
 
-  console.log("comments", comments);
-  console.log("length", comments.length);
+  // console.log("comments", comments);
+  // console.log("length", comments.length);
 
   const marginBottom = comments.length === 0 ? 0 : 20;
 

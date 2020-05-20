@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { promisify } from "../helper";
+import pubsub from "../pubsub";
 
 const User = require("../model/user");
 const Post = require("../model/post");
@@ -178,7 +179,7 @@ const resolvers = {
     ]).then((result) => result[0]);
   },
   addComment: (_, args) => {
-    return new Promise((resolve, reject) => {
+    const result = new Promise((resolve, reject) => {
       const id = mongoose.Types.ObjectId();
       Comment.create(
         {
@@ -193,6 +194,14 @@ const resolvers = {
         }
       );
     });
+
+    Post.findById(args.postId, function (err, post) {
+      if (!err) {
+        // pubsub.publish("postUpdated", { postUpdated: "aj" });
+        pubsub.publish("post", {post: post});
+      }
+    });
+    return result;
   },
   deleteComment: (_, args) => {
     return Comment.findByIdAndDelete({ _id: args.id }, (error, obj) => {
@@ -201,7 +210,6 @@ const resolvers = {
       }
       return;
     });
-
   },
 };
 

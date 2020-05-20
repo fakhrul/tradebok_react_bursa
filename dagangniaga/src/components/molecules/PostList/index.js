@@ -15,7 +15,6 @@ const PostList = ({navigation, name, avatar, item }) => {
   const { id, caption, uri, createdAt } = item;
   const displayTime = moment(createdAt).format("LLLL");
   const onPostPress = () => {
-    console.log("onPostPress", id);
     navigation.navigate("PostView", {postId: id})
   };
   return (

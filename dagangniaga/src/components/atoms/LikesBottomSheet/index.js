@@ -18,6 +18,7 @@ import {
 import { colors } from "../../../utils";
 
 const LikesBottomSheet = React.forwardRef(({ likes, onUserPress }, ref) => {
+ 
   const { data, loading, error } = useQuery(QUERY_LIKE_USERS, {
     variables: { likes },
     fetchPolicy: "network-only",

@@ -16,6 +16,9 @@ const typeDefs = gql`
     comments(postId: String): [Comment]
 
   }
+  type Subscription {
+    post(id: String!): Post
+  }
   type Mutation {
     createPlayer(
       position: String
@@ -138,6 +141,7 @@ const typeDefs = gql`
   schema {
     query: Query
     mutation: Mutation
+    subscription: Subscription
   }
 `;
 
