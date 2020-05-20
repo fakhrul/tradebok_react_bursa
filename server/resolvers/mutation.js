@@ -204,12 +204,21 @@ const resolvers = {
     return result;
   },
   deleteComment: (_, args) => {
-    return Comment.findByIdAndDelete({ _id: args.id }, (error, obj) => {
+    const result = Comment.findByIdAndDelete({ _id: args.commentId }, (error, obj) => {
       if (error) {
         throw new Error(error);
       }
-      return;
     });
+
+    Post.findById(args.postId, function (err, post) {
+      if (!err) {
+        // pubsub.publish("postUpdated", { postUpdated: "aj" });
+        pubsub.publish("post", {post: post});
+      }
+    });
+
+
+    return result;
   },
 };
 

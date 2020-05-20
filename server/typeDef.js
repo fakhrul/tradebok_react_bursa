@@ -53,7 +53,7 @@ const typeDefs = gql`
     followProfile(userId: String, profileToFollowUserId: String): User
     createPost(caption: String, uri: String, authorId: String): Post
     addComment(userId: String!, postId: String!, body: String!): Comment
-    deleteComment(id: String!) : Comment
+    deleteComment(postId: String!, commentId: String!) : Comment
   }
   type Player {
     id: String

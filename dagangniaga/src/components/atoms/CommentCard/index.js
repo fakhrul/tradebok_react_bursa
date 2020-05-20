@@ -20,7 +20,8 @@ const CommentCard = ({
 }) => {
 
   const {state} = useContext(AuthContext);
-  const parsedTime = moment(time).format("LLLL");
+  // const parsedTime = moment(time).format("LLLL");
+  const parsedTime = moment(time).fromNow();
 
   const [
     deleteComment,
@@ -37,7 +38,6 @@ const CommentCard = ({
   const onDelete = () => {
     if (!deleteCommentLoading && !deleteCommentCalled) {
       longPressDeleteNotification(() => {
-        // @ts-ignore
         swipeableRef.current.close();
         deleteComment({ variables: { postId, commentId } });
       });
@@ -71,11 +71,11 @@ const CommentCard = ({
         >
           <NativeImage uri={avatar} style={styles.avatarImage} />
           <View style={styles.info}>
-            <Text style={styles.commentText}>
+            <Text style={styles.timeText}>
               <Text style={styles.handleText}>{handle} </Text>
-              {body}
+              {parsedTime}
             </Text>
-            <Text style={styles.timeText}>{parsedTime}</Text>
+            <Text style={styles.commentText}>{body}</Text>
           </View>
         </TouchableOpacity>
       </Swipeable>

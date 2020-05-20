@@ -6,7 +6,11 @@ export const colors = {
   placeholder: "#F4F4F4",
   white: "#FFFFFF",
   background: "#EFECF4",
-  placeholder : "#F4F4F4",
+  like: '#E24359',
+  unlike: '#DDD',
+  translucent: 'rgba(0, 0, 0, 0.1)',
+  delete: '#F44336',
+  badge: '#F24',  
   text: {
     default: "#838899",
     title: "#454D65",

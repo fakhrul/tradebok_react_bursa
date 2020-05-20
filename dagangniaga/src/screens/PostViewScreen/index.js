@@ -88,8 +88,14 @@ const PostViewScreen = ({ navigation }) => {
         queryPost();
       }
     }
-  }, [postQueryData, postQueryCalled, postQueryLoading, postSubscriptionData, postSubscriptionLoading]);
-// }, [postQueryData, postQueryCalled, postQueryLoading]);
+  }, [
+    postQueryData,
+    postQueryCalled,
+    postQueryLoading,
+    postSubscriptionData,
+    postSubscriptionLoading,
+  ]);
+  // }, [postQueryData, postQueryCalled, postQueryLoading]);
 
   const onMorePress = () => {
     openOptions();
@@ -161,7 +167,11 @@ const PostViewScreen = ({ navigation }) => {
     const readableLikes = parseLikes(likes.length);
 
     content = (
-      <View style={{ borderWidth: 1 }}>
+      <View
+        style={{
+          borderWidth: 1,
+        }}
+      >
         <TouchableOpacity
           activeOpacity={0.9}
           onPress={() => navigateToProfile(authorId)}
@@ -304,7 +314,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     flex: 1,
     paddingTop: 10,
-    paddingHorizontal: 20,
+    paddingHorizontal: 0,
   },
   postHeader: {
     flexDirection: "row",
@@ -328,10 +338,11 @@ const styles = StyleSheet.create({
   },
   postImage: {
     height: responsiveWidth(90),
-    width: responsiveWidth(90),
+    // width: responsiveWidth(90),
+    width: "100%",
     alignSelf: "center",
-    marginTop: 25,
-    borderRadius: 10,
+    marginTop: 5,
+    borderRadius: 0,
     backgroundColor: colors.placeholder,
   },
   likes: {
