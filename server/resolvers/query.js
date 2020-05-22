@@ -4,6 +4,9 @@ const Player = require("../model/player");
 const User = require("../model/user");
 const Post = require("../model/post");
 const Comment = require("../model/comment");
+const LikePost = require("../model/likePost");
+const Stock = require("../model/stock");
+const StockComment = require("../model/stockComment");
 
 const resolvers = {
   players: () =>
@@ -39,6 +42,14 @@ const resolvers = {
     promisify(Comment.findById(args.id)).then((result) => result),
   comments: (_, args) =>
     promisify(Comment.find({ post: args.postId })).then((result) => result),
+  likes: (_, args) =>
+    promisify(LikePost.find({ post: args.postId })).then((result) => result),
+  stock: (_, args) =>
+    promisify(Stock.findById(args.id)).then((result) => result),
+  stockComments: (_, args) =>
+    promisify(StockComment.find({ stock: args.stockId })).then(
+      (result) => result
+    ),
 };
 
 module.exports = resolvers;

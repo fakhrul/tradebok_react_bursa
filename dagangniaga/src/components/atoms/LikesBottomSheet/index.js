@@ -1,6 +1,6 @@
 import React from "react";
 import { useQuery } from "@apollo/react-hooks";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { Modalize } from "react-native-modalize";
 import {
   responsiveHeight,
@@ -18,11 +18,13 @@ import {
 import { colors } from "../../../utils";
 
 const LikesBottomSheet = React.forwardRef(({ likes, onUserPress }, ref) => {
- 
-  const { data, loading, error } = useQuery(QUERY_LIKE_USERS, {
-    variables: { likes },
-    fetchPolicy: "network-only",
-  });
+  // const { id } = likes;
+  // console.log(likes);
+
+  // const { data, loading, error } = useQuery(QUERY_LIKE_USERS, {
+  //   variables: { likes },
+  //   fetchPolicy: "network-only",
+  // });
 
   let content = <ConnectionsPlaceholder />;
 
@@ -31,7 +33,12 @@ const LikesBottomSheet = React.forwardRef(({ likes, onUserPress }, ref) => {
   );
 
   const renderItem = ({ item }) => {
-    const { id, avatar, handle, name } = item;
+    const {
+      author: { id, avatar, handle, name },
+    } = item;
+    // console.log("id", id);
+    // console.log("handle", handle);
+    // console.log("name", name);
     return (
       <UserCard
         userId={id}
@@ -43,19 +50,38 @@ const LikesBottomSheet = React.forwardRef(({ likes, onUserPress }, ref) => {
     );
   };
 
-  if (!loading && !error) {
-    const { likeUsers } = data;
+  // if (!loading && !error) {
+    // const { likeUsers } = data;
+
+    // content = (
+    //   <FlatGrid
+    //     bounces={false}
+    //     itemDimension={responsiveWidth(85)}
+    //     showsVerticalScrollIndicator={false}
+    //     items={likes}
+    //     itemContainerStyle={styles.listItemContainer}
+    //     contentContainerStyle={styles.listContentContainer}
+    //     ListEmptyComponent={ListEmptyComponent}
+    //     style={styles.listContainer}
+    //     spacing={20}
+    //     renderItem={renderItem}
+    //   />
+    // );
+  // }
+
+  if (likes.length > 0) {
+    // const { likeUsers } = likes;
 
     content = (
       <FlatGrid
         bounces={false}
         itemDimension={responsiveWidth(85)}
         showsVerticalScrollIndicator={false}
-        items={likeUsers}
-        itemContainerStyle={styles().listItemContainer}
-        contentContainerStyle={styles().listContentContainer}
+        items={likes}
+        itemContainerStyle={styles.listItemContainer}
+        contentContainerStyle={styles.listContentContainer}
         ListEmptyComponent={ListEmptyComponent}
-        style={styles().listContainer}
+        style={styles.listContainer}
         spacing={20}
         renderItem={renderItem}
       />
@@ -64,15 +90,11 @@ const LikesBottomSheet = React.forwardRef(({ likes, onUserPress }, ref) => {
 
   return (
     <Modalize
-      //@ts-ignore
       ref={ref}
       scrollViewProps={{ showsVerticalScrollIndicator: false }}
       modalStyle={styles.container}
     >
-      <BottomSheetHeader
-        heading="Likes"
-        subHeading="Users who liked this post"
-      />
+      <BottomSheetHeader header="Likes" subHeader="Users who liked this post" />
       <View style={styles.content}>{content}</View>
     </Modalize>
   );

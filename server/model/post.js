@@ -23,7 +23,7 @@ const schema = new Schema(
     }],
     likes: [{
       type: Schema.Types.ObjectId,
-      ref: 'User'
+      ref: 'LikePost'
     }]
   },
   { timestamps: true }

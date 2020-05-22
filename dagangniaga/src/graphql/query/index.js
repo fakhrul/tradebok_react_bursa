@@ -21,7 +21,12 @@ export const QUERY_POST = gql`
       }
       uri
       likes {
-        id
+        author {
+          id
+          handle
+          avatar
+          name
+        }
       }
       caption
       createdAt

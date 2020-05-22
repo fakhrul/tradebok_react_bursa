@@ -8,6 +8,7 @@ import {
   View,
   ViewStyle,
 } from "react-native";
+import {NativeImage} from "../../../components";
 import { Context as AuthContext } from "../../../context/AuthContext";
 import { colors } from "../../../utils";
 

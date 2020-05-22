@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
 export const SUBSCRIPTION_CHAT = gql`
   subscription Chat($chatId: String!) {
@@ -37,8 +37,12 @@ export const SUBSCRIPTION_POST = gql`
       }
       uri
       likes {
+        author {
           id
           handle
+          avatar
+          name
+        }
       }
       caption
       createdAt

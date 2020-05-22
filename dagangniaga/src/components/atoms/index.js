@@ -16,7 +16,7 @@ import Button from "./Button";
 import NativeImage from "./NativeImage";
 import PostOptionsBottomSheet from "./PostOptionsBottomSheet";
 import EditPostBottomSheet from "./EditPostBottomSheet";
-import UseCard from "./UserCard";
+import UserCard from "./UserCard";
 import LikesBottomSheet from "./LikesBottomSheet";
 import BounceView from "./BounceView";
 import FormInput from "./FormInput";
@@ -46,7 +46,7 @@ export {
   NativeImage,
   PostOptionsBottomSheet,
   EditPostBottomSheet,
-  UseCard,
+  UserCard,
   LikesBottomSheet,
   BounceView,
   FormInput,

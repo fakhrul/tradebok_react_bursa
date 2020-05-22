@@ -3,5 +3,12 @@ import ProfileCard from "./ProfileCard";
 import PostList from "./PostList";
 import CommentInput from "./CommentInput";
 import PostViewPlaceHolder from "./PostViewPlaceHolder";
-
-export { ProfileScreenPlaceholder, ProfileCard, PostList , CommentInput, PostViewPlaceHolder};
+import ConnectionsPlaceholder from "./ConnectionsPlaceholder";
+export {
+  ProfileScreenPlaceholder,
+  ProfileCard,
+  PostList,
+  CommentInput,
+  PostViewPlaceHolder,
+  ConnectionsPlaceholder,
+};

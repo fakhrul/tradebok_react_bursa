@@ -36,11 +36,11 @@ const schema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Post'
   }],
-  postLikes: [{
+  likePost: [{
     type: Schema.Types.ObjectId,
-    ref: 'Post'
+    ref: 'LikePost'
   }],
-  commentLikes: [{
+  likeComment: [{
     type: Schema.Types.ObjectId,
     ref: 'Comment'
   }]

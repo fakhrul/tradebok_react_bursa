@@ -61,7 +61,7 @@ export const MUTATION_DELETE_POST = gql`
 
 
 export const MUTATION_LIKE_INTERACTION = gql`
-  mutation LikeInteraction($postId: String!, $userId: String!, $action: LikeAction!) {
+  mutation LikeInteraction($postId: String!, $userId: String!, $action: String!) {
     likeInteraction(postId: $postId, userId: $userId, action: $action) {
       id
     }

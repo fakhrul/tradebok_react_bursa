@@ -5,6 +5,9 @@ import pubsub from "../pubsub";
 const User = require("../model/user");
 const Post = require("../model/post");
 const Comment = require("../model/comment");
+const LikePost = require("../model/likePost");
+const Stock = require("../model/stock");
+const StockComment = require("../model/stockComment");
 
 const addProfileToFollowingList = (userId, profileToFollowUserId) =>
   new Promise((resolve, reject) => {
@@ -198,28 +201,120 @@ const resolvers = {
     Post.findById(args.postId, function (err, post) {
       if (!err) {
         // pubsub.publish("postUpdated", { postUpdated: "aj" });
-        pubsub.publish("post", {post: post});
+        pubsub.publish("post", { post: post });
       }
     });
     return result;
   },
   deleteComment: (_, args) => {
-    const result = Comment.findByIdAndDelete({ _id: args.commentId }, (error, obj) => {
-      if (error) {
-        throw new Error(error);
+    const result = Comment.findByIdAndDelete(
+      { _id: args.commentId },
+      (error, obj) => {
+        if (error) {
+          throw new Error(error);
+        }
       }
-    });
+    );
 
     Post.findById(args.postId, function (err, post) {
       if (!err) {
         // pubsub.publish("postUpdated", { postUpdated: "aj" });
-        pubsub.publish("post", {post: post});
+        pubsub.publish("post", { post: post });
       }
     });
 
-
     return result;
   },
+  deleteLike: (_, args) => {
+    return new Promise((resolve, reject) => {
+      LikePost.findByIdAndDelete({ _id: args.id }, (error, obj) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(obj);
+        }
+      });
+    });
+  },
+  addLike: (_, args) => {
+    return new Promise((resolve, reject) => {
+      const id = mongoose.Types.ObjectId();
+      LikePost.create(
+        {
+          _id: id,
+          author: args.userId,
+          post: args.postId,
+        },
+        (err, result) => {
+          if (err) reject(err);
+          else resolve(result);
+        }
+      );
+    });
+  },
+  addStock: (_, args) => {
+    return new Promise((resolve, reject) => {
+      const id = mongoose.Types.ObjectId();
+      Stock.create(
+        {
+          _id: id,
+          name: args.name,
+        },
+        (err, result) => {
+          if (err) reject(err);
+          else resolve(result);
+        }
+      );
+    });
+  },
+  addStockComment: (_, args) => {
+    return new Promise((resolve, reject) => {
+      const id = mongoose.Types.ObjectId();
+      StockComment.create(
+        {
+          _id: id,
+          stock: args.stockId,
+          body: args.body,
+        },
+        (err, result) => {
+          if (err) reject(err);
+          else resolve(result);
+        }
+      );
+    });
+  },
+  // likeInteraction(userId: String!, postId: String!, action: LikeAction!): Post!
+  // likeInteraction: (_, args) => {
+  //   console.log(args.action);
+  //   if (args.action === "LIKE") {
+
+  //     Post.findOneAndUpdate({_id: args.postId}, {$push:{likes:args.userId}}, {new: true}, (err, post) => {
+  //       if (err) {
+  //         throw new Error(err);
+  //       }
+  //       console.log(post);
+  //       return post;
+  //     });
+
+  //     // const post = promisify(
+  //     //   Post.update({ _id: args.postId }, { $push: { likes: args.userId } })
+  //     // ).then((result) => result);
+  //     // console.log(post);
+  //     // return post;
+  //   } else {
+  //     return promisify(
+  //       Post.update({ _id: args.postId }, { $pull: { likes: args.userId } })
+  //     ).then((result) => result);
+  //   }
+  // new Promise((resolve, reject) => {
+  //   User.update(
+  //     { _id: userId },
+  //     { $push: { posts: postId } },
+  //     (err, result) => {
+  //       if (err) reject(err);
+  //       else resolve(result);
+  //     }
+  //   );
 };
 
 export default resolvers;

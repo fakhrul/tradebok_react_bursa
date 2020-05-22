@@ -14,7 +14,9 @@ const typeDefs = gql`
     posts: [Post!]!
     comment(id: String): Comment
     comments(postId: String): [Comment]
-
+    likes(postId: String): [LikePost]
+    stock(id: String!): Stock
+    stockComments(stockId: String!): StockComment
   }
   type Subscription {
     post(id: String!): Post
@@ -54,6 +56,20 @@ const typeDefs = gql`
     createPost(caption: String, uri: String, authorId: String): Post
     addComment(userId: String!, postId: String!, body: String!): Comment
     deleteComment(postId: String!, commentId: String!) : Comment
+    addLike(userId: String!, postId: String!): LikePost!
+    deleteLike(id: String!): LikePost
+    addStock(name: String!): Stock!
+    addStockComment(stockId: String!, body: String!) : StockComment!
+  }
+  type Stock {
+    id: ID!
+    name: String!
+    stockComments: [StockComment]
+  }
+  type StockComment {
+    id: ID!
+    stock: Stock
+    body: String!
   }
   type Player {
     id: String
@@ -81,8 +97,8 @@ const typeDefs = gql`
     posts: [Post]!
     chats: [Chat]!
     notifications: [Notification!]
-    postLikes: [Post]!
-    commentLikes: [Comment]!
+    likePost: [Post]!
+    likeComment: [Comment]!
   }
   type Post {
     id: ID!
@@ -92,7 +108,7 @@ const typeDefs = gql`
     author: User!
     comments: [Comment]
     createdAt: DateTime!
-    likes: [User]
+    likes: [LikePost]
   }
   type Comment {
     id: ID!
@@ -100,6 +116,11 @@ const typeDefs = gql`
     author: User!
     post: Post!
     createdAt: DateTime!
+  }
+  type LikePost {
+    id: ID!
+    author: User!
+    post: Post!
   }
   type Notification {
     id: String

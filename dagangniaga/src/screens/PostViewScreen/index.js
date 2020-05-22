@@ -97,6 +97,8 @@ const PostViewScreen = ({ navigation }) => {
   ]);
   // }, [postQueryData, postQueryCalled, postQueryLoading]);
 
+  const [likeInteraction, { loading: likeInteractionLoading }] = useMutation(MUTATION_LIKE_INTERACTION);
+
   const onMorePress = () => {
     openOptions();
   };
@@ -115,10 +117,28 @@ const PostViewScreen = ({ navigation }) => {
 
   const handleDoubleTap = (isLiked) => {};
 
-  const openLikes = () => {};
+  const openLikes = () => {
+    likesBottomSheetRef.current.open();
+  };
 
   // const readableLikes = () => {};
-  const likeInteractionHandler = (isLiked: boolean) => {};
+  const likeInteractionHandler = (isLiked: boolean) => {
+    if (likeInteractionLoading) return;
+
+    const variables = {
+      postId,
+      userId: state.userId,
+      action: "LIKE"
+    };
+
+    if (isLiked) {
+      variables.action = "UNLIKE"
+    } else {
+      likeBounceAnimationRef.current.animate();
+    }
+
+    return likeInteraction({ variables });
+  };
 
   const confirmationToggle = () => {
     setIsConfirmModalVisible(!isConfirmModalVisible);
@@ -162,7 +182,8 @@ const PostViewScreen = ({ navigation }) => {
       return likeCount === 1 ? `${likeCount} like` : `${likeCount} likes`;
     };
 
-    const readableTime = moment(createdAt).format("LLLL");
+    // const readableTime = moment(createdAt).format("LLLL");
+    const readableTime = moment(createdAt).fromNow();
     const isLiked = likes.includes(state.userId);
     const readableLikes = parseLikes(likes.length);
 
@@ -182,7 +203,7 @@ const PostViewScreen = ({ navigation }) => {
             <Text style={styles.handleText}>{handle}</Text>
             <Text style={styles.timeText}>{readableTime}</Text>
           </View>
-          <IconButton
+          {/* <IconButton
             onPress={openOptions}
             Icon={() => (
               <Entypo
@@ -191,8 +212,18 @@ const PostViewScreen = ({ navigation }) => {
                 color={colors.text01}
               />
             )}
-          />
+          /> */}
         </TouchableOpacity>
+        <Text style={styles.captionText}>
+          {/* <Text
+            onPress={() => navigateToProfile(authorId)}
+            style={styles.handleText}
+          >
+            {handle}
+          </Text>{" "} */}
+          {caption}{" "}
+        </Text>
+
         <TouchableOpacity
           onPress={() => handleDoubleTap(isLiked)}
           activeOpacity={1}
@@ -215,15 +246,6 @@ const PostViewScreen = ({ navigation }) => {
             {readableLikes}
           </Text>
         </View>
-        <Text style={styles.captionText}>
-          <Text
-            onPress={() => navigateToProfile(authorId)}
-            style={styles.handleText}
-          >
-            {handle}
-          </Text>{" "}
-          {caption}{" "}
-        </Text>
         <Comments
           navigation={navigation}
           postId={postId}
@@ -242,6 +264,9 @@ const PostViewScreen = ({ navigation }) => {
         caption,
       },
     } = postData;
+
+    // console.log("postData", postData);
+    // console.log("likes", likes);
 
     bottomSheets = (
       <>
@@ -266,11 +291,11 @@ const PostViewScreen = ({ navigation }) => {
           toggle={confirmationToggle}
           onConfirm={() => onDeleteConfirm(uri)}
         />
-        {/* <LikesBottomSheet
+        <LikesBottomSheet
           ref={likesBottomSheetRef}
           likes={likes}
           onUserPress={navigateToProfile}
-        /> */}
+        />
       </>
     );
   }
@@ -358,7 +383,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.text01,
     marginTop: 10,
-    marginBottom: 20,
+    marginBottom: 0,
+    marginHorizontal: 5,
   },
 });
 
