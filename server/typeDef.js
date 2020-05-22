@@ -57,7 +57,7 @@ const typeDefs = gql`
     addComment(userId: String!, postId: String!, body: String!): Comment
     deleteComment(postId: String!, commentId: String!) : Comment
     addLike(userId: String!, postId: String!): LikePost!
-    deleteLike(id: String!): LikePost
+    deleteLike(userId: String!, postId: String!): LikePost
     addStock(name: String!): Stock!
     addStockComment(stockId: String!, body: String!) : StockComment!
   }

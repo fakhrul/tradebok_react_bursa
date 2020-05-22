@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useContext,
+  createRef,
+} from "react";
 import {
   useLazyQuery,
   useMutation,
@@ -28,12 +34,14 @@ import {
   NativeImage,
   IconButton,
   Comments,
+  LikeBounceAnimation,
 } from "../../components";
 import { Entypo, AntDesign } from "@expo/vector-icons";
 import { QUERY_POST } from "../../graphql/query";
 import {
   MUTATION_DELETE_POST,
-  MUTATION_LIKE_INTERACTION,
+  MUTATION_ADD_LIKE,
+  MUTATION_DELETE_LIKE,
 } from "../../graphql/mutation";
 import { SUBSCRIPTION_POST } from "../../graphql/subscription";
 
@@ -51,7 +59,7 @@ const PostViewScreen = ({ navigation }) => {
   const postOptionsBottomSheetRef = useRef();
   const editPostBottomSheetRef = useRef();
   const likesBottomSheetRef = useRef();
-  // const likeBounceAnimationRef = createRef();
+  const likeBounceAnimationRef = createRef();
 
   const [postData, setPostData] = useState(null);
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
@@ -79,7 +87,6 @@ const PostViewScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (!postSubscriptionLoading) {
-      console.log("subscription load");
       setPostData(postSubscriptionData);
     } else if (postSubscriptionLoading) {
       if (postQueryCalled && !postQueryLoading) {
@@ -97,7 +104,15 @@ const PostViewScreen = ({ navigation }) => {
   ]);
   // }, [postQueryData, postQueryCalled, postQueryLoading]);
 
-  const [likeInteraction, { loading: likeInteractionLoading }] = useMutation(MUTATION_LIKE_INTERACTION);
+  // const [likeInteraction, { loading: likeInteractionLoading }] = useMutation(
+  //   MUTATION_LIKE_INTERACTION
+  // );
+
+  const [addLike, { loading: addLikeLoading }] = useMutation(MUTATION_ADD_LIKE);
+
+  const [deleteLike, { loading: deleteLikeLoading }] = useMutation(
+    MUTATION_DELETE_LIKE
+  );
 
   const onMorePress = () => {
     openOptions();
@@ -115,7 +130,16 @@ const PostViewScreen = ({ navigation }) => {
     postOptionsBottomSheetRef.current.close();
   };
 
-  const handleDoubleTap = (isLiked) => {};
+  const handleDoubleTap = (isLiked) => {
+    const now = Date.now();
+    const DOUBLE_PRESS_DELAY = 500;
+    if (now - lastTap < DOUBLE_PRESS_DELAY) {
+      likeInteractionHandler(isLiked);
+    } else {
+      setLastTap(now);
+    }
+
+  };
 
   const openLikes = () => {
     likesBottomSheetRef.current.open();
@@ -123,21 +147,21 @@ const PostViewScreen = ({ navigation }) => {
 
   // const readableLikes = () => {};
   const likeInteractionHandler = (isLiked: boolean) => {
-    if (likeInteractionLoading) return;
+    if (addLikeLoading) return;
+    if (deleteLikeLoading) return;
 
+    console.log("lineInteractionHandler");
     const variables = {
       postId,
       userId: state.userId,
-      action: "LIKE"
     };
 
     if (isLiked) {
-      variables.action = "UNLIKE"
+      return deleteLike({ variables });
     } else {
       likeBounceAnimationRef.current.animate();
+      return addLike({ variables });
     }
-
-    return likeInteraction({ variables });
   };
 
   const confirmationToggle = () => {
@@ -182,9 +206,14 @@ const PostViewScreen = ({ navigation }) => {
       return likeCount === 1 ? `${likeCount} like` : `${likeCount} likes`;
     };
 
-    // const readableTime = moment(createdAt).format("LLLL");
     const readableTime = moment(createdAt).fromNow();
-    const isLiked = likes.includes(state.userId);
+    // const isLiked = likes.includes(state.userId);
+    const isContainMyLike = likes.filter(
+      (likePost) => {
+        return likePost.author.id === state.userId
+      }
+    );
+    const isLiked = isContainMyLike.length > 0 ? true: false;
     const readableLikes = parseLikes(likes.length);
 
     content = (
@@ -229,7 +258,7 @@ const PostViewScreen = ({ navigation }) => {
           activeOpacity={1}
         >
           <NativeImage uri={uri} style={styles.postImage} />
-          {/* <LikeBounceAnimation ref={likeBounceAnimationRef} /> */}
+          <LikeBounceAnimation ref={likeBounceAnimationRef} />
         </TouchableOpacity>
         <View style={styles.likes}>
           <BounceView

@@ -26,6 +26,7 @@ import ListEmptyComponent from "./ListEmptyComponent";
 import DeleteCardRightActions from "./DeleteCardRightActions";
 import CommentCard from "./CommentCard";
 import Comments from "./Comments";
+import LikeBounceAnimation from "./LikeBounceAnimation";
 
 export {
   InputCustom,
@@ -54,5 +55,6 @@ export {
   ListEmptyComponent,
   DeleteCardRightActions,
   CommentCard,
-  Comments
+  Comments,
+  LikeBounceAnimation
 };

@@ -60,9 +60,24 @@ export const MUTATION_DELETE_POST = gql`
 // `;
 
 
-export const MUTATION_LIKE_INTERACTION = gql`
-  mutation LikeInteraction($postId: String!, $userId: String!, $action: String!) {
-    likeInteraction(postId: $postId, userId: $userId, action: $action) {
+// export const MUTATION_LIKE_INTERACTION = gql`
+//   mutation LikeInteraction($postId: String!, $userId: String!, $action: String!) {
+//     likeInteraction(postId: $postId, userId: $userId, action: $action) {
+//       id
+//     }
+//   }
+// `;
+export const MUTATION_ADD_LIKE = gql`
+  mutation AddLike($userId: String!, $postId: String!) {
+    addLike(userId: $userId, postId: $postId) {
+      id
+    }
+  }
+`;
+
+export const MUTATION_DELETE_LIKE = gql`
+  mutation DeleteLike($userId: String!, $postId: String!) {
+    deleteLike(userId: $userId, postId: $postId) {
       id
     }
   }

@@ -226,8 +226,8 @@ const resolvers = {
     return result;
   },
   deleteLike: (_, args) => {
-    return new Promise((resolve, reject) => {
-      LikePost.findByIdAndDelete({ _id: args.id }, (error, obj) => {
+    const likePost = new Promise((resolve, reject) => {
+      LikePost.deleteMany({ post: args.postId, author: args.userId }, (error, obj) => {
         if (error) {
           reject(error);
         } else {
@@ -235,9 +235,17 @@ const resolvers = {
         }
       });
     });
+
+    Post.findById(args.postId, function (err, post) {
+      if (!err) {
+        pubsub.publish("post", { post: post });
+      }
+    });
+
+    return likePost;
   },
   addLike: (_, args) => {
-    return new Promise((resolve, reject) => {
+    const likePost = new Promise((resolve, reject) => {
       const id = mongoose.Types.ObjectId();
       LikePost.create(
         {
@@ -251,6 +259,14 @@ const resolvers = {
         }
       );
     });
+    Post.findById(args.postId, function (err, post) {
+      if (!err) {
+        pubsub.publish("post", { post: post });
+      }
+    });
+
+    return likePost;
+
   },
   addStock: (_, args) => {
     return new Promise((resolve, reject) => {
