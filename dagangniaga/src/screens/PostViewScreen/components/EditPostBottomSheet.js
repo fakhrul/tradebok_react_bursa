@@ -19,7 +19,7 @@ const EditPostBottomSheet = React.forwardRef(({ postId, caption }, ref) => {
   const updatePost = async () => {
     setIsUpdating(true);
     try {
-      await editPost({ variables: { postId, caption: editableCaption } });
+      await editPost({ variables: { id: postId, caption: editableCaption } });
     } catch ({ message }) {
     //   crashlytics.recordCustomError(Errors.EDIT_POST, message);
     }

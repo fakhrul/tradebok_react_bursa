@@ -11,7 +11,7 @@ const typeDefs = gql`
     getUser(id: String): User
     userExist(authId: String): User
     post(id: String): Post
-    posts: [Post!]!
+    posts(userId: String!): [Post]
     comment(id: String): Comment
     comments(postId: String): [Comment]
     likes(postId: String): [LikePost]
@@ -54,6 +54,8 @@ const typeDefs = gql`
     deleteUser(id: String): User
     followProfile(userId: String, profileToFollowUserId: String): User
     createPost(caption: String, uri: String, authorId: String): Post
+    deletePost(id: String!): Post
+    editPost(id: String!, caption: String!): Post
     addComment(userId: String!, postId: String!, body: String!): Comment
     deleteComment(postId: String!, commentId: String!) : Comment
     addLike(userId: String!, postId: String!): LikePost!

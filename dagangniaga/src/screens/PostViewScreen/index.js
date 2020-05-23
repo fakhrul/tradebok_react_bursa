@@ -181,10 +181,17 @@ const PostViewScreen = ({ navigation }) => {
 
   const onDeleteConfirm = (uri: string) => {
     confirmationToggle();
+    console.log("1");
     navigation.goBack();
+    console.log("2");
+
     postDeletedNotification();
-    deletePost({ variables: { postId } });
+    console.log("3");
+    deletePost({ variables: { id: postId } });
+    console.log("4");
     deleteFromStorage(uri);
+    console.log("5");
+
   };
 
   let content = <PostViewPlaceHolder></PostViewPlaceHolder>;
@@ -219,7 +226,7 @@ const PostViewScreen = ({ navigation }) => {
     content = (
       <View
         style={{
-          borderWidth: 1,
+          // borderWidth: 1,
         }}
       >
         <TouchableOpacity
@@ -362,10 +369,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.base,
-    borderWidth: 1,
+    // borderWidth: 1,
   },
   content: {
-    borderWidth: 1,
+    // borderWidth: 1,
     flex: 1,
     paddingTop: 10,
     paddingHorizontal: 0,

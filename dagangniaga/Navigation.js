@@ -37,6 +37,8 @@ import {
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import { createStackNavigator } from "react-navigation-stack";
 import PostViewScreen from "./src/screens/PostViewScreen";
+import ExploreScreen from "./src/screens/ExploreScreen";
+import ConnectionScreen from "./src/screens/ConnectionScreen";
 
 const dashboardFlow = createStackNavigator({
   Dashboard: DashboardScreen,
@@ -53,6 +55,14 @@ dashboardFlow.navigationOptions = {
 
 const stockFlow = createStackNavigator({
   Stock: StockScreen,
+});
+
+const exploreFlow = createStackNavigator({
+  ExploreScreen,
+  PostView: PostViewScreen,
+});
+const connectionFlow = createStackNavigator({
+  ConnectionScreen,
 });
 
 const streamFlow = createStackNavigator({
@@ -73,12 +83,22 @@ const portfolioFlow = createStackNavigator({
   PortfolioNote: PortfolioNoteScreen,
 });
 
+ConnectionScreen.navigationOptions = () => {
+  return {
+    headerShown: false,
+  };
+};
 PortfolioScreen.navigationOptions = () => {
   return {
     headerShown: false,
   };
 };
 PortfolioNoteScreen.navigationOptions = () => {
+  return {
+    headerShown: false,
+  };
+};
+ExploreScreen.navigationOptions = () => {
   return {
     headerShown: false,
   };
@@ -187,6 +207,8 @@ const switchNavigator = createSwitchNavigator({
       //       ),
       //     },
       //   },
+      exploreFlow,
+      connectionFlow,
       SettingScreen,
       AboutScreen,
       SignoutScreen,

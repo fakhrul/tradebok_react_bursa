@@ -4,6 +4,8 @@ import PostList from "./PostList";
 import CommentInput from "./CommentInput";
 import PostViewPlaceHolder from "./PostViewPlaceHolder";
 import ConnectionsPlaceholder from "./ConnectionsPlaceholder";
+import ExploreScreenPlaceholder from "./ExploreScreenPlaceholder";
+
 export {
   ProfileScreenPlaceholder,
   ProfileCard,
@@ -11,4 +13,5 @@ export {
   CommentInput,
   PostViewPlaceHolder,
   ConnectionsPlaceholder,
+  ExploreScreenPlaceholder
 };

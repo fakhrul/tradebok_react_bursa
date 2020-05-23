@@ -34,6 +34,18 @@ export const QUERY_POST = gql`
   }
 `;
 
+
+export const QUERY_POSTS = gql`
+  query Posts($userId: String!)  {
+    posts(userId: $userId) {
+      id
+      uri
+      caption
+      createdAt
+    }
+  }
+`;
+
 export const QUERY_USER = gql`
  query GetUser($id: String!) {
     getUser(id: $id) {

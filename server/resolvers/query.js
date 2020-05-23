@@ -37,7 +37,7 @@ const resolvers = {
       return userToReturn;
     }),
   post: (_, args) => promisify(Post.findById(args.id)).then((result) => result),
-  posts: (_, args) => promisify(Post.find({})).then((result) => result),
+  posts: (_, args) => promisify(Post.find({}).sort({createdAt: 'desc'})).then((result) => result),
   comment: (_, args) =>
     promisify(Comment.findById(args.id)).then((result) => result),
   comments: (_, args) =>

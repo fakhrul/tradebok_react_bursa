@@ -185,8 +185,8 @@ const DrawerScreen = ({ navigation }) => {
           ></SidebarLink>
           <SidebarLink
             navigation={navigation}
-            title="Stream"
-            route="homeFlow"
+            title="Posts"
+            route="exploreFlow"
             icon={
               <FontAwesome5
                 name="stream"
@@ -195,6 +195,15 @@ const DrawerScreen = ({ navigation }) => {
               ></FontAwesome5>
             }
           ></SidebarLink>
+          <SidebarLink
+            navigation={navigation}
+            title="Connections"
+            route="connectionFlow"
+            icon={
+              <Ionicons name="ios-people" size={20} color={colors.text.title} />
+            }
+          ></SidebarLink>
+          
           <Divider />
           <SidebarTitle title="COMMUNICATE"></SidebarTitle>
           <SidebarLink

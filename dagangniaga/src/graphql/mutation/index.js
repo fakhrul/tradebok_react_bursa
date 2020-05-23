@@ -33,16 +33,16 @@ export const MUTATION_REPORT_POST = gql`
 `;
 
 export const MUTATION_EDIT_POST = gql`
-  mutation EditPost($postId: String!, $caption: String!) {
-    editPost(postId: $postId, caption: $caption) {
+  mutation EditPost($id: String!, $caption: String!) {
+    editPost(id: $id, caption: $caption) {
       id
     }
   }
 `;
 
 export const MUTATION_DELETE_POST = gql`
-  mutation DeletePost($postId: String!) {
-    deletePost(postId: $postId) {
+  mutation DeletePost($id: String!) {
+    deletePost(id: $id) {
       id
     }
   }

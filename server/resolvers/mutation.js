@@ -181,6 +181,32 @@ const resolvers = {
       updateUserPostList(args.authorId, id),
     ]).then((result) => result[0]);
   },
+  // deletePost(id: String!): Post
+  // editPost(id: String!, caption: String!): Post
+  deletePost: (_, args) => {
+    const result = Post.findByIdAndDelete(
+      { _id: args.id },
+      (error, obj) => {
+        if (error) {
+          throw new Error(error);
+        }
+      }
+    );
+    return result;
+  },
+  editPost: (_, args) => {
+    return Post.findByIdAndUpdate(
+      { _id: args.id },
+      { caption: args.caption },
+      (error, postUpdated) => {
+        if (error) {
+          throw new Error(error);
+        }
+        pubsub.publish("post", { post: postUpdated });
+        return postUpdated;
+      }
+    );
+  },
   addComment: (_, args) => {
     const result = new Promise((resolve, reject) => {
       const id = mongoose.Types.ObjectId();

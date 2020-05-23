@@ -48,7 +48,7 @@ const Comments = ({ navigation, postId, comments }) => {
   // console.log("comments", comments);
   // console.log("length", comments.length);
 
-  const marginBottom = comments.length === 0 ? 0 : 20;
+  const marginBottom = comments.length === 0 ? 0 : 10;
 
   return (
     // <View></View>
@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
   commentsHeader: {
     fontSize: 16,
     color: colors.text01,
+    marginTop: 5
   },
   listStyle: {
     marginBottom: 10,
