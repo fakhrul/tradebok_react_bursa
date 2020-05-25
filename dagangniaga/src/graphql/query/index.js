@@ -67,6 +67,18 @@ export const QUERY_USER = gql`
   }
 `;
 
+
+export const QUERY_SEARCH_USERS = gql`
+  query SearchUsers($userId: String!, $name: String!) {
+    searchUsers(userId: $userId, name: $name) {
+      id
+      avatar
+      name
+      handle
+    }
+  }
+`;
+
 export const QUERY_USER_EXISTS = gql`
   query UserExist($authId: String!) {
     userExist(authId: $authId){

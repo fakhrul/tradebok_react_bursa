@@ -5,6 +5,7 @@ import CommentInput from "./CommentInput";
 import PostViewPlaceHolder from "./PostViewPlaceHolder";
 import ConnectionsPlaceholder from "./ConnectionsPlaceholder";
 import ExploreScreenPlaceholder from "./ExploreScreenPlaceholder";
+import SearchUsersPlaceholder from "./SearchUsersPlaceholder";
 
 export {
   ProfileScreenPlaceholder,
@@ -13,5 +14,6 @@ export {
   CommentInput,
   PostViewPlaceHolder,
   ConnectionsPlaceholder,
-  ExploreScreenPlaceholder
+  ExploreScreenPlaceholder,
+  SearchUsersPlaceholder
 };

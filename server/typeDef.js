@@ -8,6 +8,7 @@ const typeDefs = gql`
     getPlayer(id: String): Player
     user(id: ID!): User
     users: [User]
+    searchUsers(userId: String!, name: String!): [User]
     getUser(id: String): User
     userExist(authId: String): User
     post(id: String): Post

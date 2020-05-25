@@ -24,7 +24,7 @@ const UserCard = ({
   const { state } = useContext(AuthContext);
 
   const navigateToProfile = () => {
-    if (userId === user.id) return;
+    if (userId === state.userId) return;
     navigation.navigate("ProfileView", { userId: state.userId });
   };
 

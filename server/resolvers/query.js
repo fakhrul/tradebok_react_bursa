@@ -31,13 +31,18 @@ const resolvers = {
       if (error) throw new Error(error);
       return userToReturn;
     }),
+  // searchUsers(userId: String!, name: String!): [User]
+  searchUsers: (_, args) => promisify(User.find({})).then((result) => result),
   userExist: (_, args) =>
     User.findOne({ authId: args.authId }, async (error, userToReturn) => {
       if (error) throw new Error(error);
       return userToReturn;
     }),
   post: (_, args) => promisify(Post.findById(args.id)).then((result) => result),
-  posts: (_, args) => promisify(Post.find({}).sort({createdAt: 'desc'})).then((result) => result),
+  posts: (_, args) =>
+    promisify(Post.find({}).sort({ createdAt: "desc" })).then(
+      (result) => result
+    ),
   comment: (_, args) =>
     promisify(Comment.findById(args.id)).then((result) => result),
   comments: (_, args) =>

@@ -27,6 +27,8 @@ import DeleteCardRightActions from "./DeleteCardRightActions";
 import CommentCard from "./CommentCard";
 import Comments from "./Comments";
 import LikeBounceAnimation from "./LikeBounceAnimation";
+import AnimatedSearchBar from "./AnimatedSearchBar";
+import UserSearchResults from "./UserSearchResults";
 
 export {
   InputCustom,
@@ -56,5 +58,7 @@ export {
   DeleteCardRightActions,
   CommentCard,
   Comments,
-  LikeBounceAnimation
+  LikeBounceAnimation,
+  AnimatedSearchBar,
+  UserSearchResults
 };
