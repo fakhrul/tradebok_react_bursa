@@ -12,6 +12,7 @@ import {
   ProfileScreenPlaceholder,
   ProfileCard,
   ListEmptyComponent,
+  ProfileHeader
 } from "../../components";
 import { useQuery } from "@apollo/react-hooks";
 import { QUERY_USER } from "../../graphql/query";
@@ -43,33 +44,6 @@ const MyProfileScreen = ({ navigation }) => {
   // @ts-ignore
   const onEdit = () => console.log("onEdit");
 
-  const ProfileHeader = ({
-    avatar,
-    following,
-    followers,
-    name,
-    handle,
-    about,
-  }) => {
-    console.log("following", following);
-    console.log("follower", followers);
-    return (
-      <View>
-        <ProfileCard
-          editable
-          onEdit={onEdit}
-          onFollowingOpen={onFollowingOpen}
-          onFollowersOpen={onFollowersOpen}
-          avatar={avatar}
-          following={following}
-          followers={followers}
-          name={name}
-          handle={handle}
-          about={about}
-        />
-      </View>
-    );
-  };
 
   const renderItem = ({ item }) => {
     const {
@@ -105,6 +79,9 @@ const MyProfileScreen = ({ navigation }) => {
               following={followingIds.length}
               followers={followerIds.length}
               about={about}
+              onEdit={onEdit}
+              onFollowingOpen={onFollowingOpen}
+              onFollowersOpen={onFollowersOpen}
             ></ProfileHeader>
             <FlatList
               style={styles.feed}

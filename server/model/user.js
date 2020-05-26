@@ -5,10 +5,6 @@ import timestamps from 'mongoose-timestamp';
 // import Following from "./_following";
 
 const schema = new Schema({
-  authId: {
-    type: String,
-    required: true,
-  },
   avatar: {
     type: String,
   },

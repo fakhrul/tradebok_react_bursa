@@ -8,26 +8,31 @@ import client from "../graphql/client";
 
 const WelcomeScreen = ({ navigation }) => {
   const { state, updateUserId } = useContext(AuthContext);
-  const [createUser, { data, loading, error }] = useMutation(
-    MUTATION_CREATE_USER
-  );
+  const [createUser] = useMutation(MUTATION_CREATE_USER);
 
   const createUserIfNotExist = async (
-    authId: string,
-    avatar: string | null,
+    email: string,
     name: string,
-    email: string
+    avatar: string | null
   ) => {
+    console.log("check exist user for email =", email);
     const {
       data: { userExist },
-    } = await client.query({ query: QUERY_USER_EXISTS, variables: { authId } });
+    } = await client.query({ query: QUERY_USER_EXISTS, variables: { email: email } });
 
     if (!userExist) {
       console.log("New user found. Create use in database.");
+
       const {
-        data: { createUser },
-      } = await createUser({ variables: { authId, avatar, name, email } });
-      const userId = createUser.id;
+        data: {
+          createUser: { id: userId },
+        },
+      } = await createUser({
+        variables: { name, email, avatar },
+      });
+
+      console.log("userId", userId);
+      // const userId = createUser.id;
 
       return await userId;
     } else {

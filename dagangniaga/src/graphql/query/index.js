@@ -50,7 +50,6 @@ export const QUERY_USER = gql`
  query GetUser($id: String!) {
     getUser(id: $id) {
       id
-      authId
       avatar
       name
       email
@@ -80,8 +79,8 @@ export const QUERY_SEARCH_USERS = gql`
 `;
 
 export const QUERY_USER_EXISTS = gql`
-  query UserExist($authId: String!) {
-    userExist(authId: $authId){
+  query UserExist($email: String!) {
+    userExist(email: $email){
       name
       id
     }
@@ -97,5 +96,21 @@ export const QUERY_LIKE_USERS = gql`
       handle
       name
     }
+  }
+`;
+
+
+export const QUERY_CHAT_EXISTS = gql`
+  query ChatExists($userId: String!, $targetId: String!) {
+    chatExists(userId: $userId, targetId: $targetId) {
+      id
+    }
+  }
+`;
+
+
+export const QUERY_DOES_FOLLOW = gql`
+  query DoesFollow($userId: String!, $targetId: String!) {
+    doesFollow(userId: $userId, targetId: $targetId)
   }
 `;

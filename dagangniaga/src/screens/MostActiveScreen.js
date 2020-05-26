@@ -6,24 +6,9 @@ import { useMutation } from "@apollo/react-hooks";
 import { MUTATION_CREATE_USER } from "../graphql/mutation";
 
 const MostActiveScreen = () => {
-//   const [createUser] = useMutation(MUTATION_CREATE_USER);
+  //   const [createUser] = useMutation(MUTATION_CREATE_USER);
 
-  const getData = async () => {
-    // const authId = "1";
-    // const { data: {userExist}  } = await client.query({ query: QUERY_USER_EXISTS, variables: { authId } });
-
-    // // console.log(userExist);
-    // const authId = "a";
-    // const avatar = "b";
-    // const name = "c";
-    // const email = "d";
-    // // const { data } = await createUser({
-    // //   variables: { authId, avatar, name, email },
-    // // });
-
-    // const {data} = await createUser({ variables: { authId, avatar, name, email } });
-    // console.log(data);
-  };
+  const getData = async () => {};
   return (
     <View>
       <Text>Most Active</Text>

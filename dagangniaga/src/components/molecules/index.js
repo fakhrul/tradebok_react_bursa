@@ -6,6 +6,7 @@ import PostViewPlaceHolder from "./PostViewPlaceHolder";
 import ConnectionsPlaceholder from "./ConnectionsPlaceholder";
 import ExploreScreenPlaceholder from "./ExploreScreenPlaceholder";
 import SearchUsersPlaceholder from "./SearchUsersPlaceholder";
+import ProfileHeader from "./ProfileHeader";
 
 export {
   ProfileScreenPlaceholder,
@@ -15,5 +16,6 @@ export {
   PostViewPlaceHolder,
   ConnectionsPlaceholder,
   ExploreScreenPlaceholder,
-  SearchUsersPlaceholder
+  SearchUsersPlaceholder,
+  ProfileHeader
 };

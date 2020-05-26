@@ -10,7 +10,7 @@ const typeDefs = gql`
     users: [User]
     searchUsers(userId: String!, name: String!): [User]
     getUser(id: String): User
-    userExist(authId: String): User
+    userExist(email: String!): User
     post(id: String): Post
     posts(userId: String!): [Post]
     comment(id: String): Comment
@@ -40,17 +40,15 @@ const typeDefs = gql`
     ): Player
     deletePlayer(id: String): Player
     createUser(
-      authId: String!
-      avatar: String
-      name: String!
       email: String!
+      name: String!
+      avatar: String
     ): User
     updateUser(
       id: String
-      authId: String
-      avatar: String
       name: String
       email: String
+      avatar: String
     ): User
     deleteUser(id: String): User
     followProfile(userId: String, profileToFollowUserId: String): User
@@ -86,7 +84,6 @@ const typeDefs = gql`
     id: ID!
     token: String!
     fcmToken: String
-    authId: String!
     avatar: String
     name: String!
     email: String!

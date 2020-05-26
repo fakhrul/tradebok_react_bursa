@@ -34,7 +34,7 @@ const resolvers = {
   // searchUsers(userId: String!, name: String!): [User]
   searchUsers: (_, args) => promisify(User.find({})).then((result) => result),
   userExist: (_, args) =>
-    User.findOne({ authId: args.authId }, async (error, userToReturn) => {
+    User.findOne({ email: args.email }, async (error, userToReturn) => {
       if (error) throw new Error(error);
       return userToReturn;
     }),

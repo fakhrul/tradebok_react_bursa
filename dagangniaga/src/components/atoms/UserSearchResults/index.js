@@ -2,7 +2,8 @@ import React, { useContext } from "react";
 import { StyleSheet } from "react-native";
 import { responsiveWidth } from "react-native-responsive-dimensions";
 import { FlatGrid } from "react-native-super-grid";
-import { UserCard, ListEmptyComponent } from "../../../components";
+import UserCard from "../UserCard";
+import ListEmptyComponent from "../ListEmptyComponent";
 import { Context as AuthContext } from "../../../context/AuthContext";
 
 const UserSearchResults = ({navigation, searchResults }) => {

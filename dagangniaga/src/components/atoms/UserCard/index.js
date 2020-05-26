@@ -8,7 +8,7 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import {NativeImage} from "../../../components";
+import { NativeImage } from "../../../components";
 import { Context as AuthContext } from "../../../context/AuthContext";
 import { colors } from "../../../utils";
 
@@ -25,7 +25,12 @@ const UserCard = ({
 
   const navigateToProfile = () => {
     if (userId === state.userId) return;
-    navigation.navigate("ProfileView", { userId: state.userId });
+    console.log("userId", userId);
+    console.log("name", name);
+
+    navigation.navigate("ProfileView", { profileId: userId });
+    console.log("navigate done");
+
   };
 
   return (

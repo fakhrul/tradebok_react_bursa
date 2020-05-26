@@ -39,6 +39,7 @@ import { createStackNavigator } from "react-navigation-stack";
 import PostViewScreen from "./src/screens/PostViewScreen";
 import ExploreScreen from "./src/screens/ExploreScreen";
 import ConnectionScreen from "./src/screens/ConnectionScreen";
+import ProfileViewScreen from "./src/screens/ProfileViewScreen";
 
 const dashboardFlow = createStackNavigator({
   Dashboard: DashboardScreen,
@@ -63,6 +64,7 @@ const exploreFlow = createStackNavigator({
 });
 const connectionFlow = createStackNavigator({
   ConnectionScreen,
+  ProfileView: ProfileViewScreen
 });
 
 const streamFlow = createStackNavigator({
@@ -83,6 +85,11 @@ const portfolioFlow = createStackNavigator({
   PortfolioNote: PortfolioNoteScreen,
 });
 
+ProfileViewScreen.navigationOptions = () => {
+  return {
+    headerShown: false
+  }
+}
 ConnectionScreen.navigationOptions = () => {
   return {
     headerShown: false,

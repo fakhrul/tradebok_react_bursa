@@ -139,20 +139,38 @@ const resolvers = {
   },
   createUser: (_, args) => {
     const handle = generateUniqueAccountName(args.name);
-    console.log("handle", handle);
-    if (!handle) throw new Error("failed to generate handle");
-    const newUser = new User({
-      authId: args.authId,
-      avatar: args.avatar,
-      name: args.name,
-      email: args.email,
-      handle: handle,
+    return new Promise((resolve, reject) => {
+      const id = mongoose.Types.ObjectId();
+      User.create(
+        {
+          _id: id,
+          avatar: args.avatar,
+          name: args.name,
+          email: args.email,
+          handle: handle,
+        },
+        (err, result) => {
+          if (err) reject(err);
+          else resolve(result);
+        }
+      );
     });
-    newUser.save(function (err) {
-      if (err) throw new Error(err);
-      // const id = newUser._id; // Hey!
-    });
-    return newUser;
+
+    // const handle = generateUniqueAccountName(args.name);
+    // console.log("handle", handle);
+    // if (!handle) throw new Error("failed to generate handle");
+    // const newUser = new User({
+    //   authId: args.authId,
+    //   avatar: args.avatar,
+    //   name: args.name,
+    //   email: args.email,
+    //   handle: handle,
+    // });
+    // newUser.save(function (err) {
+    //   if (err) throw new Error(err);
+    //   // const id = newUser._id; // Hey!
+    // });
+    // return newUser;
   },
   updateUser: (_, args) => {
     return User.findByIdAndUpdate(
@@ -184,14 +202,11 @@ const resolvers = {
   // deletePost(id: String!): Post
   // editPost(id: String!, caption: String!): Post
   deletePost: (_, args) => {
-    const result = Post.findByIdAndDelete(
-      { _id: args.id },
-      (error, obj) => {
-        if (error) {
-          throw new Error(error);
-        }
+    const result = Post.findByIdAndDelete({ _id: args.id }, (error, obj) => {
+      if (error) {
+        throw new Error(error);
       }
-    );
+    });
     return result;
   },
   editPost: (_, args) => {
@@ -253,13 +268,16 @@ const resolvers = {
   },
   deleteLike: (_, args) => {
     const likePost = new Promise((resolve, reject) => {
-      LikePost.deleteMany({ post: args.postId, author: args.userId }, (error, obj) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(obj);
+      LikePost.deleteMany(
+        { post: args.postId, author: args.userId },
+        (error, obj) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(obj);
+          }
         }
-      });
+      );
     });
 
     Post.findById(args.postId, function (err, post) {
@@ -292,7 +310,6 @@ const resolvers = {
     });
 
     return likePost;
-
   },
   addStock: (_, args) => {
     return new Promise((resolve, reject) => {

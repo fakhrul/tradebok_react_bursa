@@ -1,14 +1,9 @@
 import gql from "graphql-tag";
 
 export const MUTATION_CREATE_USER = gql`
-  mutation CreateUser(
-    $authId: String!
-    $avatar: String
-    $name: String!
-    $email: String!
-  ) {
-    createUser(authId: $authId, avatar: $avatar, name: $name, email: $email) {
-      authId
+  mutation CreateUser($email: String!, $name: String!, $avatar: String) {
+    createUser(email: $email, name: $name, avatar: $avatar) {
+      id
       avatar
       name
       email
@@ -59,7 +54,6 @@ export const MUTATION_DELETE_POST = gql`
 //   }
 // `;
 
-
 // export const MUTATION_LIKE_INTERACTION = gql`
 //   mutation LikeInteraction($postId: String!, $userId: String!, $action: String!) {
 //     likeInteraction(postId: $postId, userId: $userId, action: $action) {
@@ -83,7 +77,6 @@ export const MUTATION_DELETE_LIKE = gql`
   }
 `;
 
-
 export const MUTATION_ADD_COMMENT = gql`
   mutation AddComment($userId: String!, $postId: String!, $body: String!) {
     addComment(userId: $userId, postId: $postId, body: $body) {
@@ -92,11 +85,35 @@ export const MUTATION_ADD_COMMENT = gql`
   }
 `;
 
-
 export const MUTATION_DELETE_COMMENT = gql`
   mutation DeleteComment($postId: String!, $commentId: String!) {
     deleteComment(postId: $postId, commentId: $commentId) {
       id
     }
+  }
+`;
+
+export const MUTATION_BLOCK_USER = gql`
+  mutation BlockUser($from: String!, $to: String!) {
+    blockUser(from: $from, to: $to)
+  }
+`;
+
+export const MUTATION_CREATE_TEMPORARY_CHAT = gql`
+  mutation CreateTemporaryChat {
+    createTemporaryChat {
+      id
+    }
+  }
+`;
+
+
+export const MUTATION_UPDATE_FOLLOWING = gql`
+  mutation UpdateFollowing($userId: String!, $targetId: String!, $action: UpdateFollowingAction!) {
+    updateFollowing(
+      userId: $userId
+      targetId: $targetId
+      action: $action
+    )
   }
 `;
