@@ -18,6 +18,7 @@ const typeDefs = gql`
     likes(postId: String): [LikePost]
     stock(id: String!): Stock
     stockComments(stockId: String!): StockComment
+    doesFollow(userId: String!, targetId: String!) : Boolean!
   }
   type Subscription {
     post(id: String!): Post
