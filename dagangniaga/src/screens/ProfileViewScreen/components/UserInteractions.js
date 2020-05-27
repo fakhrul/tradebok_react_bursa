@@ -22,8 +22,8 @@ const UserInteractions = ({ navigation, targetId, avatar, handle }) => {
     loading: doesFollowLoading,
     error: doesFollowError,
   } = useQuery(QUERY_DOES_FOLLOW, {
-    variables: { userId: user.id, targetId },
-    pollInterval: PollIntervals.interaction,
+    variables: { userId: state.userId, targetId },
+    pollInterval: 1000,
   });
 
   const [updateFollowing, { loading: updateFollowingLoading }] = useMutation(
@@ -96,7 +96,7 @@ const UserInteractions = ({ navigation, targetId, avatar, handle }) => {
   };
 
   return (
-    <View style={styles().container}>
+    <View style={styles.container}>
       <TouchableOpacity
         activeOpacity={0.9}
         onPress={followInteraction}

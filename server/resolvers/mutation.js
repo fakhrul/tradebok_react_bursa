@@ -90,7 +90,78 @@ const generateUniqueAccountName = (proposedName) => {
   return proposedName;
 };
 
+const addUserToFollowingList = (userId, targetId) =>
+  new Promise((resolve, reject) => {
+    User.update(
+      { _id: userId },
+      { $push: { following: targetId } },
+      (err, result) => {
+        if (err) reject(err);
+        else resolve(result);
+      }
+    );
+  });
+
+const removeUserFromFollowingList = (userId, targetId) =>
+  new Promise((resolve, reject) => {
+    User.update(
+      { _id: userId },
+      { $pull: { following: targetId } },
+      (err, result) => {
+        if (err) reject(err);
+        else resolve(result);
+      }
+    );
+  });
+
+const addTargetToFollowerList = (userId, targetId) =>
+  new Promise((resolve, reject) => {
+    User.update(
+      { _id: targetId },
+      { $push: { followers: userId } },
+      (err, result) => {
+        if (err) reject(err);
+        else resolve(result);
+      }
+    );
+  });
+
+const removeTargetFromFollowerList = (userId, targetId) =>
+  new Promise((resolve, reject) => {
+    User.update(
+      { _id: targetId },
+      { $pull: { followers: userId } },
+      (err, result) => {
+        if (err) reject(err);
+        else resolve(result);
+      }
+    );
+  });
+
 const resolvers = {
+  //     updateFollowing(userId: String!, targetId: String!, action: String!) : User
+  updateFollowing: (_, args) => {
+    if (args.action === "FOLLOW") {
+      Promise.all([
+        addUserToFollowingList(args.userId, args.targetId),
+        addTargetToFollowerList(args.userId, args.targetId),
+      ]).then((result) => result[0]);
+      return User.findById({ _id: args.targetId }, async (error, userToReturn) => {
+        if (error) throw new Error(error);
+        return userToReturn;
+      })
+    }
+    else if (args.action === "UNFOLLOW") {
+      Promise.all([
+        removeUserFromFollowingList(args.userId, args.targetId),
+        removeTargetFromFollowerList(args.userId, args.targetId),
+      ]).then((result) => result[0]);
+      return User.findById({ _id: args.targetId }, async (error, userToReturn) => {
+        if (error) throw new Error(error);
+        return userToReturn;
+      })
+    }
+  },
   followProfile: (_, args) => {
     return Promise.all([
       addProfileToFollowingList(args.userId, args.profileToFollowUserId),

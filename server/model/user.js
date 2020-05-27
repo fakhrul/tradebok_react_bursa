@@ -28,6 +28,14 @@ const schema = new Schema({
   about: String,
   followerIds: [Schema.Types.ObjectId],
   followingIds: [Schema.Types.ObjectId],
+  followers: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }],
+  following: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }],
   posts: [{
     type: Schema.Types.ObjectId,
     ref: 'Post'
@@ -42,10 +50,5 @@ const schema = new Schema({
   }]
 }, {timestamps: true});
 
-
-
-// userSchema.plugin(timestamps);
-
-// userSchema.index({ createdAt: 1, updatedAt: 1 });
 
 module.exports = mongoose.model("User", schema);

@@ -25,7 +25,7 @@ import {
   sortPostsAscendingTime,
 } from "../../utils";
 import ProfileOptionsBottomSheet from "./components/ProfileOptionsBottomSheet";
-// import UserInteractions from "./components/UserInteractions";
+import UserInteractions from "./components/UserInteractions";
 import { MUTATION_BLOCK_USER } from "../../graphql/mutation";
 
 const ProfileViewScreen = ({ navigation }) => {
@@ -46,7 +46,10 @@ const ProfileViewScreen = ({ navigation }) => {
   const profileOptionsBottomSheetRef = useRef();
 
   // @ts-ignore
-  const onFollowingOpen = () => followingBottomSheetRef.current.open();
+  const onFollowingOpen = () => {
+    console.log("onFollowingOpen click");
+    followingBottomSheetRef.current.open();
+  }
   // @ts-ignore
   const onFollowersOpen = () => followersBottomSheetRef.current.open();
   // @ts-ignore
@@ -85,10 +88,10 @@ const ProfileViewScreen = ({ navigation }) => {
 
   const renderItem = ({ item }) => {
     const {
-        getUser: { avatar, name },
-      } = data;
-      return <PostList name={name} avatar={avatar} navigation={navigation} item={item}></PostList>;
-      // const { id, uri } = item;
+      getUser: { avatar, name },
+    } = data;
+    return <PostList name={name} avatar={avatar} navigation={navigation} item={item}></PostList>;
+    // const { id, uri } = item;
     // return (
     //   <PostThumbnail
     //     id={id}
@@ -130,6 +133,7 @@ const ProfileViewScreen = ({ navigation }) => {
             onFollowingOpen={onFollowingOpen}
             onFollowersOpen={onFollowersOpen}
           ></ProfileHeader>
+          <UserInteractions targetId={profileId} avatar={avatar} handle={handle} />
           <FlatList
             style={styles.feed}
             data={sortedPosts}
@@ -137,6 +141,21 @@ const ProfileViewScreen = ({ navigation }) => {
             keyExtractor={(item) => item.id}
             showsVerticalScrollIndicator={false}
           ></FlatList>
+          <ConnectionsBottomSheet
+            viewMode
+            ref={followingBottomSheetRef}
+            data={followingIds}
+            handle={handle}
+            type="FOLLOWING"
+          />
+          <ConnectionsBottomSheet
+            viewMode
+            ref={followersBottomSheetRef}
+            data={followerIds}
+            handle={handle}
+            type="FOLLOWERS"
+          />
+
         </ScrollView>
       </>
       //       <>
@@ -195,7 +214,7 @@ const ProfileViewScreen = ({ navigation }) => {
     />
   );
 
-  const onMorePress = () => {};
+  const onMorePress = () => { };
   return (
     <View style={styles.container}>
       <Text>"test"</Text>

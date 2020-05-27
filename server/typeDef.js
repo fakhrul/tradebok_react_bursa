@@ -61,6 +61,7 @@ const typeDefs = gql`
     deleteLike(userId: String!, postId: String!): LikePost
     addStock(name: String!): Stock!
     addStockComment(stockId: String!, body: String!) : StockComment!
+    updateFollowing(userId: String!, targetId: String!, action: String!) : User
   }
   type Stock {
     id: ID!

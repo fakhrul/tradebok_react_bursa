@@ -7,6 +7,7 @@ import ConnectionsPlaceholder from "./ConnectionsPlaceholder";
 import ExploreScreenPlaceholder from "./ExploreScreenPlaceholder";
 import SearchUsersPlaceholder from "./SearchUsersPlaceholder";
 import ProfileHeader from "./ProfileHeader";
+import ConnectionsBottomSheet from "./ConnectionsBottomSheet";
 
 export {
   ProfileScreenPlaceholder,
@@ -17,5 +18,6 @@ export {
   ConnectionsPlaceholder,
   ExploreScreenPlaceholder,
   SearchUsersPlaceholder,
-  ProfileHeader
+  ProfileHeader,
+  ConnectionsBottomSheet
 };

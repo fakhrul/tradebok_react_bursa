@@ -28,9 +28,13 @@ const generalConfig = {
   repository,
   version,
   codepush,
+  // url: {
+  //   https: 'http://192.168.0.140:4000/',
+  //   wss: 'ws://192.168.0.140:4000/graphql'
+  // }
   url: {
-    https: 'http://192.168.0.140:4000/',
-    wss: 'ws://192.168.0.140:4000/graphql'
+    https: 'http://192.168.0.88:4000/',
+    wss: 'ws://192.168.0.88:4000/graphql'
   }
 };
 
