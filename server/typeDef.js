@@ -18,7 +18,7 @@ const typeDefs = gql`
     likes(postId: String): [LikePost]
     stock(id: String!): Stock
     stockComments(stockId: String!): StockComment
-    doesFollow(userId: String!, targetId: String!) : Boolean!
+    doesFollow(userId: String!, targetId: String!): User
   }
   type Subscription {
     post(id: String!): Post
@@ -40,29 +40,20 @@ const typeDefs = gql`
       wonSuperBowl: Boolean
     ): Player
     deletePlayer(id: String): Player
-    createUser(
-      email: String!
-      name: String!
-      avatar: String
-    ): User
-    updateUser(
-      id: String
-      name: String
-      email: String
-      avatar: String
-    ): User
+    createUser(email: String!, name: String!, avatar: String): User
+    updateUser(id: String, name: String, email: String, avatar: String): User
     deleteUser(id: String): User
     followProfile(userId: String, profileToFollowUserId: String): User
     createPost(caption: String, uri: String, authorId: String): Post
     deletePost(id: String!): Post
     editPost(id: String!, caption: String!): Post
     addComment(userId: String!, postId: String!, body: String!): Comment
-    deleteComment(postId: String!, commentId: String!) : Comment
+    deleteComment(postId: String!, commentId: String!): Comment
     addLike(userId: String!, postId: String!): LikePost!
     deleteLike(userId: String!, postId: String!): LikePost
     addStock(name: String!): Stock!
-    addStockComment(stockId: String!, body: String!) : StockComment!
-    updateFollowing(userId: String!, targetId: String!, action: String!) : User
+    addStockComment(stockId: String!, body: String!): StockComment!
+    updateFollowing(userId: String!, targetId: String!, action: String!): User
   }
   type Stock {
     id: ID!

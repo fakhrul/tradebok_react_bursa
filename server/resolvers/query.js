@@ -55,6 +55,8 @@ const resolvers = {
     promisify(StockComment.find({ stock: args.stockId })).then(
       (result) => result
     ),
+  doesFollow: (_, args) =>
+    promisify(User.findOne({ _id: args.userId, following: args.targetId })),
 };
 
 module.exports = resolvers;
