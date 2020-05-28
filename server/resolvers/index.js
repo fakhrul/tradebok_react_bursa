@@ -8,8 +8,10 @@ import Comment from "./comment";
 import Subscription from "./subscription";
 import LikePost from "./likePost"
 import Stock from "./stock";
+import Message from "./message";
+import Chat from "./chat";
 
-const resolvers = {User, Post, Comment, LikePost, Query, Stock,  Mutation, Subscription};
+const resolvers = {User, Post, Comment, LikePost, Query, Stock, Message, Chat,  Mutation, Subscription};
 
 console.log(resolvers);
 module.exports = resolvers;

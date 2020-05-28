@@ -8,30 +8,8 @@ const Comment = require("../model/comment");
 const LikePost = require("../model/likePost");
 const Stock = require("../model/stock");
 const StockComment = require("../model/stockComment");
-
-// const addProfileToFollowingList = (userId, profileToFollowUserId) =>
-//   new Promise((resolve, reject) => {
-//     User.update(
-//       { _id: userId },
-//       { $push: { followingIds: profileToFollowUserId } },
-//       (err, result) => {
-//         if (err) reject(err);
-//         else resolve(result);
-//       }
-//     );
-//   });
-
-// const addProfileToFollowerList = (userId, profileToFollowUserId) =>
-//   new Promise((resolve, reject) => {
-//     User.update(
-//       { _id: profileToFollowUserId },
-//       { $push: { followerIds: userId } },
-//       (err, result) => {
-//         if (err) reject(err);
-//         else resolve(result);
-//       }
-//     );
-//   });
+const Chat = require("../model/chat");
+const Message = require("../model/message");
 
 const addPost = (id, caption, uri, authorId) =>
   new Promise((resolve, reject) => {
@@ -52,17 +30,26 @@ const updateUserPostList = (userId, postId) =>
     );
   });
 
-// const addProfileToFollowerList = (userId, profileToFollowUserId) =>
-// new Promise((resolve, reject) => {
-//   User.update(
-//     { _id: profileToFollowUserId },
-//     { $push: { followerIds: userId } },
-//     (err, result) => {
-//       if (err) reject(err);
-//       else resolve(result);
-//     }
-//   );
-// });
+const addMessage = (messageId, chatId, authorId, body) =>
+  new Promise((resolve, reject) => {
+    Message.create({ _id: messageId, chat: chatId, author: authorId, body: body }, (err, result) => {
+      if (err) reject(err);
+      else resolve(result);
+    })
+  })
+
+const addMessageToList = (chatId, messageId) =>
+  new Promise((resolve, reject) => {
+    Chat.update(
+      { _id: chatId },
+      { $push: { messages: messageId } },
+      (err, result) => {
+        if (err) reject(err);
+        else resolve(result);
+      }
+    )
+  })
+
 
 const isHandleExist = (handleName) => {
   User.findOne({ handle: handleName }, (error, userFound) => {
@@ -413,38 +400,90 @@ const resolvers = {
       );
     });
   },
-  // likeInteraction(userId: String!, postId: String!, action: LikeAction!): Post!
-  // likeInteraction: (_, args) => {
-  //   console.log(args.action);
-  //   if (args.action === "LIKE") {
+  createTemporaryChat: (_, args) => {
+    return new Promise((resolve, reject) => {
+      const id = mongoose.Types.ObjectId();
+      Chat.create(
+        {
+          _id: id
+        },
+        (err, result) => {
+          if (err) reject(err);
+          else resolve(result);
+        }
+      );
+    });
+  },
+  // connectChatToUsers(chatId: String!, userId: String!, targetId: String!) : Chat!
+  connectChatToUsers: (_, args) => {
+    return new Promise((resolve, reject) => {
+      var foundUser = null;
+      var foundTarget = null;
+      User.findById(args.userId, function (err, user) {
+        if (err) throw Error(err);
+        const foundUser = user;
+        User.findById(args.targetId, function (err, user) {
+          if (err) throw Error(err);
+          const foundTarget = user;
+          Chat.update(
+            { _id: args.chatId },
+            { $push: { participants: { $each: [foundUser._id, foundTarget._id] } } },
+            (err, result) => {
+              if (err) reject(err);
+              else resolve(result);
+            }
+          );
+        });
+      });
+    })
+  },
+  // deleteChat(chatId: $String): Chat!
+  deleteChat: (_, args) => {
+    return Chat.findByIdAndDelete(
+      { _id: args.chatId },
+      (error, chatDeleted) => {
+        if (error) {
+          throw new Error(error);
+        }
+        return chatDeleted;
+      }
+    );
+  },
+  // addChatMessage( chatId: $chatId, authorId: $authorId, body: $body ): Message!
+  addChatMessage: (_, args) => {
+    const messageId = mongoose.Types.ObjectId();
+    Promise.all([
+      addMessage(messageId, args.chatId, args.authorId, args.body),
+      addMessageToList(args.chatId, messageId),
+    ]).then((result) => result[0]);
+    return Chat.findById({ _id: args.chatId }, async (error, chatToReturn) => {
+      if (error) throw new Error(error);
+      return chatToReturn;
+    })
 
-  //     Post.findOneAndUpdate({_id: args.postId}, {$push:{likes:args.userId}}, {new: true}, (err, post) => {
-  //       if (err) {
-  //         throw new Error(err);
-  //       }
-  //       console.log(post);
-  //       return post;
-  //     });
+    // return new Promise((resolve, reject) => {
 
-  //     // const post = promisify(
-  //     //   Post.update({ _id: args.postId }, { $push: { likes: args.userId } })
-  //     // ).then((result) => result);
-  //     // console.log(post);
-  //     // return post;
-  //   } else {
-  //     return promisify(
-  //       Post.update({ _id: args.postId }, { $pull: { likes: args.userId } })
-  //     ).then((result) => result);
-  //   }
-  // new Promise((resolve, reject) => {
-  //   User.update(
-  //     { _id: userId },
-  //     { $push: { posts: postId } },
-  //     (err, result) => {
-  //       if (err) reject(err);
-  //       else resolve(result);
-  //     }
-  //   );
+    //   const message = new Message({
+    //     _id: mongoose.Types.ObjectId(),
+    //     author: args.authorId,
+    //     body: args.body
+    //   });
+
+    //   Chat.update(
+    //     { _id: args.authorId },
+    //     { $push: { messages: message } },
+    //     (err, result) => {
+    //       if (err) reject(err);
+    //       else resolve(result);
+    //     }
+    //   );
+    //   // return message;
+    // })
+  },
+  // messageSeen(messageId: String!) : Message 
+  messageSeen: (_, args) => {
+
+  }
 };
 
 export default resolvers;

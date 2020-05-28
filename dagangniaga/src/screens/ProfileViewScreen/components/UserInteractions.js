@@ -72,11 +72,11 @@ const UserInteractions = ({ navigation, targetId, avatar, handle }) => {
         data: { chatExists },
       } = await client.query({
         query: QUERY_CHAT_EXISTS,
-        variables: { userId: user.id, targetId },
+        variables: { userId: state.userId, targetId },
       });
 
       if (chatExists) {
-        navigate(Routes.ConversationScreen, {
+        navigation.navigate("conversationFlow", {
           chatId: chatExists.id,
           avatar,
           handle,
@@ -84,7 +84,7 @@ const UserInteractions = ({ navigation, targetId, avatar, handle }) => {
         });
       } else {
         const { data } = await createTemporaryChat();
-        navigate(Routes.ConversationScreen, {
+        navigation.navigate("conversationFlow", {
           chatId: data.createTemporaryChat.id,
           avatar,
           handle,
@@ -93,7 +93,8 @@ const UserInteractions = ({ navigation, targetId, avatar, handle }) => {
       }
     } catch ({ message }) {
       tryAgainLaterNotification();
-      crashlytics.recordCustomError("INITIALIZE_CHAT", message);
+      console.log("INITIALIZE_CHAT", message);
+      // crashlytics.recordCustomError("INITIALIZE_CHAT", message);
     }
   };
 

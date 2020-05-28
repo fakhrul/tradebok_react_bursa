@@ -19,6 +19,8 @@ const typeDefs = gql`
     stock(id: String!): Stock
     stockComments(stockId: String!): StockComment
     doesFollow(userId: String!, targetId: String!): User
+    chatExists(userId: String!, targetId: String!): Chat
+    chats(userId: String!): [Chat]
   }
   type Subscription {
     post(id: String!): Post
@@ -53,6 +55,11 @@ const typeDefs = gql`
     addStock(name: String!): Stock!
     addStockComment(stockId: String!, body: String!): StockComment!
     updateFollowing(userId: String!, targetId: String!, action: String!): User
+    createTemporaryChat : Chat!
+    connectChatToUsers(chatId: String!, userId: String!, targetId: String!) : Chat!
+    addChatMessage( chatId: String!, authorId: String!, body: String! ): Chat!
+    deleteChat(chatId: String!): Chat!
+    messageSeen(messageId: String!) : Message 
   }
   type Stock {
     id: ID!
@@ -131,6 +138,8 @@ const typeDefs = gql`
     body: String
     seen: Boolean
     author: User!
+    chat: Chat!
+    createdAt: DateTime!
   }
   enum MessageType {
     TEXT
@@ -147,6 +156,7 @@ const typeDefs = gql`
     id: String
     participants: [User!]
     messages(last: Int): [Message!]
+    createdAt: DateTime!
   }
 
   schema {

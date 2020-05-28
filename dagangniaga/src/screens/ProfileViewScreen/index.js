@@ -133,7 +133,7 @@ const ProfileViewScreen = ({ navigation }) => {
             onFollowingOpen={onFollowingOpen}
             onFollowersOpen={onFollowersOpen}
           ></ProfileHeader>
-          <UserInteractions targetId={profileId} avatar={avatar} handle={handle} />
+          <UserInteractions navigation={navigation} targetId={profileId} avatar={avatar} handle={handle} />
           <FlatList
             style={styles.feed}
             data={sortedPosts}
@@ -217,10 +217,9 @@ const ProfileViewScreen = ({ navigation }) => {
   const onMorePress = () => { };
   return (
     <View style={styles.container}>
-      <Text>"test"</Text>
       <Header
         isBackButton
-        title="Post View"
+        title="Profile View"
         navigation={navigation}
         onPress={onMorePress}
       ></Header>

@@ -28,7 +28,7 @@ const UserCard = ({
     console.log("userId", userId);
     console.log("name", name);
 
-    navigation.navigate("ProfileView", { profileId: userId });
+    navigation.navigate("profileViewFlow", { profileId: userId });
     console.log("navigate done");
 
   };

@@ -32,7 +32,7 @@ const CommentCard = ({
 
   const navigateToProfile = () => {
     if (authorId === state.userId) return;
-    navigation.navigate("ProfileView", { userId: authorId });
+    navigation.navigate("profileViewFlow", { userId: authorId });
   };
 
   const onDelete = () => {

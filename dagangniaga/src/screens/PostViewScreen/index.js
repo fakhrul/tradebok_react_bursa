@@ -118,7 +118,7 @@ const PostViewScreen = ({ navigation }) => {
     openOptions();
   };
   const navigateToProfile = (authorId) => {
-    navigation.navigate("ProfileView", { authorId });
+    navigation.navigate("profileViewFlow", { authorId });
   };
 
   const openOptions = () => {

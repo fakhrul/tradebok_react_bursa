@@ -108,6 +108,59 @@ export const MUTATION_CREATE_TEMPORARY_CHAT = gql`
 `;
 
 
+export const MUTATION_CONNECT_CHAT_TO_USERS = gql`
+  mutation ConnectChatToUsers($chatId: String!, $userId: String!, $targetId: String!) {
+    connectChatToUsers(
+      chatId: $chatId,
+      userId: $userId,
+      targetId: $targetId
+    ) {
+      id
+    }
+  }
+`;
+
+
+export const MUTATION_ADD_MESSAGE = gql`
+  mutation AddChatMessage($chatId: String!, $authorId: String!, $body: String!) {
+    addChatMessage(
+      chatId: $chatId
+      authorId: $authorId
+      body: $body
+    ) {
+      messages {
+        id
+        body
+        createdAt
+        author {
+          id
+          name
+          avatar
+        }
+      }
+    }
+  }
+`;
+
+
+export const MUTATION_DELETE_CHAT = gql`
+  mutation DeleteChat($chatId: String!) {
+    deleteChat(chatId: $chatId) {
+      id
+    }
+  }
+`;
+
+
+export const MUTATION_SEEN_MESSAGE = gql`
+  mutation MessageSeen($messageId: String!) {
+    messageSeen(messageId: $messageId) {
+      id
+    }
+  }
+`;
+
+
 export const MUTATION_UPDATE_FOLLOWING = gql`
   mutation UpdateFollowing($userId: String!, $targetId: String!, $action: String!) {
     updateFollowing(

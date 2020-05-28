@@ -119,6 +119,29 @@ export const QUERY_CHAT_EXISTS = gql`
 `;
 
 
+export const QUERY_CHATS = gql`
+  query Chats($userId: String!) {
+    chats(userId: $userId) {
+      id
+      participants {
+        id
+        avatar
+        handle
+        lastSeen
+      }
+      messages(last: 1) {
+        id
+        body
+        seen
+        author {
+          id
+        }
+        createdAt
+      }
+    }
+  }
+`;
+
 export const QUERY_DOES_FOLLOW = gql`
   query DoesFollow($userId: String!, $targetId: String!) {
     doesFollow(userId: $userId, targetId: $targetId) {

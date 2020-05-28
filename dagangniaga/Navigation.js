@@ -19,6 +19,8 @@ import AddPostScreen from "./src/screens/AddPostScreen";
 
 import { createDrawerNavigator } from "react-navigation-drawer";
 import WelcomeScreen from "./src/screens/WelcomeScreen";
+import ConversationScreen from "./src/screens/ConversationScreen";
+
 import {
   FontAwesome,
   Entypo,
@@ -58,13 +60,24 @@ const stockFlow = createStackNavigator({
   Stock: StockScreen,
 });
 
+const conversationFlow = createStackNavigator({
+  Conversation: ConversationScreen
+})
+
 const exploreFlow = createStackNavigator({
   ExploreScreen,
   PostView: PostViewScreen,
 });
+
+const profileViewFlow =  createStackNavigator({
+  ProfileView: ProfileViewScreen,
+  conversationFlow    
+})
+
 const connectionFlow = createStackNavigator({
   ConnectionScreen,
-  ProfileView: ProfileViewScreen
+  // ProfileView: ProfileViewScreen,
+  profileViewFlow
 });
 
 const streamFlow = createStackNavigator({
@@ -90,11 +103,24 @@ ProfileViewScreen.navigationOptions = () => {
     headerShown: false
   }
 }
+
+profileViewFlow.navigationOptions = () => {
+  return {
+    headerShown: false
+  }
+}
+
 ConnectionScreen.navigationOptions = () => {
   return {
     headerShown: false,
   };
 };
+
+ConversationScreen.navigationOptions = () => {
+  return {
+    headerShown: false,
+  }
+}
 PortfolioScreen.navigationOptions = () => {
   return {
     headerShown: false,
