@@ -2,16 +2,26 @@ import { colors } from "../colors";
 import * as ImagePicker from "expo-image-picker";
 import { showMessage } from "react-native-flash-message";
 
+export const filterChatParticipants = (userId: string, participants) =>
+  participants.filter((participant) => userId !== participant.id);
 
-export const createAsyncDelay = (duration: number) => {
-
-  return new Promise((resolve, _) => setTimeout(() => { resolve(); }, duration));
+export const isUserOnline = (lastSeen: number) => {
+  const now = Date.now() / 1000;
+  return now - lastSeen < 12;
 };
 
-export const sortPostsAscendingTime = array =>
+export const createAsyncDelay = (duration: number) => {
+  return new Promise((resolve, _) =>
+    setTimeout(() => {
+      resolve();
+    }, duration)
+  );
+};
+
+export const sortPostsAscendingTime = (array) =>
   // @ts-ignore
   [...array].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-  
+
 export const parseConnectionsCount = (connectionCount) => {
   // parse larger numbers here
   return connectionCount.toString();
@@ -81,11 +91,7 @@ export const uploadErrorNotification = (asset: string) =>
     duration: 2000,
   });
 
-export const inputLimitErrorNotification = (
-  type,
-  condition,
-  limit
-) => {
+export const inputLimitErrorNotification = (type, condition, limit) => {
   showMessage({
     message: `${type} should be ${condition} than ${limit} characters`,
     icon: "danger",

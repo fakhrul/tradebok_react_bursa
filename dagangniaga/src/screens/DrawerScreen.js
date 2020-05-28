@@ -203,6 +203,14 @@ const DrawerScreen = ({ navigation }) => {
               <Ionicons name="ios-people" size={20} color={colors.text.title} />
             }
           ></SidebarLink>
+          <SidebarLink
+            navigation={navigation}
+            title="Messages"
+            route="messageFlow"
+            icon={
+              <Ionicons name="ios-people" size={20} color={colors.text.title} />
+            }
+          ></SidebarLink>
           
           <Divider />
           <SidebarTitle title="COMMUNICATE"></SidebarTitle>

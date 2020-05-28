@@ -42,6 +42,7 @@ import PostViewScreen from "./src/screens/PostViewScreen";
 import ExploreScreen from "./src/screens/ExploreScreen";
 import ConnectionScreen from "./src/screens/ConnectionScreen";
 import ProfileViewScreen from "./src/screens/ProfileViewScreen";
+import MessageScreen from "./src/screens/MessageScreen";
 
 const dashboardFlow = createStackNavigator({
   Dashboard: DashboardScreen,
@@ -62,6 +63,10 @@ const stockFlow = createStackNavigator({
 
 const conversationFlow = createStackNavigator({
   Conversation: ConversationScreen
+})
+
+const messageFlow = createStackNavigator({
+  Message: MessageScreen
 })
 
 const exploreFlow = createStackNavigator({
@@ -104,6 +109,16 @@ ProfileViewScreen.navigationOptions = () => {
   }
 }
 
+MessageScreen.navigationOptions = () => {
+  return {
+    headerShown: false
+  }
+}
+messageFlow.navigationOptions = () => {
+  return {
+    headerShown: false
+  }
+}
 profileViewFlow.navigationOptions = () => {
   return {
     headerShown: false
@@ -242,6 +257,7 @@ const switchNavigator = createSwitchNavigator({
       //   },
       exploreFlow,
       connectionFlow,
+      messageFlow,
       SettingScreen,
       AboutScreen,
       SignoutScreen,

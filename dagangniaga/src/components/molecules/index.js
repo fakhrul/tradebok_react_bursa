@@ -9,6 +9,8 @@ import SearchUsersPlaceholder from "./SearchUsersPlaceholder";
 import ProfileHeader from "./ProfileHeader";
 import ConnectionsBottomSheet from "./ConversationScreenPlaceholder";
 import ConversationScreenPlaceholder from "./ConversationScreenPlaceholder";
+import MessageScreenPlaceholder from "./MessageScreenPlaceholder";
+import SearchBar from "./SearchBar";
 
 export {
   ProfileScreenPlaceholder,
@@ -21,5 +23,7 @@ export {
   SearchUsersPlaceholder,
   ProfileHeader,
   ConnectionsBottomSheet,
-  ConversationScreenPlaceholder
+  ConversationScreenPlaceholder,
+  MessageScreenPlaceholder,
+  SearchBar
 };
