@@ -60,6 +60,7 @@ const typeDefs = gql`
     addChatMessage( chatId: String!, authorId: String!, body: String! ): Chat!
     deleteChat(chatId: String!): Chat!
     messageSeen(messageId: String!) : Message 
+    updateLastSeen(userId: String!) : User!
   }
   type Stock {
     id: ID!
@@ -88,7 +89,6 @@ const typeDefs = gql`
     email: String!
     handle: String
     about: String
-    lastSeen: Float!
     following: [User]
     followers: [User]
     posts: [Post]!
@@ -96,6 +96,7 @@ const typeDefs = gql`
     notifications: [Notification!]
     likePost: [Post]!
     likeComment: [Comment]!
+    lastSeen: DateTime
   }
   type Post {
     id: ID!

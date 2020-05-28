@@ -161,6 +161,21 @@ export const MUTATION_SEEN_MESSAGE = gql`
 `;
 
 
+export const MUTATION_LAST_SEEN = gql`
+  mutation LastSeen($userId: String!) {
+    updateLastSeen(userId: $userId) {
+      chats {
+        messages(last: 1) {
+          author {
+            id
+          }
+          seen
+        }
+      }
+    }
+  }
+`;
+
 export const MUTATION_UPDATE_FOLLOWING = gql`
   mutation UpdateFollowing($userId: String!, $targetId: String!, $action: String!) {
     updateFollowing(

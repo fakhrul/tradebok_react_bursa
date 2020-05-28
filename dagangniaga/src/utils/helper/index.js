@@ -2,6 +2,26 @@ import { colors } from "../colors";
 import * as ImagePicker from "expo-image-picker";
 import { showMessage } from "react-native-flash-message";
 
+
+export const searchQueryFilter = (array, userId: string, query: string, ) =>
+  [...array].filter(({ participants }) => {
+    const [participant] = filterChatParticipants(userId, participants);
+    if (query === '') return true;
+    return participant
+      .handle
+      .toLowerCase()
+      .includes(query.toLocaleLowerCase());
+  });
+
+export const sortMessageAscendingTime = array =>
+  [...array].sort((a, b) => {
+    const [lastMessageA] = a.messages;
+    const [lastMessageB] = b.messages;
+
+    // @ts-ignore
+    return new Date(lastMessageB.createdAt) - new Date(lastMessageA.createdAt);
+  });
+  
 export const filterChatParticipants = (userId: string, participants) =>
   participants.filter((participant) => userId !== participant.id);
 

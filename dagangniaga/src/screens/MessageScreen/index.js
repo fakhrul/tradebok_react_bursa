@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
 import { FlatGrid } from 'react-native-super-grid';
-// import EmptyMessages from '@app/assets/svg/empty-messages.svg';
+import EmptyMessages from '../../resources/empty-messages.svg';
 // import { PollIntervals, IconSizes, Routes, Errors } from '@app/constants';
 // import { AppContext } from '@app/context';
 import { QUERY_CHATS, QUERY_CHAT_EXISTS } from '../../graphql/query';
@@ -20,8 +20,8 @@ import { MUTATION_CREATE_TEMPORARY_CHAT } from '../../graphql/mutation';
 // import { crashlytics } from '@app/utils/firebase';
 // import { tryAgainLaterNotification } from '@app/utils/notifications';
 import {Context as AuthContext} from "../../context/AuthContext";
-import {colors, filterChatParticipants, isUserOnline} from "../../utils";
-import {MessageScreenPlaceholder, Header, SearchBar} from "../../components";
+import {colors, filterChatParticipants, isUserOnline, searchQueryFilter,sortMessageAscendingTime} from "../../utils";
+import {MessageScreenPlaceholder, Header, SearchBar, SvgBanner} from "../../components";
 
 const MessageScreen = ({navigation}) => {
 
@@ -80,24 +80,24 @@ const MessageScreen = ({navigation}) => {
 
   let content = <MessageScreenPlaceholder />;
 
-//   if (called && !loading && !error) {
-//     const { chats } = data;
+  if (called && !loading && !error) {
+    // const { chats } = data;
 
-//     const filteredChats = searchQueryFilter(chats, user.id, chatSearch);
-//     const sortedFilteredChats = sortMessageAscendingTime(filteredChats);
+    // const filteredChats = searchQueryFilter(chats, state.userId, chatSearch);
+    // const sortedFilteredChats = sortMessageAscendingTime(filteredChats);
 
-//     content = (
-//       <FlatGrid
-//         itemDimension={responsiveWidth(85)}
-//         showsVerticalScrollIndicator={false}
-//         items={sortedFilteredChats}
-//         ListEmptyComponent={() => <SvgBanner Svg={EmptyMessages} spacing={16} placeholder='No messages' />}
-//         style={styles().messagesList}
-//         spacing={20}
-//         renderItem={renderItem}
-//       />
-//     );
-//   }
+    // content = (
+    //   <FlatGrid
+    //     itemDimension={responsiveWidth(85)}
+    //     showsVerticalScrollIndicator={false}
+    //     items={sortedFilteredChats}
+    //     ListEmptyComponent={() => <SvgBanner Svg={EmptyMessages} spacing={16} placeholder='No messages' />}
+    //     style={styles.messagesList}
+    //     spacing={20}
+    //     renderItem={renderItem}
+    //   />
+    // );
+  }
 
 //   const onConnectionSelect = async (targetId: string, avatar: string, handle: string) => {
 //     try {

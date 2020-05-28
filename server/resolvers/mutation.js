@@ -32,11 +32,14 @@ const updateUserPostList = (userId, postId) =>
 
 const addMessage = (messageId, chatId, authorId, body) =>
   new Promise((resolve, reject) => {
-    Message.create({ _id: messageId, chat: chatId, author: authorId, body: body }, (err, result) => {
-      if (err) reject(err);
-      else resolve(result);
-    })
-  })
+    Message.create(
+      { _id: messageId, chat: chatId, author: authorId, body: body },
+      (err, result) => {
+        if (err) reject(err);
+        else resolve(result);
+      }
+    );
+  });
 
 const addMessageToList = (chatId, messageId) =>
   new Promise((resolve, reject) => {
@@ -47,9 +50,8 @@ const addMessageToList = (chatId, messageId) =>
         if (err) reject(err);
         else resolve(result);
       }
-    )
-  })
-
+    );
+  });
 
 const isHandleExist = (handleName) => {
   User.findOne({ handle: handleName }, (error, userFound) => {
@@ -133,20 +135,25 @@ const resolvers = {
         addUserToFollowingList(args.userId, args.targetId),
         addTargetToFollowerList(args.userId, args.targetId),
       ]).then((result) => result[0]);
-      return User.findById({ _id: args.targetId }, async (error, userToReturn) => {
-        if (error) throw new Error(error);
-        return userToReturn;
-      })
-    }
-    else if (args.action === "UNFOLLOW") {
+      return User.findById(
+        { _id: args.targetId },
+        async (error, userToReturn) => {
+          if (error) throw new Error(error);
+          return userToReturn;
+        }
+      );
+    } else if (args.action === "UNFOLLOW") {
       Promise.all([
         removeUserFromFollowingList(args.userId, args.targetId),
         removeTargetFromFollowerList(args.userId, args.targetId),
       ]).then((result) => result[0]);
-      return User.findById({ _id: args.targetId }, async (error, userToReturn) => {
-        if (error) throw new Error(error);
-        return userToReturn;
-      })
+      return User.findById(
+        { _id: args.targetId },
+        async (error, userToReturn) => {
+          if (error) throw new Error(error);
+          return userToReturn;
+        }
+      );
     }
   },
   // followProfile: (_, args) => {
@@ -405,7 +412,7 @@ const resolvers = {
       const id = mongoose.Types.ObjectId();
       Chat.create(
         {
-          _id: id
+          _id: id,
         },
         (err, result) => {
           if (err) reject(err);
@@ -419,23 +426,35 @@ const resolvers = {
     return new Promise((resolve, reject) => {
       var foundUser = null;
       var foundTarget = null;
-      User.findById(args.userId, function (err, user) {
-        if (err) throw Error(err);
-        const foundUser = user;
-        User.findById(args.targetId, function (err, user) {
+      User.findByIdAndUpdate(
+        { _id: args.userId },
+        { $push: { chats: args.chatId } },
+        (err, user) => {
           if (err) throw Error(err);
-          const foundTarget = user;
-          Chat.update(
-            { _id: args.chatId },
-            { $push: { participants: { $each: [foundUser._id, foundTarget._id] } } },
-            (err, result) => {
-              if (err) reject(err);
-              else resolve(result);
+          const foundUser = user;
+          User.findByIdAndUpdate(
+            { _id: args.targetId },
+            { $push: { chats: args.chatId } },
+            (err, user) => {
+              if (err) throw Error(err);
+              const foundTarget = user;
+              Chat.update(
+                { _id: args.chatId },
+                {
+                  $push: {
+                    participants: { $each: [foundUser._id, foundTarget._id] },
+                  },
+                },
+                (err, result) => {
+                  if (err) reject(err);
+                  else resolve(result);
+                }
+              );
             }
           );
-        });
-      });
-    })
+        }
+      );
+    });
   },
   // deleteChat(chatId: $String): Chat!
   deleteChat: (_, args) => {
@@ -459,31 +478,23 @@ const resolvers = {
     return Chat.findById({ _id: args.chatId }, async (error, chatToReturn) => {
       if (error) throw new Error(error);
       return chatToReturn;
-    })
-
-    // return new Promise((resolve, reject) => {
-
-    //   const message = new Message({
-    //     _id: mongoose.Types.ObjectId(),
-    //     author: args.authorId,
-    //     body: args.body
-    //   });
-
-    //   Chat.update(
-    //     { _id: args.authorId },
-    //     { $push: { messages: message } },
-    //     (err, result) => {
-    //       if (err) reject(err);
-    //       else resolve(result);
-    //     }
-    //   );
-    //   // return message;
-    // })
+    });
   },
-  // messageSeen(messageId: String!) : Message 
-  messageSeen: (_, args) => {
-
-  }
+  // messageSeen(messageId: String!) : Message
+  messageSeen: (_, args) => {},
+  // updateLastSeen(userId: String!) : User!
+  updateLastSeen: (_, args) => {
+    return User.findByIdAndUpdate(
+      { _id: args.userId },
+      { lastSeen: Date.now },
+      async (error, userUpdate) => {
+        if (error) {
+          throw new Error(error);
+        }
+        return await userUpdate;
+      }
+    );
+  },
 };
 
 export default resolvers;

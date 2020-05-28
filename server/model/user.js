@@ -45,6 +45,14 @@ const schema = new Schema({
   likeComment: [{
     type: Schema.Types.ObjectId,
     ref: 'Comment'
+  }],
+  lastSeen: {
+    type: Date,
+    default: Date.now
+  },
+  chats: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Chat'
   }]
 }, {timestamps: true});
 
