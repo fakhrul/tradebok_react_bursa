@@ -43,7 +43,6 @@ const typeDefs = gql`
     createUser(email: String!, name: String!, avatar: String): User
     updateUser(id: String, name: String, email: String, avatar: String): User
     deleteUser(id: String): User
-    followProfile(userId: String, profileToFollowUserId: String): User
     createPost(caption: String, uri: String, authorId: String): Post
     deletePost(id: String!): Post
     editPost(id: String!, caption: String!): Post
@@ -85,8 +84,6 @@ const typeDefs = gql`
     lastSeen: Float!
     following: [User]
     followers: [User]
-    followingIds: [String]
-    followerIds: [String]
     posts: [Post]!
     chats: [Chat]!
     notifications: [Notification!]

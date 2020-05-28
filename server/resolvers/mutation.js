@@ -9,29 +9,29 @@ const LikePost = require("../model/likePost");
 const Stock = require("../model/stock");
 const StockComment = require("../model/stockComment");
 
-const addProfileToFollowingList = (userId, profileToFollowUserId) =>
-  new Promise((resolve, reject) => {
-    User.update(
-      { _id: userId },
-      { $push: { followingIds: profileToFollowUserId } },
-      (err, result) => {
-        if (err) reject(err);
-        else resolve(result);
-      }
-    );
-  });
+// const addProfileToFollowingList = (userId, profileToFollowUserId) =>
+//   new Promise((resolve, reject) => {
+//     User.update(
+//       { _id: userId },
+//       { $push: { followingIds: profileToFollowUserId } },
+//       (err, result) => {
+//         if (err) reject(err);
+//         else resolve(result);
+//       }
+//     );
+//   });
 
-const addProfileToFollowerList = (userId, profileToFollowUserId) =>
-  new Promise((resolve, reject) => {
-    User.update(
-      { _id: profileToFollowUserId },
-      { $push: { followerIds: userId } },
-      (err, result) => {
-        if (err) reject(err);
-        else resolve(result);
-      }
-    );
-  });
+// const addProfileToFollowerList = (userId, profileToFollowUserId) =>
+//   new Promise((resolve, reject) => {
+//     User.update(
+//       { _id: profileToFollowUserId },
+//       { $push: { followerIds: userId } },
+//       (err, result) => {
+//         if (err) reject(err);
+//         else resolve(result);
+//       }
+//     );
+//   });
 
 const addPost = (id, caption, uri, authorId) =>
   new Promise((resolve, reject) => {
@@ -94,7 +94,7 @@ const addUserToFollowingList = (userId, targetId) =>
   new Promise((resolve, reject) => {
     User.update(
       { _id: userId },
-      { $push: { following: targetId } },
+      { $push: { followers: targetId } },
       (err, result) => {
         if (err) reject(err);
         else resolve(result);
@@ -106,7 +106,7 @@ const removeUserFromFollowingList = (userId, targetId) =>
   new Promise((resolve, reject) => {
     User.update(
       { _id: userId },
-      { $pull: { following: targetId } },
+      { $pull: { followers: targetId } },
       (err, result) => {
         if (err) reject(err);
         else resolve(result);
@@ -118,7 +118,7 @@ const addTargetToFollowerList = (userId, targetId) =>
   new Promise((resolve, reject) => {
     User.update(
       { _id: targetId },
-      { $push: { followers: userId } },
+      { $push: { following: userId } },
       (err, result) => {
         if (err) reject(err);
         else resolve(result);
@@ -130,7 +130,7 @@ const removeTargetFromFollowerList = (userId, targetId) =>
   new Promise((resolve, reject) => {
     User.update(
       { _id: targetId },
-      { $pull: { followers: userId } },
+      { $pull: { following: userId } },
       (err, result) => {
         if (err) reject(err);
         else resolve(result);
@@ -162,12 +162,12 @@ const resolvers = {
       })
     }
   },
-  followProfile: (_, args) => {
-    return Promise.all([
-      addProfileToFollowingList(args.userId, args.profileToFollowUserId),
-      addProfileToFollowerList(args.userId, args.profileToFollowUserId),
-    ]).then((result) => result[0]);
-  },
+  // followProfile: (_, args) => {
+  //   return Promise.all([
+  //     addProfileToFollowingList(args.userId, args.profileToFollowUserId),
+  //     addProfileToFollowerList(args.userId, args.profileToFollowUserId),
+  //   ]).then((result) => result[0]);
+  // },
   //   unFollowProfile: (_, args) => {
   //     return Promise.all([
   //       removeProfileFromFollowingList(args.userId, args.profileToFollowUserId),

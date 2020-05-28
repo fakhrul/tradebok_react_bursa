@@ -54,8 +54,18 @@ export const QUERY_USER = gql`
       name
       email
       about
-      followingIds
-      followerIds
+      followers {
+        id
+        handle
+        name
+        avatar
+      }
+      following {
+        id
+        handle
+        name
+        avatar
+      }
       posts {
         id
         caption
@@ -111,6 +121,8 @@ export const QUERY_CHAT_EXISTS = gql`
 
 export const QUERY_DOES_FOLLOW = gql`
   query DoesFollow($userId: String!, $targetId: String!) {
-    doesFollow(userId: $userId, targetId: $targetId)
+    doesFollow(userId: $userId, targetId: $targetId) {
+      id
+    }
   }
 `;

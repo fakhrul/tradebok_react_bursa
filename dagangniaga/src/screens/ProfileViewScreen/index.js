@@ -110,8 +110,8 @@ const ProfileViewScreen = ({ navigation }) => {
         avatar,
         name,
         handle,
-        followingIds,
-        followerIds,
+        following,
+        followers,
         about,
         posts,
       },
@@ -126,8 +126,8 @@ const ProfileViewScreen = ({ navigation }) => {
             avatar={avatar}
             name={name}
             handle={handle}
-            following={followingIds.length}
-            followers={followerIds.length}
+            following={following.length}
+            followers={followers.length}
             about={about}
             onEdit={onEdit}
             onFollowingOpen={onFollowingOpen}
@@ -144,14 +144,14 @@ const ProfileViewScreen = ({ navigation }) => {
           <ConnectionsBottomSheet
             viewMode
             ref={followingBottomSheetRef}
-            data={followingIds}
+            data={following}
             handle={handle}
             type="FOLLOWING"
           />
           <ConnectionsBottomSheet
             viewMode
             ref={followersBottomSheetRef}
-            data={followerIds}
+            data={followers}
             handle={handle}
             type="FOLLOWERS"
           />

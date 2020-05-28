@@ -56,7 +56,7 @@ const resolvers = {
       (result) => result
     ),
   doesFollow: (_, args) =>
-    promisify(User.findOne({ _id: args.userId, following: args.targetId })),
+    promisify(User.findOne({ _id: args.userId, followers: args.targetId })),
 };
 
 module.exports = resolvers;

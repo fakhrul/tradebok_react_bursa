@@ -26,8 +26,6 @@ const schema = new Schema({
     required: true,
   },
   about: String,
-  followerIds: [Schema.Types.ObjectId],
-  followingIds: [Schema.Types.ObjectId],
   followers: [{
     type: Schema.Types.ObjectId,
     ref: 'User'

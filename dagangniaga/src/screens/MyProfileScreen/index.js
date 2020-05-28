@@ -60,8 +60,8 @@ const MyProfileScreen = ({ navigation }) => {
         avatar,
         name,
         handle,
-        followingIds,
-        followerIds,
+        following,
+        followers,
         about,
         posts,
       },
@@ -76,8 +76,8 @@ const MyProfileScreen = ({ navigation }) => {
               avatar={avatar}
               name={name}
               handle={handle}
-              following={followingIds.length}
-              followers={followerIds.length}
+              following={following.length}
+              followers={followers.length}
               about={about}
               onEdit={onEdit}
               onFollowingOpen={onFollowingOpen}

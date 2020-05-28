@@ -34,6 +34,7 @@ const UserInteractions = ({ navigation, targetId, avatar, handle }) => {
   let content = <LoadingIndicator size={6} color={colors.white} />;
 
   if (!doesFollowLoading && !updateFollowingLoading && !doesFollowError) {
+    console.log("doesFollowData", doesFollowData);
     const { doesFollow } = doesFollowData;
     content = (
       <Text style={styles.followInteractionText}>
@@ -47,6 +48,7 @@ const UserInteractions = ({ navigation, targetId, avatar, handle }) => {
 
     const { doesFollow } = doesFollowData;
     const updateFollowingArgs = { userId: state.userId, targetId };
+    console.log("updateFollowingArgs", updateFollowingArgs)
     if (doesFollow) {
       updateFollowing({
         variables: {

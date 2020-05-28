@@ -109,11 +109,13 @@ export const MUTATION_CREATE_TEMPORARY_CHAT = gql`
 
 
 export const MUTATION_UPDATE_FOLLOWING = gql`
-  mutation UpdateFollowing($userId: String!, $targetId: String!, $action: UpdateFollowingAction!) {
+  mutation UpdateFollowing($userId: String!, $targetId: String!, $action: String!) {
     updateFollowing(
       userId: $userId
       targetId: $targetId
       action: $action
-    )
+    ){
+      id
+    }
   }
 `;
