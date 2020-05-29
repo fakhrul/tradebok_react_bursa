@@ -20,6 +20,7 @@ import AddPostScreen from "./src/screens/AddPostScreen";
 import { createDrawerNavigator } from "react-navigation-drawer";
 import WelcomeScreen from "./src/screens/WelcomeScreen";
 import ConversationScreen from "./src/screens/ConversationScreen";
+import PostFeedScreen from "./src/screens/PostFeedScreen";
 
 import {
   FontAwesome,
@@ -63,13 +64,13 @@ const stockFlow = createStackNavigator({
 });
 
 const conversationFlow = createStackNavigator({
-  Conversation: ConversationScreen
-})
+  Conversation: ConversationScreen,
+});
 
 const messageFlow = createStackNavigator({
   Message: MessageScreen,
-  conversationFlow
-})
+  conversationFlow,
+});
 
 const exploreFlow = createStackNavigator({
   ExploreScreen,
@@ -78,18 +79,19 @@ const exploreFlow = createStackNavigator({
 
 const profileViewFlow = createStackNavigator({
   ProfileView: ProfileViewScreen,
-  conversationFlow
-})
+  conversationFlow,
+});
 
 const connectionFlow = createStackNavigator({
   ConnectionScreen,
   // ProfileView: ProfileViewScreen,
-  profileViewFlow
+  profileViewFlow,
 });
 
 const streamFlow = createStackNavigator({
-  Stream: StreamScreen,
-  StreamAdd: StreamAddScreen,
+  PostFeed: PostFeedScreen,
+  // Stream: StreamScreen,
+  // StreamAdd: StreamAddScreen,
 });
 
 const settingFlow = createStackNavigator({
@@ -97,7 +99,8 @@ const settingFlow = createStackNavigator({
 });
 
 const chatFlow = createStackNavigator({
-  Chat: ChatScreen,
+  // Chat: ChatScreen,
+  messageFlow,
 });
 
 const portfolioFlow = createStackNavigator({
@@ -107,36 +110,36 @@ const portfolioFlow = createStackNavigator({
 
 conversationFlow.navigationOptions = () => {
   return {
-    headerShown: false
-  }
-}
+    headerShown: false,
+  };
+};
 
 ProfileViewScreen.navigationOptions = () => {
   return {
-    headerShown: false
-  }
-}
+    headerShown: false,
+  };
+};
 
 MessageScreen.navigationOptions = () => {
   return {
-    headerShown: false
-  }
-}
+    headerShown: false,
+  };
+};
 messageFlow.navigationOptions = () => {
   return {
-    headerShown: false
-  }
-}
+    headerShown: false,
+  };
+};
 profileViewFlow.navigationOptions = () => {
   return {
-    headerShown: false
-  }
-}
+    headerShown: false,
+  };
+};
 NotificationScreen.navigationOptions = () => {
   return {
     headerShown: false,
-  }
-}
+  };
+};
 ConnectionScreen.navigationOptions = () => {
   return {
     headerShown: false,
@@ -146,8 +149,8 @@ ConnectionScreen.navigationOptions = () => {
 ConversationScreen.navigationOptions = () => {
   return {
     headerShown: false,
-  }
-}
+  };
+};
 PortfolioScreen.navigationOptions = () => {
   return {
     headerShown: false,
@@ -271,6 +274,7 @@ const switchNavigator = createSwitchNavigator({
       connectionFlow,
       messageFlow,
       Notification: NotificationScreen,
+      PostFeed: PostFeedScreen,
       SettingScreen,
       AboutScreen,
       SignoutScreen,

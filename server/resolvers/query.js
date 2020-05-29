@@ -45,6 +45,12 @@ const resolvers = {
     promisify(Post.find({}).sort({ createdAt: "desc" })).then(
       (result) => result
     ),
+  // userFeed(userId: String!): [Post]!
+  userFeed: (_, args) =>
+    promisify(Post.find({}).sort({ createdAt: "desc" })).then(
+      (result) => result
+    ),
+
   comment: (_, args) =>
     promisify(Comment.findById(args.id)).then((result) => result),
   comments: (_, args) =>
@@ -61,17 +67,20 @@ const resolvers = {
     promisify(User.findOne({ _id: args.userId, followers: args.targetId })),
   // chats(userId: String!): [Chat]
   chats: (_, args) =>
-    promisify(Chat.find({ participants: args.userId, messages: { $exists: true, $not: { $size: 0 } } })).then(
-      (result) => result
-    ),
+    promisify(
+      Chat.find({
+        participants: args.userId,
+        messages: { $exists: true, $not: { $size: 0 } },
+      })
+    ).then((result) => result),
   // chat(chatId: String!): Chat!
-  chat: (_, args) => promisify(Chat.findById(args.chatId)).then((result) => result),
+  chat: (_, args) =>
+    promisify(Chat.findById(args.chatId)).then((result) => result),
   // chatExists(userId: String!, targetId: String!): Chat
   chatExists: (_, args) =>
-    promisify(Chat.findOne({ participants: { $in: [args.userId, args.targetId] } })).then(
-      (result) => result
-
-    ),
+    promisify(
+      Chat.findOne({ participants: { $in: [args.userId, args.targetId] } })
+    ).then((result) => result),
   // userConnections(userId: String!, type: String!): [User]
   userConnections: (_, args) =>
     promisify(User.find({ following: { $in: [args.userId] } })).then(
@@ -79,7 +88,9 @@ const resolvers = {
     ),
   // notifications(userId: String!): [Notification]
   notifications: (_, args) =>
-    promisify(Notification.find({ user: args.userId })).then((result) => result),
+    promisify(Notification.find({ user: args.userId })).then(
+      (result) => result
+    ),
 };
 
 module.exports = resolvers;

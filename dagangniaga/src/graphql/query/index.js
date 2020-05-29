@@ -1,6 +1,5 @@
 import gql from "graphql-tag";
 
-
 export const QUERY_POST = gql`
   query Post($id: String!) {
     post(id: $id) {
@@ -34,9 +33,8 @@ export const QUERY_POST = gql`
   }
 `;
 
-
 export const QUERY_POSTS = gql`
-  query Posts($userId: String!)  {
+  query Posts($userId: String!) {
     posts(userId: $userId) {
       id
       uri
@@ -47,7 +45,7 @@ export const QUERY_POSTS = gql`
 `;
 
 export const QUERY_USER = gql`
- query GetUser($id: String!) {
+  query GetUser($id: String!) {
     getUser(id: $id) {
       id
       avatar
@@ -76,7 +74,6 @@ export const QUERY_USER = gql`
   }
 `;
 
-
 export const QUERY_SEARCH_USERS = gql`
   query SearchUsers($userId: String!, $name: String!) {
     searchUsers(userId: $userId, name: $name) {
@@ -90,13 +87,12 @@ export const QUERY_SEARCH_USERS = gql`
 
 export const QUERY_USER_EXISTS = gql`
   query UserExist($email: String!) {
-    userExist(email: $email){
+    userExist(email: $email) {
       name
       id
     }
   }
 `;
-
 
 export const QUERY_LIKE_USERS = gql`
   query LikeUsers($likes: [String!]) {
@@ -109,7 +105,6 @@ export const QUERY_LIKE_USERS = gql`
   }
 `;
 
-
 export const QUERY_CHAT_EXISTS = gql`
   query ChatExists($userId: String!, $targetId: String!) {
     chatExists(userId: $userId, targetId: $targetId) {
@@ -117,7 +112,6 @@ export const QUERY_CHAT_EXISTS = gql`
     }
   }
 `;
-
 
 export const QUERY_CHATS = gql`
   query Chats($userId: String!) {
@@ -142,7 +136,6 @@ export const QUERY_CHATS = gql`
   }
 `;
 
-
 export const QUERY_CHAT = gql`
   query Chat($chatId: String!) {
     chat(chatId: $chatId) {
@@ -163,6 +156,30 @@ export const QUERY_CHAT = gql`
   }
 `;
 
+export const QUERY_USER_FEED = gql`
+  query UserFeed($userId: String!) {
+    userFeed(userId: $userId) {
+      id
+      uri
+      caption
+      createdAt
+      author {
+        id
+        avatar
+        handle
+      }
+      likes{
+        author {
+          id
+          handle
+          avatar
+          name
+        }
+      }
+    }
+  }
+`;
+
 export const QUERY_DOES_FOLLOW = gql`
   query DoesFollow($userId: String!, $targetId: String!) {
     doesFollow(userId: $userId, targetId: $targetId) {
@@ -171,9 +188,8 @@ export const QUERY_DOES_FOLLOW = gql`
   }
 `;
 
-
 export const QUERY_USER_CONNECTIONS = gql`
- query UserConnections($userId: String!, $type: String!) {
+  query UserConnections($userId: String!, $type: String!) {
     userConnections(userId: $userId, type: $type) {
       id
       avatar
@@ -182,7 +198,6 @@ export const QUERY_USER_CONNECTIONS = gql`
     }
   }
 `;
-
 
 export const QUERY_NOTIFICATION = gql`
   query Notifications($userId: String!) {

@@ -26,6 +26,8 @@ const schema = new Schema({
     required: true,
   },
   about: String,
+  token: String,
+  fcmToken: String,
   followers: [{
     type: Schema.Types.ObjectId,
     ref: 'User'

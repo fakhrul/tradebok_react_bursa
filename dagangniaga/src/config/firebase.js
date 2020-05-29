@@ -147,4 +147,8 @@ export const database = firebase.database();
 export const auth = firebase.auth();
 export const provider = new firebase.auth.FacebookAuthProvider();
 export const storage = firebase.storage();
-export const firestore = firebase.firestore()
+export const firestore = firebase.firestore();
+
+// export const messaging = firebase.messaging();
+// export const notifications = firebase.notifications();
+// export const crashlytics = firebase.crashlytics();

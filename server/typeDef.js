@@ -24,6 +24,7 @@ const typeDefs = gql`
     chat(chatId: String!): Chat!
     userConnections(userId: String!, type: String!): [User] 
     notifications(userId: String!): [Notification]
+    userFeed(userId: String!): [Post]!
   }
   type Subscription {
     post(id: String!): Post
@@ -66,6 +67,7 @@ const typeDefs = gql`
     messageSeen(messageId: String!) : Message 
     updateLastSeen(userId: String!) : User!
     deleteNotification(notificationId: String!) : Notification
+    updateFcmToken(userId: String!, fcmToken: String!) : User!
 
   }
   type Stock {

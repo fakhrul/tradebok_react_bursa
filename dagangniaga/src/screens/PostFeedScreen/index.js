@@ -6,22 +6,25 @@ import { FlatGrid } from 'react-native-super-grid';
 import {FontAwesome} from '@expo/vector-icons';
 import EmptyFeed from '../../resources/empty-feed.svg';
 import { Context as AuthContext } from '../../context/AuthContext';
-// import { MUTATION_UPDATE_FCM_TOKEN } from '@app/graphql/mutation';
+import { MUTATION_UPDATE_FCM_TOKEN } from '../../graphql/mutation';
 import { QUERY_USER_FEED } from '../../graphql/query';
 import { HomeHeader, IconButton, PostCardPlaceholder, SvgBanner } from '../../components';
 // import { crashlytics, initializeFCM, messaging } from '@app/utils/firebase';
+import {crashlytics,  initializeFCM } from '../../config/firebase';
 import PostCard from './components/PostCard';
+import {colors} from "../../utils";
 
-const HomeScreen: React.FC = () => {
+const PostFeedScreen= ({navigation}) => {
 
-  const { user, theme, unreadMessages } = useContext(AppContext);
-  const { navigate } = useNavigation();
+  const { state } = useContext(AuthContext);
+
   const {
     data: userFeedQueryData,
     loading: userFeedQueryLoading,
     error: userFeedQueryError,
     refetch: userFeedRefetch
-  } = useQuery(QUERY_USER_FEED, { variables: { userId: user.id }, fetchPolicy: 'network-only' });
+  } = useQuery(QUERY_USER_FEED, { variables: { userId: state.userId }, fetchPolicy: 'network-only' });
+  
   const [updateFcmToken] = useMutation(MUTATION_UPDATE_FCM_TOKEN);
 
   const initialize = async () => {
@@ -29,7 +32,7 @@ const HomeScreen: React.FC = () => {
     if (fcmToken) {
       updateFcmToken({
         variables: {
-          userId: user.id,
+          userId: state.userId,
           fcmToken
         }
       });
@@ -37,21 +40,21 @@ const HomeScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    const onTokenRefreshListener = messaging.onTokenRefresh(fcmToken => {
-      try {
-        if (fcmToken) updateFcmToken({
-          variables: {
-            userId: user.id,
-            fcmToken
-          }
-        });
-      } catch ({ message }) {
-        crashlytics.recordCustomError(Errors.UPDATE_FCM_TOKEN, message)
-      }
-    });
+    // const onTokenRefreshListener = messaging.onTokenRefresh(fcmToken => {
+    //   try {
+    //     if (fcmToken) updateFcmToken({
+    //       variables: {
+    //         userId: state.userId,
+    //         fcmToken
+    //       }
+    //     });
+    //   } catch ({ message }) {
+    //     crashlytics.recordCustomError("UPDATE_FCM_TOKEN", message)
+    //   }
+    // });
 
     return () => {
-      onTokenRefreshListener();
+      // onTokenRefreshListener();
     };
   }, []);
 
@@ -59,7 +62,7 @@ const HomeScreen: React.FC = () => {
     initialize();
   }, [])
 
-  const navigateToMessages = () => navigate(Routes.MessageScreen);
+  const navigateToMessages = () => navigation.navigate("messageFlow");
 
   const refreshControl = () => {
     const onRefresh = () => {
@@ -70,7 +73,7 @@ const HomeScreen: React.FC = () => {
 
     return (
       <RefreshControl
-        tintColor={theme.text02}
+        tintColor={colors.text02}
         refreshing={userFeedQueryLoading}
         onRefresh={onRefresh}
       />
@@ -82,6 +85,7 @@ const HomeScreen: React.FC = () => {
     const { id, uri, caption, likes, createdAt, author } = item;
 
     return <PostCard
+      navigation={navigation}
       id={id}
       author={author}
       time={createdAt}
@@ -102,7 +106,7 @@ const HomeScreen: React.FC = () => {
         showsVerticalScrollIndicator={false}
         items={userFeed}
         ListEmptyComponent={() => <SvgBanner Svg={EmptyFeed} spacing={20} placeholder={`Let's follow someone`} />}
-        style={styles().postList}
+        style={styles.postList}
         spacing={20}
         renderItem={renderItem}
       />
@@ -110,36 +114,36 @@ const HomeScreen: React.FC = () => {
   }
 
   const IconRight = () => {
-    const hasBadge = unreadMessages !== 0;
+    const hasBadge = state.unreadMessages !== 0;
     return <IconButton
       hasBadge={hasBadge}
-      badgeCount={unreadMessages}
+      badgeCount={state.unreadMessages}
       onPress={navigateToMessages}
       Icon={() =>
         <FontAwesome
           name='send'
-          size={IconSizes.x5}
-          color={theme.text01}
+          size={20}
+          color={colors.text01}
         />}
     />;
   };
 
   return (
-    <View style={styles(theme).container}>
+    <View style={styles.container}>
       <HomeHeader IconRight={IconRight} />
       {content}
     </View>
   );
 };
 
-const styles = (theme = {} as ThemeColors) => StyleSheet.create({
+const styles =  StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.base
+    backgroundColor: colors.base
   },
   postList: {
     flex: 1
   }
 });
 
-export default HomeScreen;
+export default PostFeedScreen;

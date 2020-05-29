@@ -195,3 +195,12 @@ export const MUTATION_DELETE_NOTIFICATION = gql`
     }
   }
 `;
+
+
+export const MUTATION_UPDATE_FCM_TOKEN = gql`
+  mutation UpdateFcmToken($userId: String!, $fcmToken: String!) {
+    updateFcmToken(userId: $userId, fcmToken: $fcmToken) {
+      id
+    }
+  }
+`;

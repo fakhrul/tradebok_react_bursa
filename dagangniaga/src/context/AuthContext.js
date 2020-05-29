@@ -19,11 +19,9 @@ const authReducer = (state, action) => {
     case "clear_error_message":
       return { ...state, errorMessage: "" };
     case "update_user_id":
-      // console.log("state", state);
-      // console.log("payload", action.payload);
-      const returnObj = { ...state, userId: action.payload };
-      // console.log("returnObj", returnObj);
-      return returnObj;
+      return { ...state, userId: action.payload };
+    case "update_unread_messages":
+      return { ...state, unreadMessages: action.payload };
     default:
       return state;
   }
@@ -243,6 +241,7 @@ const signout = (dispatch) => {
     await fb.auth.signOut().then(() => console.log("User signed out!"));
   };
 };
+
 const updateUserId = (dispatch) => {
   return async ({ userId }) => {
     // console.log("userId", userId);
@@ -253,6 +252,16 @@ const updateUserId = (dispatch) => {
     // dispatch({ type: "update_user_id", payload: userId });
   };
 };
+
+const updateUnreadMessages = (dispatch) => {
+  return async ({ unreadMessages }) => {
+    dispatch({
+      type: "update_unread_messages",
+      payload: unreadMessages,
+    });
+  };
+};
+
 export const { Provider, Context } = createDataContext(
   authReducer,
   {
@@ -264,6 +273,7 @@ export const { Provider, Context } = createDataContext(
     clearErrorMessage,
     tryLocalSignIn,
     updateUserId,
+    updateUnreadMessages,
   },
-  { userId: null, currentUser: null, errorMessage: "" }
+  { userId: null, currentUser: null, errorMessage: "", unreadMessages: 0 }
 );

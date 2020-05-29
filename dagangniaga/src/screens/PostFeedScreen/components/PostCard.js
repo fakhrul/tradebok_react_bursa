@@ -1,53 +1,46 @@
-import React, { useContext } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { NativeImage } from '@app/layout';
-import { Typography, ThemeStatic } from '@app/theme';
-import { useNavigation } from 'react-navigation-hooks';
-import { Routes, PostDimensions, IconSizes } from '@app/constants';
-import { parseTimeElapsed, parseLikes } from '@app/utils/shared';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import { AppContext } from '@app/context';
+import React, { useContext } from "react";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { NativeImage } from "../../../components";
+import { colors, parseLikes } from "../../../utils";
+import { AntDesign } from "@expo/vector-icons";
+import { Context as AuthContext } from "../../../context/AuthContext";
+import moment from "moment";
+import { responsiveWidth } from 'react-native-responsive-dimensions';
 
-const { FontWeights, FontSizes } = Typography;
 
-type Author = {
-  id: string,
-  avatar: string,
-  handle: string
-};
+const PostCard = ({ navigation, id, author, time, uri, likes, caption }) => {
+  const { state } = useContext(AuthContext);
 
-interface PostCardProps {
-  id: string,
-  author: Author,
-  time: string,
-  uri: string,
-  likes: string[],
-  caption: string
-};
+  const navigateToPost = () => navigation.navigate("PostView", { postId: id });
 
-const PostCard: React.FC<PostCardProps> = ({ id, author, time, uri, likes, caption }) => {
+  // const readableTime = moment(time).fromNow();
+  // const readableLikes = parseLikes(likes.length);
+  // const isLiked = likes.includes(state.userId);
 
-  const { navigate } = useNavigation();
-  const { user } = useContext(AppContext);
+  
+  const parseLikes = (likeCount) => {
+    return likeCount === 1 ? `${likeCount} like` : `${likeCount} likes`;
+  };
 
-  const navigateToPost = () => navigate(Routes.PostViewScreen, { postId: id });
-
-  const { readableTime } = parseTimeElapsed(time);
+  const readableTime = moment(time).fromNow();
+  const isContainMyLike = likes.filter(
+    (likePost) => {
+      return likePost.author.id === state.userId
+    }
+  );
+  const isLiked = isContainMyLike.length > 0 ? true: false;
   const readableLikes = parseLikes(likes.length);
-  const isLiked = likes.includes(user.id);
 
   return (
-    <TouchableOpacity onPress={navigateToPost} activeOpacity={0.9} style={styles.container}>
-      <NativeImage
-        uri={uri}
-        style={styles.postImage}
-      />
+    <TouchableOpacity
+      onPress={navigateToPost}
+      activeOpacity={0.9}
+      style={styles.container}
+    >
+      <NativeImage uri={uri} style={styles.postImage} />
 
       <View style={styles.upperContent}>
-        <NativeImage
-          uri={author.avatar}
-          style={styles.avatarImage}
-        />
+        <NativeImage uri={author.avatar} style={styles.avatarImage} />
         <View>
           <Text style={styles.handleText}>{author.handle}</Text>
           <Text style={styles.timeText}>{readableTime}</Text>
@@ -57,17 +50,14 @@ const PostCard: React.FC<PostCardProps> = ({ id, author, time, uri, likes, capti
       <View style={styles.lowerContent}>
         <View style={styles.likeContent}>
           <AntDesign
-            name='heart'
-            color={isLiked ? ThemeStatic.like : ThemeStatic.unlike}
-            size={IconSizes.x5}
+            name="heart"
+            color={isLiked ? colors.like : colors.unlike}
+            size={20}
           />
           <Text style={styles.likesText}>{readableLikes}</Text>
         </View>
 
-        <Text
-          numberOfLines={1}
-          ellipsizeMode='tail'
-          style={styles.captionText}>
+        <Text numberOfLines={1} ellipsizeMode="tail" style={styles.captionText}>
           {caption}
         </Text>
       </View>
@@ -77,61 +67,59 @@ const PostCard: React.FC<PostCardProps> = ({ id, author, time, uri, likes, capti
 
 const styles = StyleSheet.create({
   container: {
-    ...PostDimensions.Large,
-    alignSelf: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: ThemeStatic.black,
-    overflow: 'hidden',
-    borderRadius: 10
+    height: responsiveWidth(90),
+    width: responsiveWidth(90),
+    alignSelf: "center",
+    justifyContent: "space-between",
+    backgroundColor: colors.black,
+    overflow: "hidden",
+    borderRadius: 10,
   },
   postImage: {
-    position: 'absolute',
-    ...PostDimensions.Large
+    position: "absolute",
+    height: responsiveWidth(90),
+    width: responsiveWidth(90),
   },
   avatarImage: {
     height: 44,
     width: 44,
-    backgroundColor: ThemeStatic.placeholder,
+    backgroundColor: colors.placeholder,
     borderRadius: 45,
-    marginRight: 10
+    marginRight: 10,
   },
   upperContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     padding: 16,
-    backgroundColor: ThemeStatic.translucent
+    backgroundColor: colors.translucent,
   },
   lowerContent: {
-    justifyContent: 'center',
+    justifyContent: "center",
     padding: 16,
-    backgroundColor: ThemeStatic.translucent
+    backgroundColor: colors.translucent,
   },
   likeContent: {
-    flexDirection: 'row'
+    flexDirection: "row",
   },
   handleText: {
-    ...FontWeights.Regular,
-    ...FontSizes.Body,
-    color: ThemeStatic.white
+    fontSize: 16,
+    color: colors.white,
   },
   timeText: {
-    ...FontWeights.Light,
-    ...FontSizes.Caption,
-    color: ThemeStatic.white,
+    fontSize: 14,
+    color: colors.white,
     marginTop: 2,
   },
   likesText: {
-    ...FontWeights.Regular,
-    ...FontSizes.Body,
+    fontSize: 16,
     marginLeft: 8,
-    color: ThemeStatic.white
+    color: colors.white,
   },
   captionText: {
-    ...FontWeights.Light,
-    ...FontSizes.Body,
-    color: ThemeStatic.white,
-    marginTop: 5
-  }
+    fontSize: 16,
+    color: colors.white,
+    marginTop: 5,
+  },
 });
 
 export default PostCard;

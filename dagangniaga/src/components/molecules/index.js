@@ -12,6 +12,8 @@ import ConversationScreenPlaceholder from "./ConversationScreenPlaceholder";
 import MessageScreenPlaceholder from "./MessageScreenPlaceholder";
 import SearchBar from "./SearchBar";
 import NotificationScreenPlaceholder from "./NotificationScreenPlaceholder";
+import PostCardPlaceholder from "./PostCardPlaceholder";
+import HomeHeader from "./HomeHeader";
 
 export {
   ProfileScreenPlaceholder,
@@ -27,5 +29,7 @@ export {
   ConversationScreenPlaceholder,
   MessageScreenPlaceholder,
   SearchBar,
-  NotificationScreenPlaceholder
+  NotificationScreenPlaceholder,
+  PostCardPlaceholder,
+  HomeHeader
 };

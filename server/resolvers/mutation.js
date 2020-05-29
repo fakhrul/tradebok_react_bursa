@@ -148,10 +148,10 @@ const resolvers = {
               user: args.targetId,
               actionUser: args.userId,
               resourceId: args.targetId,
-              type: "FOLLOW"
-            }, (err, result) => {
-
-            });
+              type: "FOLLOW",
+            },
+            (err, result) => {}
+          );
           return userToReturn;
         }
       );
@@ -320,12 +320,12 @@ const resolvers = {
                 user: result.author._id,
                 actionUser: args.userId,
                 resourceId: args.postId,
-                type: "COMMENT"
-              }, (err, result) => {
-  
-              });
+                type: "COMMENT",
+              },
+              (err, result) => {}
+            );
 
-            resolve(result)
+            resolve(result);
           }
         }
       );
@@ -405,12 +405,10 @@ const resolvers = {
             user: post.author._id,
             actionUser: args.userId,
             resourceId: args.postId,
-            type: "LIKE"
-          }, (err, result) => {
-
-          }
-
-        )
+            type: "LIKE",
+          },
+          (err, result) => {}
+        );
       }
     });
 
@@ -522,7 +520,7 @@ const resolvers = {
     });
   },
   // messageSeen(messageId: String!) : Message
-  messageSeen: (_, args) => { },
+  messageSeen: (_, args) => {},
   // updateLastSeen(userId: String!) : User!
   updateLastSeen: (_, args) => {
     return User.findByIdAndUpdate(
@@ -533,6 +531,19 @@ const resolvers = {
           throw new Error(error);
         }
         return await userUpdate;
+      }
+    );
+  },
+  // updateFcmToken(userId: String!, fcmToken: String!) : User!
+  updateFcmToken: (_, args) => {
+    return User.findByIdAndUpdate(
+      { _id: args.userId },
+      { fcmToken: args.fcmToken },
+      (error, userUpdated) => {
+        if (error) {
+          throw new Error(error);
+        }
+        return userUpdated;
       }
     );
   },
