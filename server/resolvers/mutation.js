@@ -10,6 +10,7 @@ const Stock = require("../model/stock");
 const StockComment = require("../model/stockComment");
 const Chat = require("../model/chat");
 const Message = require("../model/message");
+const Notification = require("../model/notification");
 
 const addPost = (id, caption, uri, authorId) =>
   new Promise((resolve, reject) => {
@@ -139,6 +140,18 @@ const resolvers = {
         { _id: args.targetId },
         async (error, userToReturn) => {
           if (error) throw new Error(error);
+
+          const notificationId = mongoose.Types.ObjectId();
+          Notification.create(
+            {
+              _id: notificationId,
+              user: args.targetId,
+              actionUser: args.userId,
+              resourceId: args.targetId,
+              type: "FOLLOW"
+            }, (err, result) => {
+
+            });
           return userToReturn;
         }
       );
@@ -299,7 +312,21 @@ const resolvers = {
         },
         (err, result) => {
           if (err) reject(err);
-          else resolve(result);
+          else {
+            const notificationId = mongoose.Types.ObjectId();
+            Notification.create(
+              {
+                _id: notificationId,
+                user: result.author._id,
+                actionUser: args.userId,
+                resourceId: args.postId,
+                type: "COMMENT"
+              }, (err, result) => {
+  
+              });
+
+            resolve(result)
+          }
         }
       );
     });
@@ -371,6 +398,19 @@ const resolvers = {
     Post.findById(args.postId, function (err, post) {
       if (!err) {
         pubsub.publish("post", { post: post });
+        const notificationId = mongoose.Types.ObjectId();
+        Notification.create(
+          {
+            _id: notificationId,
+            user: post.author._id,
+            actionUser: args.userId,
+            resourceId: args.postId,
+            type: "LIKE"
+          }, (err, result) => {
+
+          }
+
+        )
       }
     });
 
@@ -477,11 +517,12 @@ const resolvers = {
     ]).then((result) => result[0]);
     return Chat.findById({ _id: args.chatId }, async (error, chatToReturn) => {
       if (error) throw new Error(error);
+      pubsub.publish("chat", { chat: chatToReturn });
       return chatToReturn;
     });
   },
   // messageSeen(messageId: String!) : Message
-  messageSeen: (_, args) => {},
+  messageSeen: (_, args) => { },
   // updateLastSeen(userId: String!) : User!
   updateLastSeen: (_, args) => {
     return User.findByIdAndUpdate(

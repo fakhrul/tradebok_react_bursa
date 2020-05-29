@@ -3,6 +3,31 @@ import * as ImagePicker from "expo-image-picker";
 import { showMessage } from "react-native-flash-message";
 
 
+export const transformMessages = messages =>
+  messages.map(message => {
+    const {
+      id,
+      body,
+      createdAt,
+      author: {
+        id: authorId,
+        name,
+        avatar
+      }
+    } = message;
+
+    return {
+      _id: id,
+      text: body,
+      createdAt: new Date(createdAt),
+      user: {
+        _id: authorId,
+        name,
+        avatar
+      }
+    };
+  });
+  
 export const searchQueryFilter = (array, userId: string, query: string, ) =>
   [...array].filter(({ participants }) => {
     const [participant] = filterChatParticipants(userId, participants);

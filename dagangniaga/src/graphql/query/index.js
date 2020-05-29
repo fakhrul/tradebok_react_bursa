@@ -142,10 +142,60 @@ export const QUERY_CHATS = gql`
   }
 `;
 
+
+export const QUERY_CHAT = gql`
+  query Chat($chatId: String!) {
+    chat(chatId: $chatId) {
+      participants {
+        id
+      }
+      messages(last: 40) {
+        id
+        body
+        createdAt
+        author {
+          id
+          name
+          avatar
+        }
+      }
+    }
+  }
+`;
+
 export const QUERY_DOES_FOLLOW = gql`
   query DoesFollow($userId: String!, $targetId: String!) {
     doesFollow(userId: $userId, targetId: $targetId) {
       id
+    }
+  }
+`;
+
+
+export const QUERY_USER_CONNECTIONS = gql`
+ query UserConnections($userId: String!, $type: String!) {
+    userConnections(userId: $userId, type: $type) {
+      id
+      avatar
+      name
+      handle
+    }
+  }
+`;
+
+
+export const QUERY_NOTIFICATION = gql`
+  query Notifications($userId: String!) {
+    notifications(userId: $userId) {
+      id
+      actionUser {
+        id
+        avatar
+        handle
+      }
+      type
+      resourceId
+      createdAt
     }
   }
 `;

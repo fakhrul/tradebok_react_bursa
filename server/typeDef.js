@@ -21,9 +21,13 @@ const typeDefs = gql`
     doesFollow(userId: String!, targetId: String!): User
     chatExists(userId: String!, targetId: String!): Chat
     chats(userId: String!): [Chat]
+    chat(chatId: String!): Chat!
+    userConnections(userId: String!, type: String!): [User] 
+    notifications(userId: String!): [Notification]
   }
   type Subscription {
     post(id: String!): Post
+    chat(chatId: String!): Chat
   }
   type Mutation {
     createPlayer(
@@ -61,6 +65,8 @@ const typeDefs = gql`
     deleteChat(chatId: String!): Chat!
     messageSeen(messageId: String!) : Message 
     updateLastSeen(userId: String!) : User!
+    deleteNotification(notificationId: String!) : Notification
+
   }
   type Stock {
     id: ID!
@@ -125,7 +131,8 @@ const typeDefs = gql`
     resourceId: String!
     user: User!
     actionUser: User!
-    type: NotificationType!
+    type: String!
+    createdAt: DateTime!
   }
   enum NotificationType {
     FOLLOW

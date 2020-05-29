@@ -8,6 +8,7 @@ const LikePost = require("../model/likePost");
 const Stock = require("../model/stock");
 const StockComment = require("../model/stockComment");
 const Chat = require("../model/chat");
+const Notification = require("../model/notification");
 
 const resolvers = {
   players: () =>
@@ -60,17 +61,25 @@ const resolvers = {
     promisify(User.findOne({ _id: args.userId, followers: args.targetId })),
   // chats(userId: String!): [Chat]
   chats: (_, args) =>
-    promisify(Chat.find({ participants: args.userId })).then(
+    promisify(Chat.find({ participants: args.userId, messages: { $exists: true, $not: { $size: 0 } } })).then(
       (result) => result
     ),
+  // chat(chatId: String!): Chat!
+  chat: (_, args) => promisify(Chat.findById(args.chatId)).then((result) => result),
   // chatExists(userId: String!, targetId: String!): Chat
   chatExists: (_, args) =>
     promisify(Chat.findOne({ participants: { $in: [args.userId, args.targetId] } })).then(
       (result) => result
-     
-    ),    // promisify(Chat.find({ participants: {$all: [args.userId, args.targetId]} })).then(
-  //   (result) => result
-  // ),
+
+    ),
+  // userConnections(userId: String!, type: String!): [User]
+  userConnections: (_, args) =>
+    promisify(User.find({ following: { $in: [args.userId] } })).then(
+      (result) => result
+    ),
+  // notifications(userId: String!): [Notification]
+  notifications: (_, args) =>
+    promisify(Notification.find({ user: args.userId })).then((result) => result),
 };
 
 module.exports = resolvers;

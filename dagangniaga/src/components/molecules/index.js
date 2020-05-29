@@ -11,6 +11,7 @@ import ConnectionsBottomSheet from "./ConversationScreenPlaceholder";
 import ConversationScreenPlaceholder from "./ConversationScreenPlaceholder";
 import MessageScreenPlaceholder from "./MessageScreenPlaceholder";
 import SearchBar from "./SearchBar";
+import NotificationScreenPlaceholder from "./NotificationScreenPlaceholder";
 
 export {
   ProfileScreenPlaceholder,
@@ -25,5 +26,6 @@ export {
   ConnectionsBottomSheet,
   ConversationScreenPlaceholder,
   MessageScreenPlaceholder,
-  SearchBar
+  SearchBar,
+  NotificationScreenPlaceholder
 };

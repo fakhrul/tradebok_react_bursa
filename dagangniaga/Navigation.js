@@ -43,6 +43,7 @@ import ExploreScreen from "./src/screens/ExploreScreen";
 import ConnectionScreen from "./src/screens/ConnectionScreen";
 import ProfileViewScreen from "./src/screens/ProfileViewScreen";
 import MessageScreen from "./src/screens/MessageScreen";
+import NotificationScreen from "./src/screens/NotificationScreen";
 
 const dashboardFlow = createStackNavigator({
   Dashboard: DashboardScreen,
@@ -66,7 +67,8 @@ const conversationFlow = createStackNavigator({
 })
 
 const messageFlow = createStackNavigator({
-  Message: MessageScreen
+  Message: MessageScreen,
+  conversationFlow
 })
 
 const exploreFlow = createStackNavigator({
@@ -74,9 +76,9 @@ const exploreFlow = createStackNavigator({
   PostView: PostViewScreen,
 });
 
-const profileViewFlow =  createStackNavigator({
+const profileViewFlow = createStackNavigator({
   ProfileView: ProfileViewScreen,
-  conversationFlow    
+  conversationFlow
 })
 
 const connectionFlow = createStackNavigator({
@@ -103,6 +105,12 @@ const portfolioFlow = createStackNavigator({
   PortfolioNote: PortfolioNoteScreen,
 });
 
+conversationFlow.navigationOptions = () => {
+  return {
+    headerShown: false
+  }
+}
+
 ProfileViewScreen.navigationOptions = () => {
   return {
     headerShown: false
@@ -124,7 +132,11 @@ profileViewFlow.navigationOptions = () => {
     headerShown: false
   }
 }
-
+NotificationScreen.navigationOptions = () => {
+  return {
+    headerShown: false,
+  }
+}
 ConnectionScreen.navigationOptions = () => {
   return {
     headerShown: false,
@@ -258,6 +270,7 @@ const switchNavigator = createSwitchNavigator({
       exploreFlow,
       connectionFlow,
       messageFlow,
+      Notification: NotificationScreen,
       SettingScreen,
       AboutScreen,
       SignoutScreen,

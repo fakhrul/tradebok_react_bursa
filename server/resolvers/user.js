@@ -2,6 +2,7 @@ import { promisify } from "../helper";
 
 const Post = require("../model/post");
 const User = require("../model/user");
+const Chat = require("../model/chat");
 
 const resolvers = {
   chats: (user) => promisify(Chat.find({participants: user.id})).then((result) => result),

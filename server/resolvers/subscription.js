@@ -17,6 +17,18 @@ const resolvers = {
 
     // }),
   },
+  chat: {
+    subscribe: withFilter(
+      () => pubsub.asyncIterator(["chat"]),
+      (payload, args) => {
+        return !args.chatId || payload.chat.id === args.chatId;
+      }
+    ),
+    // resolve: (payload) => ({
+    //   id: payload.post.id,
+
+    // }),
+  },
 };
 
 module.exports = resolvers;

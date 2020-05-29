@@ -15,7 +15,7 @@ import moment from "moment";
 //   };
 
   
-const MessageCard = ({ chatId, participantId, avatar, handle, authorId, messageId, messageBody, seen, time, isOnline }) => {
+const MessageCard = ({ navigation,  chatId, participantId, avatar, handle, authorId, messageId, messageBody, seen, time, isOnline }) => {
 
   const { state } = useContext(AuthContext);
   const  parsedTime  = moment(time).fromNow();
@@ -27,7 +27,7 @@ const MessageCard = ({ chatId, participantId, avatar, handle, authorId, messageI
     if (authorId !== state.userId) {
       messageSeen({ variables: { messageId } });
     }
-    navigate("conversationFlow", { chatId, avatar, handle, targetId: participantId })
+    navigation.navigate("conversationFlow", { chatId, avatar, handle, targetId: participantId })
   };
 
   const isHighlighted = authorId !== state.userId && !seen;

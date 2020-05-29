@@ -10,8 +10,8 @@ import LikePost from "./likePost"
 import Stock from "./stock";
 import Message from "./message";
 import Chat from "./chat";
-
-const resolvers = {User, Post, Comment, LikePost, Query, Stock, Message, Chat,  Mutation, Subscription};
+import Notification from "./notification"
+const resolvers = {User, Post, Comment, LikePost, Query, Stock, Message, Chat, Notification, Mutation, Subscription};
 
 console.log(resolvers);
 module.exports = resolvers;

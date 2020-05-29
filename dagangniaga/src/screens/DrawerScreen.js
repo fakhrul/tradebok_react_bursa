@@ -146,8 +146,8 @@ const DrawerScreen = ({ navigation }) => {
           ></SidebarLink>
           <SidebarLink
             navigation={navigation}
-            title="Alert"
-            route="homeFlow"
+            title="Notifications"
+            route="Notification"
             icon={
               <MaterialCommunityIcons
                 name="bell-alert"
@@ -203,21 +203,21 @@ const DrawerScreen = ({ navigation }) => {
               <Ionicons name="ios-people" size={20} color={colors.text.title} />
             }
           ></SidebarLink>
-          <SidebarLink
+          {/* <SidebarLink
             navigation={navigation}
             title="Messages"
             route="messageFlow"
             icon={
               <Ionicons name="ios-people" size={20} color={colors.text.title} />
             }
-          ></SidebarLink>
+          ></SidebarLink> */}
           
           <Divider />
           <SidebarTitle title="COMMUNICATE"></SidebarTitle>
           <SidebarLink
             navigation={navigation}
             title="Chat"
-            route="homeFlow"
+            route="messageFlow"
             icon={
               <Ionicons
                 name="md-chatboxes"

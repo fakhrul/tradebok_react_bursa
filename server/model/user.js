@@ -53,7 +53,11 @@ const schema = new Schema({
   chats: [{
     type: Schema.Types.ObjectId,
     ref: 'Chat'
-  }]
+  }],
+  notifications: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Notification'
+  }],
 }, {timestamps: true});
 
 

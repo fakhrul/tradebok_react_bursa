@@ -3,10 +3,13 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
 
 const Header = ({ title, navigation, isBackButton, ...more }) => {
+  const navigateGoBack = () => {
+    navigation.goBack();
+  }
   return (
     <View style={styles.header}>
       {isBackButton ? (
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={navigateGoBack}>
           <Ionicons name="md-arrow-back" size={32} />
         </TouchableOpacity>
       ) : (
