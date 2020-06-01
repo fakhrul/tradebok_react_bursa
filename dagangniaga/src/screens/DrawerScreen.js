@@ -16,7 +16,8 @@ import {
   Foundation,
   Fontisto,
   FontAwesome5,
-  Octicons
+  Octicons,
+  Entypo
 } from "@expo/vector-icons";
 import { DrawerNavigatorItems } from "react-navigation-drawer";
 import { NavigationActions } from "react-navigation";
@@ -97,10 +98,10 @@ const DrawerScreen = ({ navigation }) => {
         }}
       >
         <View>
-          <SidebarLink
+          {/* <SidebarLink
             navigation={navigation}
             title="Home"
-            route="homeFlow"
+            route="dashboardFlow"
             icon={
               <Ionicons
                 name="md-home"
@@ -108,7 +109,7 @@ const DrawerScreen = ({ navigation }) => {
                 color={colors.text.title}
               ></Ionicons>
             }
-          ></SidebarLink>
+          ></SidebarLink> */}
           {/* <SidebarLink
             navigation={navigation}
             title="Profile"
@@ -121,12 +122,12 @@ const DrawerScreen = ({ navigation }) => {
               ></Ionicons>
             }
           ></SidebarLink> */}
-          <Divider></Divider>
+          {/* <Divider></Divider> */}
           <SidebarTitle title="TRADE"></SidebarTitle>
           <SidebarLink
             navigation={navigation}
             title="Portfolio"
-            route="homeFlow"
+            route="portfolioFlow"
             icon={
               <MaterialIcons
                 name="monetization-on"
@@ -138,7 +139,7 @@ const DrawerScreen = ({ navigation }) => {
           <SidebarLink
             navigation={navigation}
             title="Watchlist"
-            route="homeFlow"
+            route="stockFlow"
             icon={
               <MaterialCommunityIcons
                 name="pin"
@@ -165,7 +166,7 @@ const DrawerScreen = ({ navigation }) => {
           <SidebarLink
             navigation={navigation}
             title="Market Status"
-            route="homeFlow"
+            route="dashboardFlow"
             icon={
               <Foundation
                 name="graph-pie"
@@ -176,14 +177,27 @@ const DrawerScreen = ({ navigation }) => {
           ></SidebarLink>
           <SidebarLink
             navigation={navigation}
-            title="Stocks"
-            route="homeFlow"
+            title="Screening"
+            route="screeningFlow"
             icon={
               <Fontisto
                 name="line-chart"
-                size={16}
+                size={15}
                 color={colors.text.title}
               ></Fontisto>
+            }
+          ></SidebarLink>
+          <SidebarLink
+            navigation={navigation}
+            title="Stream"
+            route="streamFlow"
+            icon={
+              <FontAwesome5
+              name="stream"
+              size={18}
+              color={colors.text.title}
+            ></FontAwesome5>
+
             }
           ></SidebarLink>
           <SidebarLink
@@ -191,11 +205,7 @@ const DrawerScreen = ({ navigation }) => {
             title="Posts"
             route="exploreFlow"
             icon={
-              <FontAwesome5
-                name="stream"
-                size={20}
-                color={colors.text.title}
-              ></FontAwesome5>
+              <Entypo name="retweet" size={20} color={colors.text.title} />
             }
           ></SidebarLink>
           <SidebarLink
@@ -203,7 +213,7 @@ const DrawerScreen = ({ navigation }) => {
             title="Connections"
             route="connectionFlow"
             icon={
-              <Ionicons name="ios-people" size={20} color={colors.text.title} />
+              <Ionicons name="ios-people" size={22} color={colors.text.title} />
             }
           ></SidebarLink>
           {/* <SidebarLink
@@ -230,7 +240,7 @@ const DrawerScreen = ({ navigation }) => {
             }
           ></SidebarLink>
           <Divider />
-          <SidebarTitle title="LEARN"></SidebarTitle>
+          {/* <SidebarTitle title="LEARN"></SidebarTitle>
           <SidebarLink
             navigation={navigation}
             title="About Trading"
@@ -255,7 +265,7 @@ const DrawerScreen = ({ navigation }) => {
               ></FontAwesome5>
             }
           ></SidebarLink>
-          <Divider />
+          <Divider /> */}
           <SidebarTitle title="ABOUT"></SidebarTitle>
           <SidebarLink
             navigation={navigation}
@@ -281,7 +291,7 @@ const DrawerScreen = ({ navigation }) => {
               ></MaterialIcons>
             }
           ></SidebarLink>
-          <SidebarLink
+          {/* <SidebarLink
             navigation={navigation}
             title="Disclaimer"
             route="homeFlow"
@@ -292,9 +302,9 @@ const DrawerScreen = ({ navigation }) => {
                 color={colors.text.title}
               ></FontAwesome5>
             }
-          ></SidebarLink>
+          ></SidebarLink> */}
           <Divider></Divider>
-          <SidebarTitle title="MORE"></SidebarTitle>
+          {/* <SidebarTitle title="MORE"></SidebarTitle>
           <SidebarLink
             navigation={navigation}
             title="Setting"
@@ -318,7 +328,7 @@ const DrawerScreen = ({ navigation }) => {
                 color={colors.text.title}
               ></Ionicons>
             }
-          ></SidebarLink>
+          ></SidebarLink> */}
 
 
         </View>

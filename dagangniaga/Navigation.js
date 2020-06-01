@@ -21,6 +21,7 @@ import { createDrawerNavigator } from "react-navigation-drawer";
 import WelcomeScreen from "./src/screens/WelcomeScreen";
 import ConversationScreen from "./src/screens/ConversationScreen";
 import PostFeedScreen from "./src/screens/PostFeedScreen";
+import { colors } from "./src/utils";
 
 import {
   FontAwesome,
@@ -30,6 +31,8 @@ import {
   AntDesign,
   MaterialIcons,
   Feather,
+  Foundation,
+  Ionicons
 } from "@expo/vector-icons";
 
 import {
@@ -52,10 +55,11 @@ const dashboardFlow = createStackNavigator({
 dashboardFlow.navigationOptions = {
   title: "Home",
   tabBarIcon: (
-    <MaterialCommunityIcons
-      name="monitor-dashboard"
+    <Foundation
+      name="graph-pie"
       size={20}
-    ></MaterialCommunityIcons>
+      color={colors.text.title}
+    ></Foundation>
   ),
 };
 
@@ -186,7 +190,13 @@ AddPostScreen.navigationOptions = () => {
 
 streamFlow.navigationOptions = {
   title: "Stream",
-  tabBarIcon: <FontAwesome5 name="newspaper" size={20}></FontAwesome5>,
+  tabBarIcon: (
+    <FontAwesome5
+      name="stream"
+      size={16}
+      color={colors.text.title}
+    ></FontAwesome5>
+  ),
 };
 
 settingFlow.navigationOptions = {
@@ -196,18 +206,34 @@ settingFlow.navigationOptions = {
 
 portfolioFlow.navigationOptions = {
   title: "Portfolio",
-  tabBarIcon: <FontAwesome name="money" size={20}></FontAwesome>,
+  tabBarIcon: (
+    <MaterialIcons
+      name="monetization-on"
+      size={20}
+      color={colors.text.title}
+    ></MaterialIcons>
+  ),
 };
 
 stockFlow.navigationOptions = {
-  title: "Stocks",
-  tabBarIcon: <Entypo name="line-graph" size={20}></Entypo>,
+  title: "Watchlist",
+  tabBarIcon: (
+    <MaterialCommunityIcons
+      name="pin"
+      size={20}
+      color={colors.text.title}
+    ></MaterialCommunityIcons>
+  ),
 };
 
 chatFlow.navigationOptions = {
   title: "Chat",
   tabBarIcon: (
-    <MaterialIcons name="chat-bubble-outline" size={20}></MaterialIcons>
+    <Ionicons
+      name="md-chatboxes"
+      size={20}
+      color={colors.text.title}
+    ></Ionicons>
   ),
 };
 

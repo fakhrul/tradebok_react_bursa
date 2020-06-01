@@ -7,6 +7,7 @@ export default class SidebarLink extends Component {
   render() {
     const navigateToScreen = (route) => () => {
       this.props.navigation.navigate(route)
+      this.props.navigation.closeDrawer();
     };
 
     return (
