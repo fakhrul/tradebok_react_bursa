@@ -30,7 +30,7 @@ const TermsAndConditions = () => {
 
         <Text style={styles.termsTitleText}>Modification of Terms</Text>
         <Text style={styles.termsText}>
-          Dagang Niaga (“Dagang Niaga”, “we”, “us” or “our”) provides a free 
+          Stock Hub (“Stock Hub”, “we”, “us” or “our”) provides a free 
           platform via its apps to a community of registered users
           (“users” or “you”) to engage in a variety of activities, including to
           upload and display photographs (“Visual Content”), share comments,
@@ -42,7 +42,7 @@ const TermsAndConditions = () => {
 
         <Text style={styles.termsTitleText}>Data Usage</Text>
         <Text style={styles.termsText}>
-          As mentioned Dagang Niaga is a free app, the data you generate is not 
+          As mentioned Stock Hub is a free app, the data you generate is not 
           used against you in any shape or form like sharing with 3rd parties 
           or targeting you for ads using machine learning algorithms
         </Text>
@@ -51,7 +51,7 @@ const TermsAndConditions = () => {
         <Text style={styles.termsText}>
           Services are available to authorized representatives of legal entities
           and to individuals who are either (i) at least 18 years old to
-          register for Dagang Niaga, or (ii) at least 14 years old, and who are
+          register for Stock Hub, or (ii) at least 14 years old, and who are
           authorized to access the Site by a parent or legal guardian. If you
           have authorized a minor to use the Site, you are responsible for the
           online conduct of such minor, and the consequences of any misuse of
@@ -67,9 +67,9 @@ const TermsAndConditions = () => {
           Content and Communications collectively referred to as “Content”) is
           the sole responsibility of the account holder from which such
           Communications originate. You acknowledge and agree that you, and not
-          Dagang Niaga, are entirely responsible for all Content that you post, or
+          Stock Hub, are entirely responsible for all Content that you post, or
           otherwise submit to the Site, including via messages exchanged through
-          Dagang Niaga’s messenger service. Dagang Niaga does not control user
+          Stock Hub’s messenger service. Stock Hub does not control user
           submitted Content and, as such, does not guarantee the accuracy,
           integrity, or quality of such Content. You understand that by using
           the Platform, you may be exposed to Content that is offensive,
@@ -79,7 +79,7 @@ const TermsAndConditions = () => {
           As a condition of use, you promise to abide by our Content Guidelines
           and not to use the Services for any purpose that is unlawful or
           prohibited by these Terms, or any other purpose not reasonably
-          intended by Dagang Niaga. By way of example, and not as a limitation, you
+          intended by Stock Hub. By way of example, and not as a limitation, you
           agree not to use the Services:
         </Text>
         <Text style={styles.subPoints}>
@@ -92,7 +92,7 @@ const TermsAndConditions = () => {
           any person.
         </Text>
         <Text style={styles.subPoints}>
-          3) To communicate with Dagang Niaga’s representatives or other users in
+          3) To communicate with Stock Hub’s representatives or other users in
           an abusive or offensive manner.
         </Text>
         <Text style={styles.subPoints}>
@@ -103,7 +103,7 @@ const TermsAndConditions = () => {
         <Text style={styles.subPoints}>
           5) To post or transmit, or cause to be posted or transmitted, any
           Communication designed or intended to obtain password, account, or
-          private information from any Dagang Niaga user.
+          private information from any Stock Hub user.
         </Text>
         <Text style={styles.subPoints}>
           6) To create or transmit unwanted ‘spam’ to any person or any URL.
@@ -156,11 +156,11 @@ const TermsAndConditions = () => {
         </Text>
         <Text style={styles.termsText}>
           You are solely responsible for your interactions with other users of
-          the Site. Dagang Niaga reserves the right, but has no obligation, to
+          the Site. Stock Hub reserves the right, but has no obligation, to
           review disputes between you and other users. This includes the right
-          to review messages exchanged through Dagang Niaga’s messenger service,
-          based on any reports that Dagang Niaga receives alleging the violation of
-          these Terms through the use of Dagang Niaga’s messenger service,
+          to review messages exchanged through Stock Hub’s messenger service,
+          based on any reports that Stock Hub receives alleging the violation of
+          these Terms through the use of Stock Hub’s messenger service,
           including without limitation, reports regarding alleged harassment,
           indecency, and offensive messages.
         </Text>

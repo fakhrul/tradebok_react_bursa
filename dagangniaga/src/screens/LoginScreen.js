@@ -61,9 +61,12 @@ const LoginScreen = ({ navigation }) => {
       <View style={styles.logo}>
         <Image source={require("../resources/login_logo.png")}></Image>
       </View>
-      <Text style={styles.title}>Welcome !</Text>
-      <View style={{ height: 65 }}></View>
-      <View style={{ height: 30 }}></View>
+      <View style={{ height: 45 }}></View>
+      <Text style={styles.title}>Welcome to StockHub!</Text>
+      <View style={{ height: 10 }}></View>
+      <Text style={styles.termsText}>A Social Media Platform</Text>
+      <Text style={styles.termsText}>for Bursa Malaysia Traders</Text>
+      <View style={{ height: 250 }}></View>
       {state.errorMessage ? (
         <Text style={styles.errorMessage}>{state.errorMessage} </Text>
       ) : null}
@@ -78,7 +81,7 @@ const LoginScreen = ({ navigation }) => {
           // backgroundColor: "#421234"
         }}
       >
-        <SocialIcon
+        {/* <SocialIcon
           style={{}}
           title="Sign In With Email"
           button
@@ -91,7 +94,7 @@ const LoginScreen = ({ navigation }) => {
           button
           type="facebook"
           onPress={loginWithFacebook}
-        />
+        /> */}
         <SocialIcon
           style={{}}
           title="Sign In With Google"

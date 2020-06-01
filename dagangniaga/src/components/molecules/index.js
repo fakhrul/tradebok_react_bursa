@@ -14,6 +14,8 @@ import SearchBar from "./SearchBar";
 import NotificationScreenPlaceholder from "./NotificationScreenPlaceholder";
 import PostCardPlaceholder from "./PostCardPlaceholder";
 import HomeHeader from "./HomeHeader";
+import DrawerHeaderPlaceholder from "./DrawerHeaderPlaceholder";
+import DrawerHeader from "./DrawerHeader";
 
 export {
   ProfileScreenPlaceholder,
@@ -31,5 +33,7 @@ export {
   SearchBar,
   NotificationScreenPlaceholder,
   PostCardPlaceholder,
-  HomeHeader
+  HomeHeader,
+  DrawerHeaderPlaceholder,
+  DrawerHeader
 };

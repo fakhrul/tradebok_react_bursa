@@ -25,3 +25,5 @@ export const colors = {
     white: "#FFFFFF",
   },
 };
+
+//0072CA 749500

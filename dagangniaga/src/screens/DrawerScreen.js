@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   View,
   ScrollView,
@@ -6,6 +6,7 @@ import {
   StyleSheet,
   ImageBackground,
   Image,
+  FlatList
 } from "react-native";
 import {
   Ionicons,
@@ -23,8 +24,54 @@ import { colors } from "../utils";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Divider } from "react-native-elements";
 import { SidebarLink, SidebarTitle } from "../components";
+import { Context as AuthContext } from "../context/AuthContext";
+import { DrawerHeaderPlaceholder, DrawerHeader } from "../components";
+import { useQuery } from "@apollo/react-hooks";
+import { QUERY_USER } from "../graphql/query";
+import { PollIntervals } from "../constants";
 
 const DrawerScreen = ({ navigation }) => {
+  const { state } = useContext(AuthContext);
+
+  const { data, loading, error } = useQuery(QUERY_USER, {
+    variables: { id: state.userId },
+    pollInterval: PollIntervals.profile,
+    fetchPolicy: "network-only",
+  });
+
+  const onHeaderPress = () => {
+    navigation.navigate("profileFlow");
+  }
+  let drawerHeader = <DrawerHeaderPlaceholder />;
+
+  if (!loading && !error) {
+    const {
+      getUser: {
+        avatar,
+        name,
+        handle,
+        following,
+        followers,
+      },
+    } = data;
+
+    drawerHeader = (
+      <>
+        <View>
+          <DrawerHeader
+            onPress={onHeaderPress}
+            avatar={avatar}
+            name={name}
+            handle={handle}
+            following={following.length}
+            followers={followers.length}
+            
+          ></DrawerHeader>
+        </View>
+      </>
+    );
+  }
+
   const navigateToScreen = (route) => () => {
     navigation.navigate(route);
   };
@@ -37,56 +84,12 @@ const DrawerScreen = ({ navigation }) => {
           height: 150,
           padding: 16,
           paddingTop: 48,
-          backgroundColor: "#002B55",
-          flexDirection: "row",
+          backgroundColor: colors.background,
+          // flexDirection: "row",
         }}
       >
-        <Image
-          source={require("../resources/profile.png")}
-          style={{
-            width: 80,
-            height: 80,
-            borderRadius: 40,
-            borderWidth: 3,
-            borderColor: "#FFF",
-          }}
-        ></Image>
-        <View
-          style={{
-            marginLeft: 10,
-          }}
-        >
-          <Text
-            style={{
-              color: "#FFF",
-              fontSize: 20,
-              fontWeight: "800",
-              marginVertical: 8,
-            }}
-          >
-            Fakhrul Azran
-          </Text>
-          <View
-            style={{
-              flexDirection: "row",
-            }}
-          >
-            <Text
-              style={{
-                color: "rgba(255,255,255, 0.8)",
-                fontSize: 13,
-                marginRight: 4,
-              }}
-            >
-              734 followers
-            </Text>
-            <Ionicons
-              name="md-people"
-              size={20}
-              color="rgba(255,255,255,0.8)"
-            ></Ionicons>
-          </View>
-        </View>
+        {drawerHeader}
+
       </View>
       <View
         style={{
@@ -106,7 +109,7 @@ const DrawerScreen = ({ navigation }) => {
               ></Ionicons>
             }
           ></SidebarLink>
-          <SidebarLink
+          {/* <SidebarLink
             navigation={navigation}
             title="Profile"
             route="profileFlow"
@@ -117,7 +120,7 @@ const DrawerScreen = ({ navigation }) => {
                 color={colors.text.title}
               ></Ionicons>
             }
-          ></SidebarLink>
+          ></SidebarLink> */}
           <Divider></Divider>
           <SidebarTitle title="TRADE"></SidebarTitle>
           <SidebarLink
@@ -211,7 +214,7 @@ const DrawerScreen = ({ navigation }) => {
               <Ionicons name="ios-people" size={20} color={colors.text.title} />
             }
           ></SidebarLink> */}
-          
+
           <Divider />
           <SidebarTitle title="COMMUNICATE"></SidebarTitle>
           <SidebarLink

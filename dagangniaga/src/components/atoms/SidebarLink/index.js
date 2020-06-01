@@ -6,21 +6,10 @@ import {colors} from "../../../utils";
 export default class SidebarLink extends Component {
   render() {
     const navigateToScreen = (route) => () => {
-      alert(route);
-      console.log(this.props.navigation);
-      //   this.navigator &&
-      //     this.navigator.dispatch(
-      //       NavigationActions.navigate({ routeName: route })
-      //     );
-      //   NavigationActions.navigate({ routeName: route });
+      this.props.navigation.navigate(route)
     };
 
     return (
-      // <View>
-      //     {this.props.icon}
-      //     <View>
-      //     </View>
-      // </View>
       <View
         style={
           {
@@ -37,11 +26,7 @@ export default class SidebarLink extends Component {
             paddingLeft: 20,
             alignContent:"center"
           }}
-          onPress={
-            () => {
-                // console.log(this.props.navigation)
-                this.props.navigation.navigate(this.props.route)
-            }}  
+          onPress={navigateToScreen(this.props.route)}  
             // navigateToScreen(this.props.route)}
         >
           <View style={{

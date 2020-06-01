@@ -52,6 +52,7 @@ export const QUERY_USER = gql`
       name
       email
       about
+      handle
       followers {
         id
         handle
